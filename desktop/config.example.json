@@ -1,9 +1,0 @@
-{
-  "apiBase": "http://localhost:3000",
-  "localBase": "./tasks",
-  "pollIntervalMs": 30000,
-  "printers": [
-    { "size": "6inch", "name": "HP Photo 6寸", "widthMm": 152, "heightMm": 102 },
-    { "size": "5inch", "name": "HP Photo 5寸", "widthMm": 127, "heightMm": 89 }
-  ]
-}

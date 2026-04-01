@@ -5,8 +5,7 @@
     "pages/slots/slots",
     "pages/store-slots/store-slots",
     "pages/advertiser/advertiser",
-    "pages/inspector/inspector",
-    "pages/upload/upload"
+    "pages/inspector/inspector"
   ],
   "window": {
     "navigationBarTitleText": "广告位管理",
