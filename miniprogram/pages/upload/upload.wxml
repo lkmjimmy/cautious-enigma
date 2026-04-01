@@ -1,0 +1,20 @@
+<view class="container">
+  <view class="order">订单号：{{orderId}}</view>
+  <view class="limit">最多上传 {{photoLimit}} 张，已选 {{photos.length}} 张</view>
+  <view class="grid">
+    <block wx:for="{{photos}}" wx:key="*this">
+      <view class="item">
+        <image class="thumb" src="{{item}}" mode="aspectFill" />
+        <view class="del" bindtap="onDel" data-i="{{index}}">×</view>
+      </view>
+    </block>
+    <view
+    wx:if="{{photos.length < photoLimit}}"
+    class="item add"
+    bindtap="onChoose"
+  >
+    + 添加
+  </view>
+  </view>
+  <button class="btn" bindtap="onSubmit" disabled="{{photos.length === 0}}">提交打印</button>
+</view>

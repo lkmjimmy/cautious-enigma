@@ -1,0 +1,117 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.progress-card,
+.task-card,
+.form-card {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 18rpx 20rpx;
+}
+
+.title {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.value {
+  margin-top: 8rpx;
+  color: #1677ff;
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 20rpx 0 12rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.task-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.task-store {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.task-meta {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.mini-btn {
+  margin: 0;
+  background: #eff6ff;
+  color: #1677ff;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  padding: 0 18rpx;
+  line-height: 56rpx;
+  height: 56rpx;
+}
+
+.line {
+  font-size: 25rpx;
+  color: #374151;
+  margin-bottom: 12rpx;
+}
+
+.status-group {
+  display: flex;
+  gap: 10rpx;
+  margin-bottom: 14rpx;
+}
+
+.status {
+  border: 1rpx solid #d1d5db;
+  color: #6b7280;
+  border-radius: 999rpx;
+  padding: 8rpx 16rpx;
+  font-size: 22rpx;
+}
+
+.status.active {
+  border-color: #1677ff;
+  color: #1677ff;
+  background: #eff6ff;
+}
+
+.photo-box {
+  border: 1rpx dashed #cbd5e1;
+  border-radius: 12rpx;
+  height: 280rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-placeholder {
+  color: #9ca3af;
+  font-size: 24rpx;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+}
+
+.submit-btn {
+  margin-top: 18rpx;
+  background: #1677ff;
+  color: #fff;
+  border-radius: 10rpx;
+}

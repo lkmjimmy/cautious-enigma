@@ -1,0 +1,16 @@
+{
+  "name": "photo-print-desktop",
+  "version": "1.0.0",
+  "description": "后台桌面端：自动下载、排版、检索订单、发送打印",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "download": "node src/downloader.js",
+    "layout": "node src/layout.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0",
+    "sharp": "^0.33.1"
+  }
+}

@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="page-title">{{store}} 广告位详情</view>
+
+  <block wx:for="{{groups}}" wx:key="type">
+    <view class="group-card">
+      <view class="group-title">{{item.type}}（{{item.count}}个）</view>
+      <view class="thumb-grid">
+        <block wx:for="{{item.items}}" wx:key="id">
+          <view class="thumb-item">
+            <image class="thumb" src="{{item.image}}" mode="aspectFill" />
+            <view class="slot-id">{{item.id}}</view>
+            <view wx:if="{{item.status === '即将到期'}}" class="expire-mark">即将到期</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </block>
+</view>

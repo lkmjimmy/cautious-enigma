@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="stats">
+    <block wx:for="{{stats}}" wx:key="label">
+      <view class="stat-card">
+        <view class="value">{{item.value}}</view>
+        <view class="label">{{item.label}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="section-title">安装照片与投放记录</view>
+  <block wx:for="{{records}}" wx:key="slot">
+    <view class="record-card">
+      <image class="photo" src="{{item.photo}}" mode="aspectFill" />
+      <view class="info">
+        <view class="slot">{{item.slot}} · {{item.store}}</view>
+        <view class="period">{{item.period}}</view>
+        <view class="status {{item.status === '正常' ? 'ok' : 'warn'}}">{{item.status}}</view>
+      </view>
+    </view>
+  </block>
+</view>

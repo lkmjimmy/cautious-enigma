@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="progress-card">
+    <view class="title">今日任务完成度</view>
+    <view class="value">{{completion}}</view>
+  </view>
+
+  <view class="section-title">巡店任务</view>
+  <block wx:for="{{tasks}}" wx:key="store">
+    <view class="task-card">
+      <view class="task-main">
+        <view class="task-store">{{item.store}}</view>
+        <view class="task-meta">待拍 {{item.slots}} 个广告位 · 距离 {{item.distance}}</view>
+      </view>
+      <button class="mini-btn" bindtap="onCheckIn" data-store="{{item.store}}">{{item.done ? '已完成' : '到店打卡'}}</button>
+    </view>
+  </block>
+
+  <view class="section-title">巡检提交</view>
+  <view class="form-card">
+    <view class="line">当前打卡门店：{{checkedInStore || '未打卡'}}</view>
+    <view class="line">状态选择：</view>
+    <view class="status-group">
+      <view class="status {{status === '正常' ? 'active' : ''}}" data-status="正常" bindtap="onStatusChange">正常</view>
+      <view class="status {{status === '遮挡' ? 'active' : ''}}" data-status="遮挡" bindtap="onStatusChange">遮挡</view>
+      <view class="status {{status === '脱落' ? 'active' : ''}}" data-status="脱落" bindtap="onStatusChange">脱落</view>
+    </view>
+
+    <view class="photo-box" bindtap="choosePhoto">
+      <image wx:if="{{photo}}" class="photo" src="{{photo}}" mode="aspectFill" />
+      <view wx:else class="photo-placeholder">点击拍照/上传现场图</view>
+    </view>
+
+    <button class="submit-btn" bindtap="onSubmit">提交巡检</button>
+  </view>
+</view>

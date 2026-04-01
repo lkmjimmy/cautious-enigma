@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# OS / IDE
+.DS_Store
+*.log
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Cloned third-party agents (nested git; reinstall: git clone https://github.com/msitarzewski/agency-agents.git .agency-agents)
+.agency-agents/

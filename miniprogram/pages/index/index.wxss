@@ -1,0 +1,43 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 32rpx 24rpx;
+  box-sizing: border-box;
+}
+
+.header {
+  margin: 20rpx 0 28rpx;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1f2d3d;
+}
+
+.desc {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid #e9eef5;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.card-desc {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  color: #6b7280;
+  line-height: 1.5;
+}

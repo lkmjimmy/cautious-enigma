@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="header">
+    <view class="title">广告位管理小程序</view>
+    <view class="desc">简洁高效地管理投放、巡检与安装留档</view>
+  </view>
+
+  <view class="card" bindtap="goAdmin">
+    <view class="card-title">管理者</view>
+    <view class="card-desc">查看全门店投放、空置广告位和到期时间</view>
+  </view>
+
+  <view class="card" bindtap="goAdvertiser">
+    <view class="card-title">广告主用户</view>
+    <view class="card-desc">查看我的投放记录与安装后现场照片</view>
+  </view>
+
+  <view class="card" bindtap="goInspector">
+    <view class="card-title">巡店员</view>
+    <view class="card-desc">按门店任务巡查拍照打卡并提交异常</view>
+  </view>
+</view>
