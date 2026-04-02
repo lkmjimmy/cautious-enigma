@@ -34,12 +34,11 @@ Page({
     }
 
     const storeRow = inspectorStores.addStore({ name: storeName, address, phone });
-    // 不在这里生成广告位；巡检时逐一拍照生成广告位记录
 
-    wx.showToast({ title: '门店已新增，进入巡检拍照', icon: 'success' });
+    wx.showToast({ title: '门店已新增，进入广告位初始化', icon: 'success' });
     setTimeout(() => {
       wx.navigateTo({
-        url: `/pages/inspector-check/inspector-check?storeId=${encodeURIComponent(storeRow.id)}`,
+        url: `/pages/inspector-store-init/inspector-store-init?storeId=${encodeURIComponent(storeRow.id)}`,
       });
     }, 250);
   },
