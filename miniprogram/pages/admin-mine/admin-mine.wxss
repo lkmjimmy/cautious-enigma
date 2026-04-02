@@ -1,0 +1,50 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.mine-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 24rpx;
+  margin-bottom: 16rpx;
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+}
+
+.mine-card:active {
+  opacity: 0.88;
+}
+
+.mine-card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.mine-card-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.mine-card-desc {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+  line-height: 1.45;
+}
+
+.mine-card-arrow {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+  font-size: 36rpx;
+  color: #cbd5e1;
+  font-weight: 300;
+}

@@ -1,0 +1,70 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.card {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 18rpx 20rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 14rpx;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin-bottom: 18rpx;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.input {
+  width: 100%;
+  font-size: 26rpx;
+  padding: 18rpx 14rpx;
+  background: #f9fafb;
+  border-radius: 12rpx;
+  border: 1rpx solid #e9eef5;
+  box-sizing: border-box;
+  min-height: 76rpx;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+  font-size: 26rpx;
+}
+
+.actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 18rpx;
+  padding-bottom: 6rpx;
+}
+
+.action-btn {
+  flex: 1;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.action-btn.ghost {
+  background: #f3f4f6 !important;
+  color: #6b7280 !important;
+}
+

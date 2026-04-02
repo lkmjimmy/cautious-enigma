@@ -1,0 +1,67 @@
+<view class="page ds-page">
+  <picker
+    wx:if="{{approvedStores.length > 1}}"
+    mode="selector"
+    range="{{approvedStores}}"
+    value="{{storeIndex}}"
+    bindchange="onStorePick"
+  >
+    <view class="store-picker">
+      <text class="store-picker-label">当前门店</text>
+      <text class="store-picker-value">{{storeName}}</text>
+      <text class="store-picker-arrow">›</text>
+    </view>
+  </picker>
+
+  <view class="store-bar">
+    <view class="store-name">{{storeName}}</view>
+    <view class="store-tip">仅展示您已认领门店的数据；正式环境由后端按权限返回</view>
+  </view>
+
+  <view class="stat-row">
+    <block wx:for="{{stats}}" wx:key="label">
+      <view class="stat-item">
+        <view class="stat-value tone-{{item.tone}}">{{item.value}}</view>
+        <view class="stat-label">{{item.label}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="section-title">广告位与到期时间</view>
+
+  <block wx:for="{{slots}}" wx:key="code">
+    <view class="slot-row ds-card">
+      <view class="slot-top">
+        <view class="slot-code">{{item.code}}</view>
+        <view
+          class="tag {{item.status === '空置' ? 'tag-danger' : item.status === '即将到期' ? 'tag-warning' : 'tag-success'}}"
+        >
+          {{item.status}}
+        </view>
+      </view>
+      <view class="slot-meta">{{item.type}}</view>
+      <view class="slot-expire">
+        <text class="slot-expire-label">到期时间</text>
+        <text class="slot-expire-value {{item.expireAt === '--' ? 'is-empty' : ''}}">{{item.expireAt}}</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="link-block" bindtap="goStoreVisual">
+    <text class="link-text">查看本店广告位缩略图</text>
+    <text class="link-arrow">›</text>
+  </view>
+
+  <view class="link-block link-block--sub" bindtap="goClaimMore">
+    <text class="link-text">门店认领 / 认领更多门店</text>
+    <text class="link-arrow">›</text>
+  </view>
+
+  <view class="revenue-entry" bindtap="goRevenue">
+    <view class="revenue-entry-main">
+      <text class="revenue-entry-title">预估收益</text>
+      <text class="revenue-entry-desc">各广告位本月预估收益</text>
+    </view>
+    <text class="revenue-entry-arrow">›</text>
+  </view>
+</view>

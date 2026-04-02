@@ -1,0 +1,36 @@
+<view class="page">
+  <view class="card">
+    <view class="section-title">门店信息</view>
+    <view class="line"><text class="k">店铺名称：</text>{{storeName}}</view>
+    <view class="line"><text class="k">地址：</text>{{address}}</view>
+    <view class="line"><text class="k">联系电话：</text>{{phone}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">广告位初始化（拍几张/无）</view>
+    <view class="tip">请逐一设置每个类型：选择“无”=0 张；选择 N=拍 N 张生成 N 个待拍广告位（N 上限为该门店实际数量）。巡检页里逐一拍照并提交。</view>
+
+    <block wx:for="{{typePlans}}" wx:key="type">
+      <view class="plan-row">
+        <view class="type-label">
+          {{item.type}}（实际 {{item.actualMax}} 个，上限不可超）
+        </view>
+        <picker
+          mode="selector"
+          range="{{item.countOptions}}"
+          value="{{item.pickerIndex}}"
+          data-type="{{item.type}}"
+          bindchange="onCountChange"
+        >
+          <view class="plan-picker">{{item.countOptions[item.pickerIndex]}}</view>
+        </picker>
+      </view>
+    </block>
+
+    <view class="actions">
+      <button class="action-btn ghost" bindtap="onCancel">取消</button>
+      <button class="action-btn primary" bindtap="onConfirm">确认并生成待拍广告位</button>
+    </view>
+  </view>
+</view>
+

@@ -1,0 +1,24 @@
+<view class="login-page">
+  <view class="login-content">
+    <view class="login-hero">
+      <view class="login-headline">欢迎回来</view>
+      <text class="login-brand-name">驿站传媒</text>
+      <view class="login-tagline">祝您业绩长虹</view>
+      <view class="login-sub">使用微信授权登录后进入工作台</view>
+    </view>
+
+    <view class="login-actions">
+      <button
+        class="login-btn-primary"
+        loading="{{loading}}"
+        disabled="{{loading}}"
+        bindtap="onWechatLogin"
+      >
+        {{loading ? '登录中…' : '微信一键登录'}}
+      </button>
+      <view class="login-footnote">
+        演示环境将直接完成本地登录。正式环境需将 code 提交至服务端换取会话。
+      </view>
+    </view>
+  </view>
+</view>

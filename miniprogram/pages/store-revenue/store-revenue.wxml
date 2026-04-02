@@ -1,0 +1,22 @@
+<view class="page ds-page">
+  <view class="head-card ds-card">
+    <view class="head-label">{{monthLabel}} · 本店合计（预估）</view>
+    <view class="head-total">{{totalText}}</view>
+    <view class="head-tip">以下为演示数据；正式环境按合同、刊例与实际上刊结算</view>
+  </view>
+
+  <view class="section-title">各广告位本月预估收益</view>
+
+  <block wx:for="{{rows}}" wx:key="code">
+    <view class="rev-row ds-card">
+      <view class="rev-top">
+        <view class="rev-code">{{item.code}}</view>
+        <view class="rev-amount">{{item.revenueText}}</view>
+      </view>
+      <view class="rev-meta">
+        <text class="rev-type">{{item.type}}</text>
+        <text class="rev-status">{{item.status}}</text>
+      </view>
+    </view>
+  </block>
+</view>

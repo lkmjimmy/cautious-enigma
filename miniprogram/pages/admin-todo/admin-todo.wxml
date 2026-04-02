@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="section">
+    <view class="section-title">门店认领审核</view>
+    <view wx:if="{{claimPending.length === 0}}" class="claim-empty">暂无待审核申请</view>
+    <block wx:for="{{claimPending}}" wx:key="id">
+      <view class="claim-card">
+        <view class="claim-store">{{item.storeName}}</view>
+        <view class="claim-user">申请人：{{item.shortUser}}</view>
+        <view class="claim-actions">
+          <button class="claim-btn-ok" size="mini" data-id="{{item.id}}" bindtap="onApproveClaim">通过</button>
+          <button class="claim-btn-no" size="mini" data-id="{{item.id}}" bindtap="onRejectClaim">拒绝</button>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="section">
+    <view class="section-title">续投意向通知</view>
+    <view class="price-notice-tip">广告主「继续推广」提交的意向（演示为本地存储）</view>
+    <view wx:if="{{promoteRequests.length === 0}}" class="promote-inbox-empty">暂无新意向</view>
+    <block wx:for="{{promoteRequests}}" wx:key="id">
+      <view class="promote-inbox-card">
+        <view class="promote-inbox-time">{{item.timeText}}</view>
+        <view class="promote-inbox-line"><text class="promote-inbox-k">意向类型</text>{{item.planModeLabel}}</view>
+        <view wx:if="{{item.planMode === 'renew'}}" class="promote-inbox-line"><text class="promote-inbox-k">续期门店</text>{{item.store}}</view>
+        <view wx:if="{{item.planMode === 'renew'}}" class="promote-inbox-line"><text class="promote-inbox-k">续投类型</text>{{item.typesText}}</view>
+        <view wx:if="{{item.planMode === 'expand'}}" class="promote-inbox-line promote-inbox-line--block"><text class="promote-inbox-k">加投空置</text>{{item.expandDetailText}}</view>
+        <view class="promote-inbox-line"><text class="promote-inbox-k">推广时长</text>{{item.spanText}}（{{item.periodUnitLabel}}）</view>
+        <view class="promote-inbox-actions">
+          <button class="promote-inbox-done" size="mini" data-id="{{item.id}}" bindtap="onDismissPromoteRequest">已安排对接</button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,137 @@
+<wxs src="./has.wxs" module="m" />
+
+<view class="page">
+  <view class="page-fill">
+    <view class="intro">以下为当前已投放（含即将到期）按门店与类型汇总</view>
+    <view class="table">
+      <view class="t-head">
+        <view class="t-col t-col-store">门店</view>
+        <view class="t-col t-col-type">广告位类型</view>
+        <view class="t-col t-col-qty">数量</view>
+      </view>
+      <block wx:for="{{rows}}" wx:key="rowKey">
+        <view class="t-row">
+          <view class="t-col t-col-store">{{item.store}}</view>
+          <view class="t-col t-col-type">{{item.type}}</view>
+          <view class="t-col t-col-qty">{{item.qty}}</view>
+        </view>
+      </block>
+    </view>
+    <view wx:if="{{rows.length === 0}}" class="empty">暂无已投放数据</view>
+  </view>
+
+  <view class="adv-bar-fixed">
+    <button class="adv-bar-btn" bindtap="openRenewPromoteModal">继续推广</button>
+  </view>
+
+  <!-- 续期表单 -->
+  <view wx:if="{{showPromoteModal}}" class="promote-mask" bindtap="closePromoteModal">
+    <view class="promote-sheet" catchtap="stopPromoteBubble">
+      <view class="promote-hd">原推广计划续期</view>
+      <view class="promote-desc">续投门店、已投放类型（可多选）、推广周期；提交后通知管理者安排商务</view>
+
+      <view class="promote-field">
+        <text class="promote-label">门店</text>
+        <picker mode="selector" range="{{stores}}" value="{{storeIndex}}" bindchange="onStoreChange">
+          <view class="promote-picker">{{stores[storeIndex]}}</view>
+        </picker>
+      </view>
+
+      <view class="promote-types-block">
+        <view class="promote-types-hd">广告位类型（已投放类型，可多选）</view>
+        <view class="promote-type-list">
+          <block wx:for="{{typeOptions}}" wx:key="type">
+            <view
+              class="promote-type-chip {{item.checked ? 'is-on' : ''}}"
+              data-type="{{item.type}}"
+              bindtap="toggleType"
+            >
+              <text class="promote-type-mark">{{item.checked ? '✓' : ''}}</text>
+              <text>{{item.type}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+      <view class="promote-field">
+        <text class="promote-label">时间单位</text>
+        <picker mode="selector" range="{{periodUnitLabels}}" value="{{periodUnitIndex}}" bindchange="onPeriodUnitChange">
+          <view class="promote-picker">{{periodUnitLabels[periodUnitIndex]}}</view>
+        </picker>
+      </view>
+      <view class="promote-field">
+        <text class="promote-label">时长</text>
+        <picker mode="selector" range="{{durations}}" value="{{durationIndex}}" bindchange="onDurationChange">
+          <view class="promote-picker">{{durations[durationIndex]}}</view>
+        </picker>
+      </view>
+
+      <view class="promote-actions">
+        <button class="promote-btn ghost" bindtap="closePromoteModal">取消</button>
+        <button class="promote-btn primary" bindtap="submitPromote">确认</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加大推广：全量广告位 + 勾选空置 -->
+  <view wx:if="{{showExpandModal}}" class="promote-mask expand-mask" bindtap="closeExpandModal">
+    <view class="expand-sheet" catchtap="stopExpandBubble">
+      <view class="expand-hd">加大推广计划</view>
+      <view class="expand-desc">以下为全部门店广告位投放与到期情况；请勾选意向加投的「空置」广告位（可多选）</view>
+
+      <scroll-view scroll-x class="expand-scroll-x" show-scrollbar="{{true}}">
+        <view class="expand-table">
+          <view class="expand-head">
+            <view class="ex-col ex-store">门店</view>
+            <view class="ex-col ex-code">编号</view>
+            <view class="ex-col ex-type">类型</view>
+            <view class="ex-col ex-status">状态</view>
+            <view class="ex-col ex-exp">到期日</view>
+            <view class="ex-col ex-pick">加选</view>
+          </view>
+          <block wx:for="{{allSlotRows}}" wx:key="rowKey">
+            <view class="expand-row">
+              <view class="ex-col ex-store">{{item.store}}</view>
+              <view class="ex-col ex-code">{{item.code}}</view>
+              <view class="ex-col ex-type">{{item.type}}</view>
+              <view class="ex-col ex-status st-{{item.statusClass}}">{{item.status}}</view>
+              <view class="ex-col ex-exp">{{item.expireDisplay}}</view>
+              <view class="ex-col ex-pick">
+                <view
+                  wx:if="{{item.isVacant}}"
+                  class="vacant-chip {{m.has(selectedVacantCodes, item.code) ? 'vacant-chip--on' : ''}}"
+                  data-code="{{item.code}}"
+                  bindtap="toggleVacantSlot"
+                >
+                  {{m.has(selectedVacantCodes, item.code) ? '已选' : '勾选'}}
+                </view>
+                <text wx:else class="vacant-na">—</text>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+
+      <view class="expand-selected-hint" wx:if="{{selectedVacantCodes.length}}">
+        已选空置位 {{selectedVacantCodes.length}} 个
+      </view>
+
+      <view class="promote-field expand-period">
+        <text class="promote-label">时间单位</text>
+        <picker mode="selector" range="{{periodUnitLabels}}" value="{{periodUnitIndex}}" bindchange="onPeriodUnitChange">
+          <view class="promote-picker">{{periodUnitLabels[periodUnitIndex]}}</view>
+        </picker>
+      </view>
+      <view class="promote-field">
+        <text class="promote-label">时长</text>
+        <picker mode="selector" range="{{durations}}" value="{{durationIndex}}" bindchange="onDurationChange">
+          <view class="promote-picker">{{durations[durationIndex]}}</view>
+        </picker>
+      </view>
+
+      <view class="promote-actions">
+        <button class="promote-btn ghost" bindtap="closeExpandModal">取消</button>
+        <button class="promote-btn primary" bindtap="submitExpandPromote">提交意向</button>
+      </view>
+    </view>
+  </view>
+</view>

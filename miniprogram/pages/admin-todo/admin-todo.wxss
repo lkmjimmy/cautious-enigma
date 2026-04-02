@@ -1,0 +1,122 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.section {
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8rpx;
+}
+
+.price-notice-tip {
+  margin-bottom: 12rpx;
+  font-size: 22rpx;
+  color: #6b7280;
+  line-height: 1.45;
+}
+
+.promote-inbox-empty {
+  padding: 24rpx;
+  font-size: 24rpx;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.promote-inbox-card {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 18rpx 20rpx 16rpx;
+  margin-bottom: 14rpx;
+}
+
+.promote-inbox-time {
+  font-size: 22rpx;
+  color: #9ca3af;
+  margin-bottom: 12rpx;
+}
+
+.promote-inbox-line {
+  font-size: 26rpx;
+  color: #111827;
+  line-height: 1.45;
+  margin-bottom: 8rpx;
+  word-break: break-all;
+}
+
+.promote-inbox-k {
+  display: inline-block;
+  min-width: 5em;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.promote-inbox-line--block .promote-inbox-k {
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.promote-inbox-actions {
+  margin-top: 12rpx;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.promote-inbox-done {
+  margin: 0;
+  color: #1677ff;
+  background: #e8f3ff;
+}
+
+.claim-empty {
+  font-size: 24rpx;
+  color: #94a3b8;
+  padding: 8rpx 0 16rpx;
+}
+
+.claim-card {
+  background: #fff;
+  border-radius: 14rpx;
+  border: 1rpx solid #e9eef5;
+  padding: 22rpx 20rpx;
+  margin-bottom: 14rpx;
+}
+
+.claim-store {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.claim-user {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #64748b;
+}
+
+.claim-actions {
+  margin-top: 18rpx;
+  display: flex;
+  gap: 20rpx;
+}
+
+.claim-btn-ok {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  font-weight: 600;
+}
+
+.claim-btn-no {
+  background: #fef2f2 !important;
+  color: #b91c1c !important;
+  font-weight: 600;
+}

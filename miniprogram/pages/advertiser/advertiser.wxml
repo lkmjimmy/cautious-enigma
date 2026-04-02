@@ -1,4 +1,14 @@
 <view class="page">
+  <view class="page-fill">
+  <view class="price-notice-card">
+    <view class="price-notice-head">
+      <text class="price-notice-title">价格通知</text>
+      <text class="price-notice-hint">管理者发布</text>
+    </view>
+    <view wx:if="{{priceNotice}}" class="price-notice-body">{{priceNotice}}</view>
+    <view wx:else class="price-notice-placeholder">暂无价格通知，管理者发布后将在此展示</view>
+  </view>
+
   <view class="stats">
     <block wx:for="{{stats}}" wx:key="label">
       <view class="stat-card">
@@ -8,15 +18,65 @@
     </block>
   </view>
 
-  <view class="section-title">安装照片与投放记录</view>
+  <view class="section-title">灯箱投放明细</view>
+  <view class="lb-table-wrap">
+    <view class="lb-table">
+      <view class="lb-head">
+        <view class="lb-col lb-col-code">广告位编号</view>
+        <view class="lb-col lb-col-type">类型</view>
+        <view class="lb-col lb-col-store">门店</view>
+        <view class="lb-col lb-col-qty">数量</view>
+        <view class="lb-col lb-col-date">到期日</view>
+      </view>
+      <block wx:for="{{lightboxRows}}" wx:key="code">
+        <view class="lb-row">
+          <view class="lb-col lb-col-code">{{item.code}}</view>
+          <view class="lb-col lb-col-type">{{item.typeLabel}}</view>
+          <view class="lb-col lb-col-store">{{item.store}}</view>
+          <view class="lb-col lb-col-qty">{{item.qty}}</view>
+          <view class="lb-col lb-col-date lb-col-date-cell">
+            <text class="{{item.expiringSoon ? 'lb-date-soon' : ''}}">{{item.expireAt}}</text>
+            <text wx:if="{{item.expiringSoon}}" class="lb-soon">即将到期</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class="lb-legend">说明：到期日在今日起 7 天内（含）以红色标注「即将到期」</view>
+
+  <view class="section-title">安装照 · 期中巡检 · 下刊照</view>
+  <view class="record-section-hint">每张图底部为水印示意：拍摄时间 + 定位（演示数据）</view>
   <block wx:for="{{records}}" wx:key="slot">
     <view class="record-card">
-      <image class="photo" src="{{item.photo}}" mode="aspectFill" />
-      <view class="info">
+      <view class="record-meta">
         <view class="slot">{{item.slot}} · {{item.store}}</view>
         <view class="period">{{item.period}}</view>
         <view class="status {{item.status === '正常' ? 'ok' : 'warn'}}">{{item.status}}</view>
       </view>
+      <view class="photo-stages">
+        <block wx:for="{{item.photos}}" wx:key="label" wx:for-item="p">
+          <view class="photo-stage">
+            <view class="photo-stage-title">{{p.label}}</view>
+            <view class="photo-wrap">
+              <image class="photo-img" src="{{p.src}}" mode="aspectFill" show-menu-by-longpress />
+              <view class="photo-watermark">
+                <view class="wm-line wm-time">{{p.watermarkTime}}</view>
+                <view class="wm-line wm-loc">{{p.address}}</view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
     </view>
   </block>
+  </view>
+
+  <view class="adv-actions-fixed">
+    <view class="adv-actions-caption">我的投放</view>
+    <view class="adv-actions-row">
+      <button class="adv-btn adv-btn--outline" bindtap="onMyContract">我的合同</button>
+      <button class="adv-btn adv-btn--expand" bindtap="onExpandPromote">加大推广</button>
+      <button class="adv-btn adv-btn--primary" bindtap="onContinuePromote">继续推广</button>
+    </view>
+  </view>
 </view>

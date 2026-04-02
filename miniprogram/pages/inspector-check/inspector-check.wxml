@@ -1,0 +1,105 @@
+<view class="page">
+  <view class="add-store-hero">
+    <view class="add-store-title">巡店员新增门店</view>
+    <view class="add-store-desc">新增门店后进入巡检：选择广告位类型后，逐一拍照生成广告位记录（数量不做上限，仅做提示）。</view>
+    <button class="add-store-btn" bindtap="goAddStore">新增门店</button>
+    <button class="add-store-btn add-store-btn-ghost" bindtap="clearInspectorTestData">清空测试数据</button>
+  </view>
+
+  <view class="form-card" wx:if="{{checkedInStoreId}}">
+    <view class="line">当前打卡门店：{{checkedInStoreName}}</view>
+    <view class="line line-muted">已生成：{{generatedCount}} 个广告位</view>
+
+    <block wx:if="{{!isStoreCompleted}}">
+      <view wx:if="{{typeIndex < types.length}}">
+        <view class="line line-type">当前类型：{{types[typeIndex]}}（第 {{typeIndex + 1}} / {{types.length}} 种）</view>
+        <view class="line line-muted">该类型已确认：{{currentDraftCount}} 张</view>
+
+        <view class="line line-small">状态选择（该条照片的状态）：</view>
+        <view class="status-group">
+          <view class="status {{currentStatus === '正常' ? 'active' : ''}}" data-status="正常" bindtap="onStatusChange">正常</view>
+          <view class="status {{currentStatus === '遮挡' ? 'active' : ''}}" data-status="遮挡" bindtap="onStatusChange">遮挡</view>
+          <view class="status {{currentStatus === '脱落' ? 'active' : ''}}" data-status="脱落" bindtap="onStatusChange">脱落</view>
+        </view>
+
+        <view class="photo-box">
+          <image wx:if="{{draftPhoto}}" class="photo" src="{{draftPhoto}}" mode="aspectFill" />
+          <view wx:else class="photo-placeholder">点击「拍照」开始拍摄</view>
+        </view>
+
+        <view class="form-actions">
+          <view wx:if="{{!draftPhoto}}" class="action-row">
+            <button
+              class="action-btn primary"
+              bindtap="choosePhoto"
+              disabled="{{isStoreCompleted || isGeneratedFromDraft}}"
+            >
+              拍照
+            </button>
+            <button
+              class="action-btn ghost"
+              bindtap="onSkipType"
+              disabled="{{currentDraftCount > 0 || isNoneForType}}"
+            >
+              无
+            </button>
+            <button
+            class="action-btn {{draftPhoto || (!isNoneForType && currentDraftCount === 0) ? 'ghost' : 'primary'}}"
+              bindtap="onFinishType"
+              disabled="{{(!isNoneForType && currentDraftCount === 0)}}"
+            >
+              完成该类型
+            </button>
+          </view>
+
+          <view wx:else class="action-row">
+            <button class="action-btn ghost" bindtap="onRetake">重拍</button>
+            <button class="action-btn primary" bindtap="onConfirmPhoto">确认</button>
+          </view>
+        </view>
+      </view>
+
+      <view wx:else>
+        <view class="line line-small">所有类型拍完，待生成广告位：{{draftTotalCount}} 张</view>
+        <view class="line line-muted">已生成：{{generatedCount}} 个广告位</view>
+
+        <view class="form-actions">
+          <button
+            class="action-btn primary"
+            bindtap="onGenerateAds"
+            disabled="{{isGeneratedFromDraft || draftTotalCount === 0}}"
+          >
+            生成广告位
+          </button>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="saved-hint">
+      该门店已提交。
+    </view>
+
+    <view class="saved-hint">
+      数量与类型以你「确认」的照片数量为准；不设置上限，仅做提示。
+    </view>
+  </view>
+
+  <view class="form-card empty" wx:else>
+    <view class="line">选择要巡检的门店</view>
+    <picker
+      mode="selector"
+      range="{{storePickerNames}}"
+      value="{{storePickerIndex}}"
+      bindchange="onStorePickerChange"
+    >
+      <view class="type-picker">
+        {{storePickerNames[storePickerIndex] || '暂无门店，请先新增'}}
+      </view>
+    </picker>
+
+    <view class="saved-hint">
+      如果当前没有门店：点击上方按钮“新增门店”。
+    </view>
+  </view>
+</view>
+

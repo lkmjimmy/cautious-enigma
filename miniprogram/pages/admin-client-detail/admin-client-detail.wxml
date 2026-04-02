@@ -1,0 +1,26 @@
+<view class="page" wx:if="{{client}}">
+  <view class="card">
+    <view class="hd">
+      <text class="name">{{client.name}}</text>
+      <view class="badge {{client.inAd ? 'on' : 'off'}}">{{client.inAd ? '在投' : '未在投'}}</view>
+    </view>
+    <view class="line"><text class="k">电话</text>{{client.phone}}</view>
+    <view class="line"><text class="k">公司</text>{{client.company}}</view>
+    <view wx:if="{{client.inAd}}" class="ad-block">
+      <text class="ad-title">在投广告</text>
+      <block wx:for="{{client.placementLines}}" wx:key="*this" wx:for-item="line">
+        <text class="ad-line">{{line}}</text>
+      </block>
+    </view>
+    <view wx:else class="none-ad">当前无在投广告</view>
+  </view>
+
+  <view class="section-title">广告主合同</view>
+  <view class="tip">仅管理者与本客户在广告主端「我的合同」可见（演示为本地按客户隔离存储）</view>
+  <image wx:if="{{contractPath}}" class="contract-preview" src="{{contractPath}}" mode="widthFix" />
+  <view wx:else class="contract-empty">尚未上传该客户合同</view>
+  <button class="btn-upload" bindtap="chooseContractImage">上传 / 更换合同图</button>
+  <view wx:if="{{contractPath}}" class="clear-row">
+    <text class="clear-link" bindtap="clearContract">移除合同图</text>
+  </view>
+</view>

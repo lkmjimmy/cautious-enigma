@@ -1,0 +1,20 @@
+<view class="page">
+  <view class="intro">点击卡片进入客户详情，可维护该客户的广告主合同（仅管理者与该客户在广告主端可见）</view>
+  <block wx:for="{{clients}}" wx:key="id">
+    <view class="client-card" data-id="{{item.id}}" bindtap="goClientDetail">
+      <view class="client-hd">
+        <text class="client-name">{{item.name}}</text>
+        <view class="client-badge {{item.inAd ? 'on' : 'off'}}">{{item.inAd ? '在投' : '未在投'}}</view>
+      </view>
+      <view class="client-line"><text class="k">电话</text>{{item.phone}}</view>
+      <view class="client-line"><text class="k">公司</text>{{item.company}}</view>
+      <view wx:if="{{item.inAd}}" class="client-ad">
+        <text class="client-ad-title">在投广告</text>
+        <block wx:for="{{item.placementLines}}" wx:key="*this" wx:for-item="line">
+          <text class="client-ad-line">{{line}}</text>
+        </block>
+      </view>
+      <view wx:else class="client-none">当前无在投广告</view>
+    </view>
+  </block>
+</view>

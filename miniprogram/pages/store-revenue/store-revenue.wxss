@@ -1,0 +1,77 @@
+.page {
+  padding-top: 16rpx;
+}
+
+.head-card {
+  padding: 28rpx 24rpx;
+  margin-bottom: 28rpx;
+  background: linear-gradient(135deg, #eff6ff 0%, #fff 100%);
+  border: 1rpx solid #dbeafe;
+}
+
+.head-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.head-total {
+  margin-top: 12rpx;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -1rpx;
+}
+
+.head-tip {
+  margin-top: 14rpx;
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+  line-height: 1.45;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 16rpx;
+}
+
+.rev-row {
+  padding: 22rpx 20rpx;
+  margin-bottom: 14rpx;
+}
+
+.rev-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16rpx;
+}
+
+.rev-code {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+}
+
+.rev-amount {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #0f172a;
+  flex-shrink: 0;
+}
+
+.rev-meta {
+  margin-top: 10rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.rev-status {
+  color: var(--text-tertiary);
+}

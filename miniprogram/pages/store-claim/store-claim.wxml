@@ -1,0 +1,35 @@
+<view class="page ds-page">
+  <view class="intro">
+    <view class="intro-title">认领您的门店</view>
+    <view class="intro-text">每家门店仅能被一人认领。第一家店认领后立即生效；认领更多门店需管理者审核通过。</view>
+  </view>
+
+  <view wx:if="{{canEnterWorkbench}}" class="enter-bar">
+    <button class="enter-btn" bindtap="goWorkbench">进入本店工作台</button>
+  </view>
+
+  <view class="section-label">门店列表</view>
+
+  <block wx:for="{{stores}}" wx:key="name">
+    <view class="store-row ds-card">
+      <view class="store-row-main">
+        <view class="store-name">{{item.name}}</view>
+        <view class="store-status status-{{item.status}}">{{item.statusText}}</view>
+      </view>
+      <button
+        wx:if="{{item.status === 'free'}}"
+        class="claim-btn"
+        size="mini"
+        data-name="{{item.name}}"
+        data-status="{{item.status}}"
+        bindtap="onClaimTap"
+      >
+        认领
+      </button>
+      <view wx:elif="{{item.status === 'mine'}}" class="tag-mine">我的</view>
+      <view wx:elif="{{item.status === 'pending'}}" class="tag-pending">审核中</view>
+      <view wx:elif="{{item.status === 'locked'}}" class="tag-locked">排队</view>
+      <view wx:else class="tag-taken">—</view>
+    </view>
+  </block>
+</view>

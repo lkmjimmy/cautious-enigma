@@ -1,0 +1,119 @@
+.page {
+  padding-top: 8rpx;
+}
+
+.intro {
+  margin-bottom: 24rpx;
+}
+
+.intro-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.intro-text {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.enter-bar {
+  margin-bottom: 28rpx;
+}
+
+.enter-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: var(--primary);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 0;
+}
+
+.section-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 16rpx;
+}
+
+.store-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 20rpx;
+  margin-bottom: 14rpx;
+}
+
+.store-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.store-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.store-status {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}
+
+.status-free {
+  color: var(--text-tertiary);
+}
+
+.status-mine {
+  color: #15803d;
+}
+
+.status-pending {
+  color: #b45309;
+}
+
+.status-taken {
+  color: #b91c1c;
+}
+
+.status-locked {
+  color: #64748b;
+}
+
+.claim-btn {
+  margin: 0 0 0 16rpx;
+  background: #eff6ff;
+  color: var(--primary);
+  font-weight: 600;
+  border-radius: 999rpx;
+}
+
+.tag-mine,
+.tag-pending,
+.tag-taken {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+.tag-mine {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.tag-pending {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.tag-locked {
+  color: #64748b;
+  font-weight: 600;
+}

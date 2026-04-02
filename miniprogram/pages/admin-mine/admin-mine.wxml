@@ -1,0 +1,16 @@
+<view class="page">
+  <view class="mine-card" bindtap="goPersonnel">
+    <view class="mine-card-main">
+      <text class="mine-card-title">人员管理</text>
+      <text class="mine-card-desc">调整人员角色：巡店员、店主、广告主、业务员</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+  <view class="mine-card" bindtap="goClients">
+    <view class="mine-card-main">
+      <text class="mine-card-title">客户管理</text>
+      <text class="mine-card-desc">客户姓名、电话、公司及在投广告位类型、数量与到期</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+</view>

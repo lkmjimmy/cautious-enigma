@@ -1,0 +1,58 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.intro {
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+  line-height: 1.45;
+}
+
+.person-card {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 20rpx 22rpx;
+  margin-bottom: 14rpx;
+}
+
+.person-top {
+  margin-bottom: 14rpx;
+}
+
+.person-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.person-phone {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #64748b;
+}
+
+.person-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.person-label {
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.person-picker {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1677ff;
+}

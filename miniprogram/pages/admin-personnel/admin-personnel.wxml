@@ -1,0 +1,17 @@
+<view class="page">
+  <view class="intro">选择角色后即时保存（演示为本地存储）</view>
+  <block wx:for="{{personnel}}" wx:key="id">
+    <view class="person-card">
+      <view class="person-top">
+        <text class="person-name">{{item.name}}</text>
+        <text class="person-phone">{{item.phone}}</text>
+      </view>
+      <view class="person-row">
+        <text class="person-label">角色</text>
+        <picker mode="selector" range="{{roleOptions}}" value="{{item.roleIndex}}" data-id="{{item.id}}" bindchange="onRoleChange">
+          <view class="person-picker">{{roleOptions[item.roleIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+  </block>
+</view>

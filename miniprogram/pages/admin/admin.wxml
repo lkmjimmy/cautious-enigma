@@ -1,4 +1,4 @@
-<view class="page">
+<view class="page admin-page">
   <view class="section-title">核心看板</view>
   <view class="grid">
     <block wx:for="{{stats}}" wx:key="label">
@@ -29,32 +29,86 @@
     </view>
   </view>
 
-  <view class="section">
-    <view class="section-header">
-      <view class="section-title">门店投放概览</view>
-      <view class="link" bindtap="goSlots">查看全部广告位</view>
+  <view class="section section--mgr">
+    <view class="section-title">门店管理</view>
+    <view class="mgr-store-picker" bindtap="openStorePickerModal">
+      <text class="mgr-store-picker-label">选择门店</text>
+      <view class="mgr-store-picker-inner">
+        <text class="mgr-store-picker-value">{{selectedStore}}</text>
+        <text class="mgr-store-picker-arrow">▼</text>
+      </view>
     </view>
-    <block wx:for="{{stores}}" wx:key="name">
-      <view class="row-card">
-        <view class="row-title">{{item.name}}</view>
-        <view class="store-table">
-          <view class="store-head">
-            <view class="col-type">类型</view>
-            <view class="col-num">投放</view>
-            <view class="col-num">空置</view>
-            <view class="col-num">即将到期</view>
+    <view class="mgr-tip">选择门店后展示该店全部广告位情况（演示数据）</view>
+    <view wx:if="{{hasOwner}}" class="mgr-owner-bar">
+      <text class="mgr-owner-label">店主</text>
+      <text class="mgr-owner-name">{{ownerName}}</text>
+      <text class="mgr-owner-phone">{{ownerPhone}}</text>
+    </view>
+    <view wx:else class="mgr-owner-bar mgr-owner-bar--empty">暂无店主</view>
+    <view class="mgr-slot-stats">
+      <block wx:for="{{slotStats}}" wx:key="label">
+        <view class="mgr-slot-stat">
+          <view class="mgr-slot-stat-val tone-{{item.tone}}">{{item.value}}</view>
+          <view class="mgr-slot-stat-lb">{{item.label}}</view>
+        </view>
+      </block>
+    </view>
+    <view class="mgr-type-block">
+      <view class="mgr-type-block-title">按类型汇总</view>
+      <view class="mgr-type-block-desc">列出全部广告位类型；本门店无该类型时总数与各状态为 0</view>
+      <view class="type-table mgr-type-table">
+        <view class="type-head">
+          <view class="col-type">类型</view>
+          <view class="col-num">类型总数</view>
+          <view class="col-num">已投放</view>
+          <view class="col-num">空置</view>
+          <view class="col-num">即将到期</view>
+        </view>
+        <block wx:for="{{slotTypeSummary}}" wx:key="type">
+          <view class="type-row">
+            <view class="col-type">{{item.type}}</view>
+            <view class="col-num">{{item.total}}</view>
+            <view class="col-num num-success">{{item.filled}}</view>
+            <view class="col-num num-danger">{{item.vacant}}</view>
+            <view class="col-num num-warning">{{item.expiring}}</view>
           </view>
-          <block wx:for="{{item.types}}" wx:key="type">
-            <view class="store-row">
-              <view class="col-type">{{item.type}}</view>
-              <view class="col-num num-success">{{item.filled}}</view>
-              <view class="col-num num-danger">{{item.vacant}}</view>
-              <view class="col-num num-warning">{{item.expiring}}</view>
+        </block>
+      </view>
+    </view>
+    <view class="mgr-slot-section-title">各广告位明细</view>
+    <view class="mgr-slot-section-desc">每条含：广告位编号、类型、投放状态（已投放 / 空置 / 即将到期）、到期时间</view>
+    <block wx:for="{{slotList}}" wx:key="code">
+      <view class="mgr-slot-card">
+        <view class="mgr-slot-head">
+          <text class="mgr-slot-code-label">广告位编号</text>
+          <text class="mgr-slot-code">{{item.code}}</text>
+        </view>
+        <view class="mgr-slot-body">
+          <view class="mgr-slot-line">
+            <text class="mgr-slot-k">广告位类型</text>
+            <text class="mgr-slot-v mgr-slot-v--emph">{{item.type}}</text>
+          </view>
+          <view class="mgr-slot-line mgr-slot-line--status">
+            <text class="mgr-slot-k">投放状态</text>
+            <view class="mgr-slot-status-cell">
+              <view
+                class="mgr-slot-tag {{item.status === '空置' ? 'mgr-tag-danger' : item.status === '即将到期' ? 'mgr-tag-warning' : 'mgr-tag-success'}}"
+              >
+                {{item.status}}
+              </view>
+              <text wx:if="{{item.status === '已投放'}}" class="mgr-slot-status-tip">当前已上刊</text>
+              <text wx:elif="{{item.status === '空置'}}" class="mgr-slot-status-tip mgr-slot-status-tip--danger">当前空置，待招商</text>
+              <text wx:elif="{{item.status === '即将到期'}}" class="mgr-slot-status-tip mgr-slot-status-tip--warn">临近到期，请跟进</text>
             </view>
-          </block>
+          </view>
+          <view class="mgr-slot-line">
+            <text class="mgr-slot-k">到期时间</text>
+            <text class="mgr-slot-v {{item.expireAt === '--' ? 'is-empty' : ''}}">{{item.expireAt === '--' ? '—（空置无到期日）' : item.expireAt}}</text>
+          </view>
         </view>
       </view>
     </block>
+    <view class="mgr-more-link" bindtap="goStoreDetailCurrent">查看门店详情、缩略图与清退店主 ›</view>
   </view>
 
   <view class="section">
@@ -68,5 +122,35 @@
         <view class="row-meta">{{item.store}} · 到期 {{item.expireAt}}</view>
       </view>
     </block>
+  </view>
+
+  <view wx:if="{{showStorePickerModal}}" class="mgr-pick-mask" bindtap="closeStorePickerModal">
+    <view class="mgr-pick-sheet" catchtap="stopPickBubble">
+      <view class="mgr-pick-hd">选择门店</view>
+      <scroll-view scroll-y class="mgr-pick-scroll">
+        <block wx:for="{{storeNameList}}" wx:key="*this">
+          <view
+            class="mgr-pick-item {{storePickerIndex === index ? 'is-active' : ''}}"
+            data-index="{{index}}"
+            bindtap="onSelectStoreItem"
+          >
+            {{item}}
+          </view>
+        </block>
+      </scroll-view>
+      <view class="mgr-pick-cancel" bindtap="closeStorePickerModal">取消</view>
+    </view>
+  </view>
+
+  <view class="admin-bottom-bar">
+    <view class="admin-bottom-item" bindtap="goAdminPublish">
+      <text class="admin-bottom-text">消息发布</text>
+    </view>
+    <view class="admin-bottom-item" bindtap="goAdminTodo">
+      <text class="admin-bottom-text">待办</text>
+    </view>
+    <view class="admin-bottom-item" bindtap="goAdminMine">
+      <text class="admin-bottom-text">我的</text>
+    </view>
   </view>
 </view>
