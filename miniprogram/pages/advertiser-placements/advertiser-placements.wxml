@@ -28,13 +28,11 @@
   <view wx:if="{{showPromoteModal}}" class="promote-mask" bindtap="closePromoteModal">
     <view class="promote-sheet" catchtap="stopPromoteBubble">
       <view class="promote-hd">原推广计划续期</view>
-      <view class="promote-desc">续投门店、已投放类型（可多选）、推广周期；提交后通知管理者安排商务</view>
+      <view class="promote-desc">续投门店、已投放类型（可多选）、推广周期；提交后通知中台安排商务</view>
 
       <view class="promote-field">
         <text class="promote-label">门店</text>
-        <picker mode="selector" range="{{stores}}" value="{{storeIndex}}" bindchange="onStoreChange">
-          <view class="promote-picker">{{stores[storeIndex]}}</view>
-        </picker>
+        <view class="promote-picker" data-kind="store" bindtap="openPickerSheet">{{stores[storeIndex]}}</view>
       </view>
 
       <view class="promote-types-block">
@@ -54,15 +52,11 @@
       </view>
       <view class="promote-field">
         <text class="promote-label">时间单位</text>
-        <picker mode="selector" range="{{periodUnitLabels}}" value="{{periodUnitIndex}}" bindchange="onPeriodUnitChange">
-          <view class="promote-picker">{{periodUnitLabels[periodUnitIndex]}}</view>
-        </picker>
+        <view class="promote-picker" data-kind="period" bindtap="openPickerSheet">{{periodUnitLabels[periodUnitIndex]}}</view>
       </view>
       <view class="promote-field">
         <text class="promote-label">时长</text>
-        <picker mode="selector" range="{{durations}}" value="{{durationIndex}}" bindchange="onDurationChange">
-          <view class="promote-picker">{{durations[durationIndex]}}</view>
-        </picker>
+        <view class="promote-picker" data-kind="duration" bindtap="openPickerSheet">{{durations[durationIndex]}}</view>
       </view>
 
       <view class="promote-actions">
@@ -117,15 +111,11 @@
 
       <view class="promote-field expand-period">
         <text class="promote-label">时间单位</text>
-        <picker mode="selector" range="{{periodUnitLabels}}" value="{{periodUnitIndex}}" bindchange="onPeriodUnitChange">
-          <view class="promote-picker">{{periodUnitLabels[periodUnitIndex]}}</view>
-        </picker>
+        <view class="promote-picker" data-kind="period" bindtap="openPickerSheet">{{periodUnitLabels[periodUnitIndex]}}</view>
       </view>
       <view class="promote-field">
         <text class="promote-label">时长</text>
-        <picker mode="selector" range="{{durations}}" value="{{durationIndex}}" bindchange="onDurationChange">
-          <view class="promote-picker">{{durations[durationIndex]}}</view>
-        </picker>
+        <view class="promote-picker" data-kind="duration" bindtap="openPickerSheet">{{durations[durationIndex]}}</view>
       </view>
 
       <view class="promote-actions">
@@ -134,4 +124,14 @@
       </view>
     </view>
   </view>
+
+  <selector-sheet
+    show="{{showPickerSheet}}"
+    title="{{pickerSheetTitle}}"
+    options="{{pickerSheetOptions}}"
+    range-key="{{pickerSheetRangeKey}}"
+    selected-index="{{pickerSheetSelectedIndex}}"
+    bind:select="onPickerSheetSelect"
+    bind:close="onPickerSheetClose"
+  />
 </view>

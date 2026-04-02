@@ -25,6 +25,17 @@
   display: block;
 }
 
+.contract-wm {
+  padding: 0 20rpx 12rpx;
+}
+
+.contract-wm-line {
+  display: block;
+  font-size: 22rpx;
+  color: #475569;
+  line-height: 1.45;
+}
+
 .contract-tip {
   padding: 16rpx 20rpx 20rpx;
   font-size: 22rpx;

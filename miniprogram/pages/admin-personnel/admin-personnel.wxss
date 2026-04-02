@@ -52,7 +52,8 @@
 }
 
 .person-picker {
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: 600;
   color: #1677ff;
+  padding: 10rpx 0;
 }

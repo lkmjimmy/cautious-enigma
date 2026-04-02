@@ -32,4 +32,20 @@
       </view>
     </block>
   </view>
+
+  <view class="section">
+    <view class="section-title">审核记录</view>
+    <view class="audit-tip">以下为本页操作留痕，最长保留 30 天，超期自动清理（演示为本地存储）</view>
+    <view wx:if="{{auditRecords.length === 0}}" class="audit-empty">暂无记录</view>
+    <block wx:for="{{auditRecords}}" wx:key="id">
+      <view class="audit-card">
+        <view class="audit-time">{{item.timeText}}</view>
+        <view class="audit-title">{{item.title}}</view>
+        <view wx:if="{{item.sub}}" class="audit-sub">{{item.sub}}</view>
+        <block wx:for="{{item.lines}}" wx:for-item="line" wx:for-index="lidx" wx:key="lidx">
+          <view class="audit-line">{{line}}</view>
+        </block>
+      </view>
+    </block>
+  </view>
 </view>

@@ -50,6 +50,12 @@ Page({
     periodUnitLabels: ['按月', '按季度', '按年'],
     durationIndex: 0,
     durations: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+    showPickerSheet: false,
+    pickerSheetKind: '',
+    pickerSheetTitle: '',
+    pickerSheetOptions: [],
+    pickerSheetRangeKey: '',
+    pickerSheetSelectedIndex: 0,
   },
 
   onLoad(options) {
@@ -118,8 +124,44 @@ Page({
     this.setData({ selectedVacantCodes });
   },
 
-  onStoreChange(e) {
-    this.setData({ storeIndex: Number(e.detail.value) });
+  openPickerSheet(e) {
+    const kind = e.currentTarget.dataset.kind;
+    if (!kind) return;
+    const titles = { store: '选择门店', period: '时间单位', duration: '时长' };
+    let options = [];
+    let selectedIndex = 0;
+    if (kind === 'store') {
+      options = this.data.stores;
+      selectedIndex = this.data.storeIndex;
+    } else if (kind === 'period') {
+      options = this.data.periodUnitLabels;
+      selectedIndex = this.data.periodUnitIndex;
+    } else if (kind === 'duration') {
+      options = this.data.durations;
+      selectedIndex = this.data.durationIndex;
+    }
+    this.setData({
+      showPickerSheet: true,
+      pickerSheetKind: kind,
+      pickerSheetTitle: titles[kind],
+      pickerSheetOptions: options,
+      pickerSheetRangeKey: '',
+      pickerSheetSelectedIndex: selectedIndex,
+    });
+  },
+
+  onPickerSheetSelect(e) {
+    const idx = e.detail.index;
+    const k = this.data.pickerSheetKind;
+    const patch = { showPickerSheet: false };
+    if (k === 'store') patch.storeIndex = idx;
+    else if (k === 'period') patch.periodUnitIndex = idx;
+    else if (k === 'duration') patch.durationIndex = idx;
+    this.setData(patch);
+  },
+
+  onPickerSheetClose() {
+    this.setData({ showPickerSheet: false });
   },
 
   toggleType(e) {
@@ -129,14 +171,6 @@ Page({
       item.type === type ? { ...item, checked: !item.checked } : item
     );
     this.setData({ typeOptions });
-  },
-
-  onPeriodUnitChange(e) {
-    this.setData({ periodUnitIndex: Number(e.detail.value) });
-  },
-
-  onDurationChange(e) {
-    this.setData({ durationIndex: Number(e.detail.value) });
   },
 
   submitPromote() {
@@ -164,7 +198,7 @@ Page({
     });
 
     wx.showToast({
-      title: '已通知管理者安排商务',
+      title: '已通知中台安排商务',
       icon: 'success',
       duration: 2200,
     });
@@ -199,7 +233,7 @@ Page({
     });
 
     wx.showToast({
-      title: '已通知管理者安排商务',
+      title: '已通知中台安排商务',
       icon: 'success',
       duration: 2200,
     });

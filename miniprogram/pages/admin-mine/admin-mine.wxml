@@ -13,4 +13,18 @@
     </view>
     <text class="mine-card-arrow">›</text>
   </view>
+  <view class="mine-card" bindtap="goSlotManage">
+    <view class="mine-card-main">
+      <text class="mine-card-title">广告位管理</text>
+      <text class="mine-card-desc">查看全部广告位（含图片），并为单个广告位绑定客户</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+  <view class="mine-card" bindtap="goStoreDetailCurrent">
+    <view class="mine-card-main">
+      <text class="mine-card-title">门店管理</text>
+      <text class="mine-card-desc">查看门店广告位汇总、明细、状态与到期时间</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
 </view>

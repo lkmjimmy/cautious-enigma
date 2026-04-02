@@ -1,7 +1,7 @@
 <view class="page ds-page">
   <view class="intro">
     <view class="intro-title">认领您的门店</view>
-    <view class="intro-text">每家门店仅能被一人认领。第一家店认领后立即生效；认领更多门店需管理者审核通过。</view>
+    <view class="intro-text">每家门店仅能被一人认领。第一家店认领后立即生效；认领更多门店需中台审核通过。</view>
   </view>
 
   <view wx:if="{{canEnterWorkbench}}" class="enter-bar">

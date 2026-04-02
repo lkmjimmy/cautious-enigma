@@ -1,4 +1,6 @@
-/** 广告主「继续推广」意向 → 管理者端本地收件箱（演示；正式环境可换模板消息/订阅消息） */
+/** 广告主「继续推广」意向 → 中台端本地收件箱（演示；正式环境可换模板消息/订阅消息） */
+const adminTodoAuditLog = require('./adminTodoAuditLog.js');
+
 const KEY = 'adminPromoteRequests';
 
 function list() {
@@ -25,9 +27,17 @@ function push(entry) {
 }
 
 function removeById(id) {
-  const arr = list().filter((x) => x.id !== id);
+  const arr = list();
+  const found = arr.find((x) => x.id === id);
+  if (found) {
+    adminTodoAuditLog.append({
+      kind: 'promote_handled',
+      payload: { ...found },
+    });
+  }
+  const next = arr.filter((x) => x.id !== id);
   try {
-    wx.setStorageSync(KEY, arr);
+    wx.setStorageSync(KEY, next);
   } catch (e) {
     /* ignore */
   }

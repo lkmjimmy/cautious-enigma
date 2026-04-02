@@ -1,6 +1,7 @@
 const inspectorStores = require('../../utils/inspectorStores.js');
 const inspectorStoreRecords = require('../../utils/inspectorStoreRecords.js');
 const demoSlots = require('../../utils/demoSlots.js');
+const photoCaptureMeta = require('../../utils/photoCaptureMeta.js');
 
 const STATUS_DEFAULT = '正常';
 
@@ -32,6 +33,8 @@ Page({
     storePickerNames: [],
     storePickerStoreIds: [],
     storePickerIndex: 0,
+    showStoreSheet: false,
+    storeSheetSelectedIndex: 0,
 
     draftPhoto: '',
     draftByType: {}, // { [type]: Array<{photo, status}> }
@@ -41,6 +44,12 @@ Page({
 
     // 当前类型是否选择了“无”（不自动跳过，需点“完成该类型”）
     isNoneForType: false,
+
+    draftWatermarkTime: '',
+    draftWatermarkAddress: '',
+    draftRecordedAt: 0,
+
+    storeListRows: [],
   },
 
   onLoad(options) {
@@ -53,7 +62,15 @@ Page({
   },
 
   onShow() {
-    if (!this.data.checkedInStoreId) this.refreshStorePicker();
+    this.refreshStorePicker();
+  },
+
+  onStoreCheckin(e) {
+    const storeId = e.currentTarget.dataset.storeId;
+    if (!storeId) return;
+    wx.navigateTo({
+      url: `/pages/inspector-store-checkin/inspector-store-checkin?storeId=${encodeURIComponent(storeId)}`,
+    });
   },
 
   goAddStore() {
@@ -82,6 +99,9 @@ Page({
             currentDraftCount: 0,
             currentStatus: STATUS_DEFAULT,
             isNoneForType: false,
+            draftWatermarkTime: '',
+            draftWatermarkAddress: '',
+            draftRecordedAt: 0,
           });
           this.refreshStorePicker();
           wx.showToast({ title: '测试数据已清空', icon: 'success' });
@@ -103,10 +123,25 @@ Page({
       storePickerIndex = idx >= 0 ? idx : 0;
     }
 
+    const storeListRows = stores
+      .map((s) => ({
+        id: s.id,
+        name: s.name,
+        address: s.address || '—',
+        checkinDoneThisMonth: inspectorStoreRecords.isGridCheckinDoneThisMonth(s.id),
+      }))
+      .sort((a, b) => {
+        if (a.checkinDoneThisMonth !== b.checkinDoneThisMonth) {
+          return a.checkinDoneThisMonth ? 1 : -1;
+        }
+        return String(a.name || '').localeCompare(String(b.name || ''), 'zh-CN');
+      });
+
     this.setData({
       storePickerNames,
       storePickerStoreIds,
       storePickerIndex,
+      storeListRows,
     });
   },
 
@@ -131,6 +166,9 @@ Page({
       currentDraftCount: 0,
       currentStatus: STATUS_DEFAULT,
       isNoneForType: false,
+      draftWatermarkTime: '',
+      draftWatermarkAddress: '',
+      draftRecordedAt: 0,
     });
   },
 
@@ -158,6 +196,9 @@ Page({
       currentDraftCount: 0,
       currentStatus: STATUS_DEFAULT,
       isNoneForType: false,
+      draftWatermarkTime: '',
+      draftWatermarkAddress: '',
+      draftRecordedAt: 0,
     });
   },
 
@@ -167,12 +208,29 @@ Page({
     this.setData({ currentStatus: st });
   },
 
-  onStorePickerChange(e) {
-    const idx = Number(e.detail.value);
+  openStorePickerSheet() {
+    const names = this.data.storePickerNames || [];
+    if (!names.length) {
+      wx.showToast({ title: '请先在新增门店中添加', icon: 'none' });
+      return;
+    }
+    this.setData({ showStoreSheet: true, storeSheetSelectedIndex: this.data.storePickerIndex });
+  },
+
+  onStoreSheetSelect(e) {
+    const idx = e.detail.index;
     if (Number.isNaN(idx)) return;
     const storeId = (this.data.storePickerStoreIds || [])[idx];
-    if (!storeId) return;
+    if (!storeId) {
+      this.setData({ showStoreSheet: false });
+      return;
+    }
+    this.setData({ showStoreSheet: false });
     this.checkInById(storeId);
+  },
+
+  onStoreSheetClose() {
+    this.setData({ showStoreSheet: false });
   },
 
   choosePhoto() {
@@ -203,7 +261,17 @@ Page({
       sourceType: ['camera'],
       success: (res) => {
         const file = res.tempFiles && res.tempFiles[0];
-        this.setData({ draftPhoto: file ? file.tempFilePath : '' });
+        const path = file ? file.tempFilePath : '';
+        if (!path) return;
+        const prefix = `门店：${this.data.checkedInStoreName || ''}`;
+        photoCaptureMeta.getCaptureMeta({ addressPrefix: prefix }, (meta) => {
+          this.setData({
+            draftPhoto: path,
+            draftWatermarkTime: meta.timeStr,
+            draftWatermarkAddress: meta.address,
+            draftRecordedAt: meta.recordedAt,
+          });
+        });
       },
       fail: () => {
         wx.showToast({ title: '未选择照片', icon: 'none' });
@@ -212,7 +280,12 @@ Page({
   },
 
   onRetake() {
-    this.setData({ draftPhoto: '' });
+    this.setData({
+      draftPhoto: '',
+      draftWatermarkTime: '',
+      draftWatermarkAddress: '',
+      draftRecordedAt: 0,
+    });
   },
 
   onConfirmPhoto() {
@@ -231,6 +304,9 @@ Page({
     list.push({
       photo: this.data.draftPhoto,
       status: this.data.currentStatus || STATUS_DEFAULT,
+      watermarkTime: this.data.draftWatermarkTime,
+      watermarkAddress: this.data.draftWatermarkAddress,
+      recordedAt: this.data.draftRecordedAt,
     });
     draftByType[type] = list;
 
@@ -240,6 +316,9 @@ Page({
     this.setData({
       draftByType,
       draftPhoto: '',
+      draftWatermarkTime: '',
+      draftWatermarkAddress: '',
+      draftRecordedAt: 0,
       draftTotalCount,
       currentDraftCount,
       isNoneForType: false,
@@ -266,6 +345,9 @@ Page({
       typeIndex: next,
       currentDraftCount: nextList.length,
       draftPhoto: '',
+      draftWatermarkTime: '',
+      draftWatermarkAddress: '',
+      draftRecordedAt: 0,
       currentStatus: STATUS_DEFAULT,
       isNoneForType: false,
     });
@@ -303,7 +385,11 @@ Page({
     types.forEach((type) => {
       const list = draftByType[type] || [];
       list.forEach((item) => {
-        inspectorStoreRecords.addGeneratedSlot(storeId, type, item.status || STATUS_DEFAULT, item.photo);
+        inspectorStoreRecords.addGeneratedSlot(storeId, type, item.status || STATUS_DEFAULT, item.photo, {
+          watermarkTime: item.watermarkTime,
+          watermarkAddress: item.watermarkAddress,
+          recordedAt: item.recordedAt,
+        });
       });
     });
 
@@ -329,6 +415,9 @@ Page({
       currentDraftCount: 0,
       currentStatus: STATUS_DEFAULT,
       isNoneForType: false,
+      draftWatermarkTime: '',
+      draftWatermarkAddress: '',
+      draftRecordedAt: 0,
     });
 
     this.refreshStorePicker();

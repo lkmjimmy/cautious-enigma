@@ -1,21 +1,31 @@
 <view class="page ds-page">
-  <picker
-    wx:if="{{approvedStores.length > 1}}"
-    mode="selector"
-    range="{{approvedStores}}"
-    value="{{storeIndex}}"
-    bindchange="onStorePick"
-  >
-    <view class="store-picker">
-      <text class="store-picker-label">当前门店</text>
-      <text class="store-picker-value">{{storeName}}</text>
-      <text class="store-picker-arrow">›</text>
-    </view>
-  </picker>
+  <view wx:if="{{approvedStores.length > 1}}" class="store-picker" bindtap="openStoreSheet">
+    <text class="store-picker-label">当前门店</text>
+    <text class="store-picker-value">{{storeName}}</text>
+    <text class="store-picker-arrow">›</text>
+  </view>
 
   <view class="store-bar">
     <view class="store-name">{{storeName}}</view>
     <view class="store-tip">仅展示您已认领门店的数据；正式环境由后端按权限返回</view>
+  </view>
+
+  <view class="month-checkin-card {{checkinAllDone ? 'month-checkin-card--done' : ''}}">
+    <view class="month-checkin-head">
+      <text class="month-checkin-title">本月门店打卡</text>
+      <text class="month-checkin-month">{{checkinMonthLabel}}</text>
+    </view>
+    <view class="month-checkin-rules">
+      每自然月一次：请在本页为<text class="month-checkin-strong">全部广告位</text>各拍照更新存档；全部完成后视为<text class="month-checkin-strong">本月已打卡</text>（以拍摄时间落在本月为准）。
+    </view>
+    <view wx:if="{{checkinTotal > 0}}" class="month-checkin-status">
+      <view wx:if="{{checkinAllDone}}" class="month-checkin-done">本月已打卡</view>
+      <view wx:else class="month-checkin-pending">
+        <text class="month-checkin-pending-main">未打卡</text>
+        <text class="month-checkin-pending-sub">本月已更新 {{checkinUpdated}} / {{checkinTotal}} 个广告位，请补全剩余位</text>
+      </view>
+    </view>
+    <view wx:else class="month-checkin-muted">暂无广告位清单</view>
   </view>
 
   <view class="stat-row">
@@ -27,30 +37,43 @@
     </block>
   </view>
 
-  <view class="section-title">广告位与到期时间</view>
+  <view class="section-title">本店广告位（按类型）</view>
+  <view class="section-desc">点击缩略图拍照更新本店存档（计入本月打卡）；更新后照片底部显示拍摄时间与地点水印</view>
 
-  <block wx:for="{{slots}}" wx:key="code">
-    <view class="slot-row ds-card">
-      <view class="slot-top">
-        <view class="slot-code">{{item.code}}</view>
-        <view
-          class="tag {{item.status === '空置' ? 'tag-danger' : item.status === '即将到期' ? 'tag-warning' : 'tag-success'}}"
-        >
-          {{item.status}}
-        </view>
-      </view>
-      <view class="slot-meta">{{item.type}}</view>
-      <view class="slot-expire">
-        <text class="slot-expire-label">到期时间</text>
-        <text class="slot-expire-value {{item.expireAt === '--' ? 'is-empty' : ''}}">{{item.expireAt}}</text>
+  <view wx:if="{{groups.length === 0}}" class="empty-hint">
+    <view class="empty-hint-inner">暂无广告位数据</view>
+  </view>
+
+  <block wx:for="{{groups}}" wx:key="type">
+    <view class="group-card ds-card">
+      <view class="group-title">{{item.type}} · {{item.count}} 个</view>
+      <view class="thumb-grid">
+        <block wx:for="{{item.items}}" wx:for-item="cell" wx:key="code">
+          <view class="thumb-cell">
+            <view class="thumb-wrap" data-code="{{cell.code}}" catchtap="onThumbTap">
+              <image class="thumb-img" src="{{cell.displayThumb}}" mode="aspectFill" show-menu-by-longpress />
+              <view wx:if="{{cell.showExpireBadge}}" class="thumb-badge">临期</view>
+              <view wx:if="{{cell.hasLocalPhoto}}" class="thumb-watermark">
+                <view class="thumb-wm-line thumb-wm-time">{{cell.watermarkTime}}</view>
+                <view class="thumb-wm-line thumb-wm-loc">{{cell.watermarkAddress}}</view>
+              </view>
+            </view>
+            <view class="thumb-code-row">
+              <text class="thumb-code">{{cell.code}}</text>
+              <text wx:if="{{cell.ownerUpdatedThisMonth}}" class="thumb-month-ok">本月已存档</text>
+            </view>
+            <view class="thumb-meta">
+              <text class="thumb-status st-{{cell.statusClass}}">{{cell.status}}</text>
+            </view>
+            <view class="thumb-expire-row">
+              <text class="thumb-expire-label">到期</text>
+              <text class="thumb-expire-val {{cell.expireSoon ? 'is-soon' : ''}} {{cell.expireAt === '--' ? 'is-empty' : ''}}">{{cell.expireDisplay}}</text>
+            </view>
+          </view>
+        </block>
       </view>
     </view>
   </block>
-
-  <view class="link-block" bindtap="goStoreVisual">
-    <text class="link-text">查看本店广告位缩略图</text>
-    <text class="link-arrow">›</text>
-  </view>
 
   <view class="link-block link-block--sub" bindtap="goClaimMore">
     <text class="link-text">门店认领 / 认领更多门店</text>
@@ -64,4 +87,13 @@
     </view>
     <text class="revenue-entry-arrow">›</text>
   </view>
+
+  <selector-sheet
+    show="{{showStoreSheet}}"
+    title="选择门店"
+    options="{{approvedStores}}"
+    selected-index="{{storeSheetSelectedIndex}}"
+    bind:select="onStoreSheetSelect"
+    bind:close="onStoreSheetClose"
+  />
 </view>

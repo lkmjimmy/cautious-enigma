@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="head-card">
+    <view class="head-title">{{storeName}}</view>
+    <view class="head-line">按类型查看全部广告位；须在本页为每个广告位重新拍照并保存（{{doneCount}}/{{totalCount}}）</view>
+    <view class="head-line head-muted">仅使用相机拍摄，便于带时间与定位水印。</view>
+  </view>
+
+  <view wx:if="{{emptyHint}}" class="empty-card">
+    <text class="empty-text">暂无广告位清单。请先新增门店或在本店完成巡检生成广告位；若门店名与演示门店一致，将自动载入演示广告位。</text>
+  </view>
+
+  <block wx:for="{{groups}}" wx:for-item="g" wx:key="type">
+    <view class="type-block">
+      <view class="type-title">{{g.type}}</view>
+      <view class="thumb-grid">
+        <block wx:for="{{g.items}}" wx:for-item="slot" wx:key="code">
+          <view
+            class="thumb-cell"
+            data-code="{{slot.code}}"
+            data-type="{{slot.type}}"
+            bindtap="onTapSlot"
+          >
+            <image class="thumb-img" src="{{slot.displayThumb}}" mode="aspectFill" />
+            <view wx:if="{{slot.watermarkTime}}" class="thumb-wm">
+              <text class="thumb-wm-line">{{slot.watermarkTime}}</text>
+            </view>
+            <view class="thumb-badge {{slot.sessionDone ? 'done' : 'todo'}}">
+              {{slot.sessionDone ? '本页已拍' : '待拍'}}
+            </view>
+            <view class="thumb-code">{{slot.code}}</view>
+            <view class="thumb-meta">状态 {{slot.status}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </block>
+
+  <view class="footer-actions">
+    <button
+      class="btn-complete"
+      bindtap="onCompleteCheckin"
+      disabled="{{!allDone || totalCount === 0}}"
+    >
+      完成打卡
+    </button>
+    <view class="footer-hint">全部「待拍」变为「本页已拍」后可提交</view>
+  </view>
+</view>

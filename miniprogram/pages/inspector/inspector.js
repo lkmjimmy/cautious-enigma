@@ -38,6 +38,8 @@ Page({
     draftTotalCount: 0,
     currentDraftCount: 0,
     currentStatus: '正常',
+
+    storeListRows: [],
   },
 
   onLoad(options) {
@@ -51,7 +53,19 @@ Page({
   },
 
   onShow() {
-    // inspector 页面仅负责“新增门店”入口；巡检拍照在 inspector-check 页面
+    this.refreshStorePicker();
+  },
+
+  onStoreCheckin(e) {
+    const storeId = e.currentTarget.dataset.storeId;
+    if (!storeId) return;
+    wx.navigateTo({
+      url: `/pages/inspector-store-checkin/inspector-store-checkin?storeId=${encodeURIComponent(storeId)}`,
+    });
+  },
+
+  goInspectorCheck() {
+    wx.navigateTo({ url: '/pages/inspector-check/inspector-check' });
   },
 
   goAddStore() {
@@ -68,6 +82,7 @@ Page({
           wx.setStorageSync(inspectorStores.KEY, []);
           wx.removeStorageSync(inspectorStoreRecords.KEY);
           wx.showToast({ title: '测试数据已清空', icon: 'success' });
+          this.refreshStorePicker();
         } catch (e) {
           wx.showToast({ title: '清空失败', icon: 'none' });
         }
@@ -86,10 +101,25 @@ Page({
       storePickerIndex = idx >= 0 ? idx : 0;
     }
 
+    const storeListRows = stores
+      .map((s) => ({
+        id: s.id,
+        name: s.name,
+        address: s.address || '—',
+        checkinDoneThisMonth: inspectorStoreRecords.isGridCheckinDoneThisMonth(s.id),
+      }))
+      .sort((a, b) => {
+        if (a.checkinDoneThisMonth !== b.checkinDoneThisMonth) {
+          return a.checkinDoneThisMonth ? 1 : -1;
+        }
+        return String(a.name || '').localeCompare(String(b.name || ''), 'zh-CN');
+      });
+
     this.setData({
       storePickerNames,
       storePickerStoreIds,
       storePickerIndex,
+      storeListRows,
     });
   },
 

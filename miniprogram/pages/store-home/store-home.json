@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "本店广告位",
+  "usingComponents": {
+    "selector-sheet": "/components/selector-sheet/selector-sheet"
+  },
+  "navigationBarTitleText": "本店工作台",
   "backgroundColor": "#F5F5F7"
 }

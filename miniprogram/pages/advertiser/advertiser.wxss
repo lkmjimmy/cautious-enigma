@@ -56,6 +56,39 @@
   border-radius: 10rpx;
 }
 
+.exposure-notice-card {
+  background: linear-gradient(180deg, #f0f7ff 0%, #fff 48%);
+  border: 1rpx solid #dbeafe;
+  border-radius: 14rpx;
+  padding: 20rpx 20rpx 22rpx;
+  margin-bottom: 20rpx;
+}
+
+.exposure-notice-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14rpx;
+}
+
+.exposure-notice-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.exposure-notice-hint {
+  font-size: 22rpx;
+  color: #64748b;
+}
+
+.exposure-notice-body {
+  font-size: 26rpx;
+  color: #334155;
+  line-height: 1.65;
+  word-break: break-word;
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

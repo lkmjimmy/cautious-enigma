@@ -74,6 +74,123 @@
   color: #6b7280;
 }
 
+.store-list-card {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 18rpx 20rpx 20rpx;
+  margin-top: 16rpx;
+}
+
+.store-list-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8rpx;
+}
+
+.store-list-desc {
+  font-size: 22rpx;
+  color: #6b7280;
+  line-height: 1.45;
+  margin-bottom: 14rpx;
+}
+
+.enter-inspector-check-btn {
+  width: 100%;
+  margin-bottom: 16rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1677ff;
+  background: #eff6ff;
+  border: 1rpx solid #bfdbfe;
+}
+
+.enter-inspector-check-btn::after {
+  border: none;
+}
+
+.store-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.store-list-row:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.store-list-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.store-list-name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.store-list-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.store-list-done-tag {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: #047857;
+  background: #ecfdf5;
+  padding: 4rpx 12rpx;
+  border-radius: 999rpx;
+}
+
+.store-list-sub {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #9ca3af;
+  line-height: 1.35;
+}
+
+.store-list-btn {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0 28rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #fff;
+  background: #1677ff;
+  border-radius: 999rpx;
+}
+
+.store-list-btn-secondary {
+  color: #1677ff;
+  background: #fff;
+  border: 1rpx solid #93c5fd;
+}
+
+.store-list-btn::after {
+  border: none;
+}
+
+.store-list-empty {
+  font-size: 24rpx;
+  color: #9ca3af;
+  padding: 12rpx 0 4rpx;
+  line-height: 1.45;
+}
+
 .task-card {
   background: #fff;
   border: 1rpx solid #e9eef5;

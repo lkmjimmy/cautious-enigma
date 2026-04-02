@@ -6,13 +6,21 @@ Page({
   data: {
     imagePath: '',
     clientName: '',
+    watermarkTime: '',
+    watermarkAddress: '',
   },
 
   onShow() {
     const clientId = wx.getStorageSync(STORAGE_CLIENT_ID) || 'c1';
     const imagePath = contractByClient.get(clientId);
+    const meta = contractByClient.getCaptureMeta(clientId);
     const name = this._clientNameForId(clientId);
-    this.setData({ imagePath, clientName: name });
+    this.setData({
+      imagePath,
+      clientName: name,
+      watermarkTime: meta && meta.watermarkTime ? meta.watermarkTime : '',
+      watermarkAddress: meta && meta.watermarkAddress ? meta.watermarkAddress : '',
+    });
   },
 
   _clientNameForId(id) {

@@ -109,6 +109,21 @@
   margin-bottom: 16rpx;
 }
 
+.contract-wm {
+  margin-bottom: 16rpx;
+  padding: 12rpx 14rpx;
+  background: #f8fafc;
+  border-radius: 10rpx;
+  border: 1rpx solid #e9eef5;
+}
+
+.contract-wm-line {
+  display: block;
+  font-size: 22rpx;
+  color: #475569;
+  line-height: 1.45;
+}
+
 .contract-empty {
   padding: 32rpx;
   margin-bottom: 16rpx;
@@ -146,4 +161,75 @@
   font-size: 22rpx;
   color: #9ca3af;
   text-decoration: underline;
+}
+
+.btn-time {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin: 0 0 24rpx;
+  padding: 0;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1677ff;
+  background: #eff6ff;
+  border-radius: 12rpx;
+  border: 1rpx solid #bfdbfe;
+}
+
+.btn-time::after {
+  border: none;
+}
+
+.schedule-block {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 18rpx 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.schedule-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8rpx 16rpx;
+  padding: 10rpx 0;
+  border-bottom: 1rpx solid #f1f5f9;
+  font-size: 26rpx;
+}
+
+.schedule-row:last-child {
+  border-bottom: none;
+}
+
+.schedule-type {
+  color: #6b7280;
+  min-width: 4em;
+}
+
+.schedule-date {
+  font-weight: 600;
+  color: #111827;
+}
+
+.schedule-date--soon {
+  color: #dc2626;
+}
+
+.schedule-soon {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.schedule-empty {
+  font-size: 24rpx;
+  color: #9ca3af;
+  line-height: 1.5;
+  margin-bottom: 24rpx;
+  padding: 20rpx;
+  background: #f9fafb;
+  border-radius: 12rpx;
+  border: 1rpx dashed #d1d5db;
 }

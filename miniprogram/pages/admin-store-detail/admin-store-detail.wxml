@@ -28,18 +28,37 @@
 
   <block wx:for="{{slots}}" wx:key="code">
     <view class="slot-row ds-card">
+      <view class="slot-thumb-wrap">
+        <image class="slot-thumb" src="{{item.thumb}}" mode="aspectFill" />
+        <view wx:if="{{item.watermarkTime}}" class="slot-wm">
+          <view class="slot-wm-line">{{item.watermarkTime}}</view>
+          <view class="slot-wm-line">{{item.watermarkAddress}}</view>
+        </view>
+      </view>
       <view class="slot-top">
         <view class="slot-code">{{item.code}}</view>
-        <view
-          class="tag {{item.status === '空置' ? 'tag-danger' : item.status === '即将到期' ? 'tag-warning' : 'tag-success'}}"
-        >
-          {{item.status}}
+        <view class="slot-tags">
+          <view
+            class="tag {{item.status === '空置' ? 'tag-danger' : item.status === '即将到期' ? 'tag-warning' : item.status === '已到期' ? 'tag-expired' : 'tag-success'}}"
+          >
+            {{item.status}}
+          </view>
+          <view class="tag {{item.ownerClientId ? 'tag-owner-ok' : 'tag-owner-empty'}}">
+            {{item.ownerClientId ? '已分配' : '未分配'}}
+          </view>
         </view>
       </view>
       <view class="slot-meta">{{item.type}}</view>
+      <view class="slot-owner">
+        <text class="slot-owner-label">归属客户</text>
+        <view class="slot-owner-picker" data-code="{{item.code}}" bindtap="openClientSheet">{{item.ownerClientName}}</view>
+      </view>
       <view class="slot-expire">
         <text class="slot-expire-label">到期时间</text>
-        <text class="slot-expire-value {{item.expireAt === '--' ? 'is-empty' : ''}}">{{item.expireAt}}</text>
+        <view class="slot-expire-right">
+          <text class="slot-expire-value {{item.expireAt === '--' ? 'is-empty' : ''}} {{item.expireSoon ? 'is-soon' : ''}}">{{item.expireAt}}</text>
+          <text wx:if="{{item.expireSoon && item.expireAt !== '--'}}" class="slot-expire-soon">7天内到期</text>
+        </view>
       </view>
     </view>
   </block>
@@ -48,4 +67,14 @@
     <text class="link-text">查看该门店广告位缩略图</text>
     <text class="link-arrow">›</text>
   </view>
+
+  <selector-sheet
+    show="{{showClientSheet}}"
+    title="选择客户"
+    options="{{clientPicker}}"
+    range-key="name"
+    selected-index="{{clientSheetSelectedIndex}}"
+    bind:select="onClientSheetSelect"
+    bind:close="onClientSheetClose"
+  />
 </view>

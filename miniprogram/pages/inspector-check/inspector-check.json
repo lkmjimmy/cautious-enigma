@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "selector-sheet": "/components/selector-sheet/selector-sheet"
+  },
   "navigationBarTitleText": "巡检打卡"
 }
 

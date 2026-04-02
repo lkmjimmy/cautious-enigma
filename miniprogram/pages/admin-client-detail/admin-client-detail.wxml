@@ -15,10 +15,28 @@
     <view wx:else class="none-ad">当前无在投广告</view>
   </view>
 
+  <button class="btn-time" bindtap="goTimeSettings">投放时间设置</button>
+
+  <view class="section-title">按类型投放到期</view>
+  <view wx:if="{{scheduleLines.length}}" class="schedule-block">
+    <block wx:for="{{scheduleLines}}" wx:key="type">
+      <view class="schedule-row">
+        <text class="schedule-type">{{item.type}}</text>
+        <text class="schedule-date {{item.expireSoon ? 'schedule-date--soon' : ''}}">{{item.date}}</text>
+        <text wx:if="{{item.expireSoon}}" class="schedule-soon">7天内到期</text>
+      </view>
+    </block>
+  </view>
+  <view wx:else class="schedule-empty">未设置各类型到期日，点击上方「投放时间设置」进行配置</view>
+
   <view class="section-title">广告主合同</view>
-  <view class="tip">仅管理者与本客户在广告主端「我的合同」可见（演示为本地按客户隔离存储）</view>
+  <view class="tip">仅中台与本客户在广告主端「我的合同」可见（演示为本地按客户隔离存储）</view>
   <image wx:if="{{contractPath}}" class="contract-preview" src="{{contractPath}}" mode="widthFix" />
-  <view wx:else class="contract-empty">尚未上传该客户合同</view>
+  <view wx:if="{{contractPath && contractWatermarkTime}}" class="contract-wm">
+    <text class="contract-wm-line">{{contractWatermarkTime}}</text>
+    <text class="contract-wm-line">{{contractWatermarkAddress}}</text>
+  </view>
+  <view wx:if="{{!contractPath}}" class="contract-empty">尚未上传该客户合同</view>
   <button class="btn-upload" bindtap="chooseContractImage">上传 / 更换合同图</button>
   <view wx:if="{{contractPath}}" class="clear-row">
     <text class="clear-link" bindtap="clearContract">移除合同图</text>

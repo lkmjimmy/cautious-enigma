@@ -207,11 +207,14 @@
 .promote-picker {
   flex: 1;
   text-align: right;
-  font-size: 28rpx;
+  font-size: 32rpx;
+  font-weight: 600;
   color: #111827;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 12rpx 0;
+  min-height: 44rpx;
 }
 
 .promote-actions {

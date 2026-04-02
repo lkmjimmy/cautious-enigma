@@ -22,8 +22,8 @@
     </view>
 
     <view class="actions">
-      <button class="action-btn ghost" bindtap="onCancel">取消</button>
-      <button class="action-btn primary" bindtap="onSave">保存并初始化广告位</button>
+      <button class="action-btn ghost" hover-class="btn-hover" bindtap="onCancel">取消</button>
+      <button class="action-btn primary" hover-class="btn-hover" bindtap="onSave">保存并初始化广告位</button>
     </view>
   </view>
 </view>

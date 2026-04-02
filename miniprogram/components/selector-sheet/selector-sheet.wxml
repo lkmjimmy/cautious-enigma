@@ -1,0 +1,18 @@
+<view wx:if="{{show}}" class="sheet-mask" catchtouchmove="noop" bindtap="onMask">
+  <view class="sheet-panel" catchtap="noop" catchtouchmove="noop">
+    <view class="sheet-hd">{{title}}</view>
+    <scroll-view scroll-y class="sheet-scroll" scroll-with-animation="{{true}}">
+      <view
+        wx:for="{{options}}"
+        wx:for-index="idx"
+        wx:key="idx"
+        class="sheet-item {{selectedIndex === idx ? 'is-active' : ''}}"
+        data-index="{{idx}}"
+        bindtap="onPick"
+      >
+        <text class="sheet-item-text">{{rangeKey ? item[rangeKey] : item}}</text>
+      </view>
+    </scroll-view>
+    <view class="sheet-cancel" bindtap="onCancel">取消</view>
+  </view>
+</view>

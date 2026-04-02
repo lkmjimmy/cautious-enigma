@@ -64,6 +64,59 @@ const STORE_SLOTS = {
       ],
     },
   ],
+  龙岗万达店: [
+    {
+      type: '灯箱',
+      items: [
+        { id: 'LG-LX-01', status: '已投放', image: 'https://picsum.photos/seed/lglx1/300/200' },
+        { id: 'LG-LX-02', status: '空置', image: VACANT_IMAGE },
+      ],
+    },
+    {
+      type: '地贴',
+      items: [{ id: 'LG-DT-01', status: '已投放', image: 'https://picsum.photos/seed/lgdt1/300/200' }],
+    },
+    {
+      type: 'LED',
+      items: [{ id: 'LG-LED-01', status: '即将到期', image: 'https://picsum.photos/seed/lgled1/300/200' }],
+    },
+  ],
+  龙华红山店: [
+    {
+      type: '灯箱',
+      items: [{ id: 'HS-LX-01', status: '已投放', image: 'https://picsum.photos/seed/hslx1/300/200' }],
+    },
+    {
+      type: '门头',
+      items: [{ id: 'HS-MT-01', status: '已投放', image: 'https://picsum.photos/seed/hsmt1/300/200' }],
+    },
+    {
+      type: '货架',
+      items: [{ id: 'HS-HJ-01', status: '空置', image: VACANT_IMAGE }],
+    },
+    {
+      type: '出库仪',
+      items: [{ id: 'HS-CKY-01', status: '即将到期', image: 'https://picsum.photos/seed/hscky1/300/200' }],
+    },
+  ],
+  罗湖万象店: [
+    {
+      type: '灯箱',
+      items: [{ id: 'LW-LX-01', status: '即将到期', image: 'https://picsum.photos/seed/lwlx1/300/200' }],
+    },
+    {
+      type: '地贴',
+      items: [{ id: 'LW-DT-01', status: '空置', image: VACANT_IMAGE }],
+    },
+    {
+      type: '门头',
+      items: [{ id: 'LW-MT-01', status: '已投放', image: 'https://picsum.photos/seed/lwmt1/300/200' }],
+    },
+    {
+      type: '货架',
+      items: [{ id: 'LW-HJ-01', status: '已投放', image: 'https://picsum.photos/seed/lwhj1/300/200' }],
+    },
+  ],
 };
 
 Page({

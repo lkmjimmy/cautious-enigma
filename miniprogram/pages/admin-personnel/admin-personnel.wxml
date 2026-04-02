@@ -8,10 +8,17 @@
       </view>
       <view class="person-row">
         <text class="person-label">角色</text>
-        <picker mode="selector" range="{{roleOptions}}" value="{{item.roleIndex}}" data-id="{{item.id}}" bindchange="onRoleChange">
-          <view class="person-picker">{{roleOptions[item.roleIndex]}}</view>
-        </picker>
+        <view class="person-picker" data-id="{{item.id}}" bindtap="openRoleSheet">{{roleOptions[item.roleIndex]}}</view>
       </view>
     </view>
   </block>
+
+  <selector-sheet
+    show="{{showRoleSheet}}"
+    title="选择角色"
+    options="{{roleOptions}}"
+    selected-index="{{roleSheetSelectedIndex}}"
+    bind:select="onRoleSheetSelect"
+    bind:close="onRoleSheetClose"
+  />
 </view>

@@ -2,10 +2,14 @@
   <view wx:if="{{clientName}}" class="contract-client">当前客户：{{clientName}}</view>
   <view wx:if="{{imagePath}}" class="contract-img-wrap">
     <image class="contract-img" src="{{imagePath}}" mode="widthFix" show-menu-by-longpress />
-    <view class="contract-tip">由管理者上传至本客户档案，仅您与平台管理者可见</view>
+    <view wx:if="{{watermarkTime}}" class="contract-wm">
+      <text class="contract-wm-line">{{watermarkTime}}</text>
+      <text class="contract-wm-line">{{watermarkAddress}}</text>
+    </view>
+    <view class="contract-tip">由中台上传至本客户档案，仅您与中台可见</view>
   </view>
   <view wx:else class="contract-empty">
     <text class="contract-empty-title">暂无合同图</text>
-    <text class="contract-empty-desc">请联系管理者在「客户管理」— 客户详情中上传本客户的投放合同</text>
+    <text class="contract-empty-desc">请联系中台在「客户管理」— 客户详情中上传本客户的投放合同</text>
   </view>
 </view>

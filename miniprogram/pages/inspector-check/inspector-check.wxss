@@ -155,9 +155,10 @@
 }
 
 .type-picker {
-  font-size: 26rpx;
-  color: #111827;
-  padding: 10rpx 0;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1677ff;
+  padding: 16rpx 0;
 }
 
 .status-group {
@@ -181,6 +182,7 @@
 }
 
 .photo-box {
+  position: relative;
   border: 1rpx dashed #cbd5e1;
   border-radius: 12rpx;
   height: 280rpx;
@@ -199,6 +201,23 @@
 .photo {
   width: 100%;
   height: 100%;
+}
+
+.draft-watermark {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12rpx 14rpx;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72));
+  box-sizing: border-box;
+}
+
+.draft-wm-line {
+  font-size: 20rpx;
+  color: #fff;
+  line-height: 1.35;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.35);
 }
 
 .form-actions {
@@ -248,5 +267,98 @@
   font-size: 22rpx;
   color: #9ca3af;
   line-height: 1.45;
+}
+
+.store-list-card {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 18rpx 20rpx 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.store-list-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8rpx;
+}
+
+.store-list-desc {
+  font-size: 22rpx;
+  color: #6b7280;
+  line-height: 1.45;
+  margin-bottom: 16rpx;
+}
+
+.store-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.store-list-row:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.store-list-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.store-list-name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.store-list-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.store-list-done-tag {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: #047857;
+  background: #ecfdf5;
+  padding: 4rpx 12rpx;
+  border-radius: 999rpx;
+}
+
+.store-list-sub {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #9ca3af;
+  line-height: 1.35;
+}
+
+.store-list-btn {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0 28rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #fff;
+  background: #1677ff;
+  border-radius: 999rpx;
+}
+
+.store-list-btn-secondary {
+  color: #1677ff;
+  background: #fff;
+  border: 1rpx solid #93c5fd;
+}
+
+.store-list-btn::after {
+  border: none;
 }
 

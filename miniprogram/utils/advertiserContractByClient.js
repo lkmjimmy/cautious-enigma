@@ -1,6 +1,7 @@
 /** 按客户 ID 存储合同图路径；仅演示本地隔离，正式环境用服务端鉴权 */
 const KEY = 'advertiserContractByClientMap';
 const LEGACY_KEY = 'advertiserContractImagePath';
+const META_KEY = 'advertiserContractCaptureMetaV1';
 
 function getMap() {
   try {
@@ -46,6 +47,47 @@ function set(clientId, savedFilePath) {
   } catch (e) {
     /* ignore */
   }
+  if (!savedFilePath) {
+    setCaptureMeta(clientId, null);
+  }
 }
 
-module.exports = { KEY, getMap, get, set };
+function getMetaMap() {
+  try {
+    const raw = wx.getStorageSync(META_KEY);
+    if (raw && typeof raw === 'object' && !Array.isArray(raw)) return { ...raw };
+  } catch (e) {
+    /* ignore */
+  }
+  return {};
+}
+
+/** @returns {{ watermarkTime?: string, watermarkAddress?: string } | null} */
+function getCaptureMeta(clientId) {
+  if (!clientId) return null;
+  const m = getMetaMap();
+  const row = m[clientId];
+  if (!row || typeof row !== 'object') return null;
+  return row;
+}
+
+/** @param {{ watermarkTime?: string, watermarkAddress?: string } | null} meta */
+function setCaptureMeta(clientId, meta) {
+  if (!clientId) return;
+  const m = getMetaMap();
+  if (!meta || (!meta.watermarkTime && !meta.watermarkAddress)) {
+    delete m[clientId];
+  } else {
+    m[clientId] = {
+      watermarkTime: meta.watermarkTime || '',
+      watermarkAddress: meta.watermarkAddress || '',
+    };
+  }
+  try {
+    wx.setStorageSync(META_KEY, m);
+  } catch (e) {
+    /* ignore */
+  }
+}
+
+module.exports = { KEY, getMap, get, set, getCaptureMeta, setCaptureMeta };

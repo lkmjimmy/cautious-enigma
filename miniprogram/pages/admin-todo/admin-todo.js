@@ -1,5 +1,6 @@
 const claim = require('../../utils/claim.js');
 const promoteRequestInbox = require('../../utils/promoteRequestInbox.js');
+const adminTodoAuditLog = require('../../utils/adminTodoAuditLog.js');
 
 function formatPromoteTime(ts) {
   const d = new Date(ts);
@@ -32,12 +33,14 @@ Page({
   data: {
     claimPending: [],
     promoteRequests: [],
+    auditRecords: [],
   },
 
   onShow() {
     this.setData({
       claimPending: claim.getPendingForAdmin(),
       promoteRequests: mapPromoteRequestsForView(),
+      auditRecords: adminTodoAuditLog.listForView(),
     });
   },
 
@@ -48,21 +51,24 @@ Page({
       title: r.ok ? (r.mode === 'noop' ? '已是认领状态' : '已通过') : (r.message || '处理失败'),
       icon: r.ok ? 'success' : 'none',
     });
-    this.setData({ claimPending: claim.getPendingForAdmin() });
+    this.setData({ claimPending: claim.getPendingForAdmin(), auditRecords: adminTodoAuditLog.listForView() });
   },
 
   onRejectClaim(e) {
     const id = e.currentTarget.dataset.id;
     claim.rejectPending(id);
     wx.showToast({ title: '已拒绝', icon: 'success' });
-    this.setData({ claimPending: claim.getPendingForAdmin() });
+    this.setData({ claimPending: claim.getPendingForAdmin(), auditRecords: adminTodoAuditLog.listForView() });
   },
 
   onDismissPromoteRequest(e) {
     const id = e.currentTarget.dataset.id;
     if (!id) return;
     promoteRequestInbox.removeById(id);
-    this.setData({ promoteRequests: mapPromoteRequestsForView() });
+    this.setData({
+      promoteRequests: mapPromoteRequestsForView(),
+      auditRecords: adminTodoAuditLog.listForView(),
+    });
     wx.showToast({ title: '已标记', icon: 'success' });
   },
 });

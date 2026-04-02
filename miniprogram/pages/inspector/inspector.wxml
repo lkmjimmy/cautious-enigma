@@ -5,5 +5,32 @@
     <button class="add-store-btn" bindtap="goAddStore">新增门店</button>
     <button class="add-store-btn add-store-btn-ghost" bindtap="clearInspectorTestData">清空测试数据</button>
   </view>
+
+  <view class="store-list-card">
+    <view class="store-list-title">门店列表</view>
+    <view class="store-list-desc">未在本月完成网格打卡的门店靠前显示；完成后显示「本月已打卡」，可点「重新打卡」再次巡检。按类型巡检请点下方「巡检打卡」。</view>
+    <button class="enter-inspector-check-btn" bindtap="goInspectorCheck">巡检打卡（按类型拍照）</button>
+    <block wx:if="{{storeListRows.length}}">
+      <block wx:for="{{storeListRows}}" wx:key="id">
+        <view class="store-list-row">
+          <view class="store-list-main">
+            <view class="store-list-name-row">
+              <text class="store-list-name">{{item.name}}</text>
+              <text wx:if="{{item.checkinDoneThisMonth}}" class="store-list-done-tag">本月已打卡</text>
+            </view>
+            <view class="store-list-sub">{{item.address}}</view>
+          </view>
+          <button
+            class="store-list-btn {{item.checkinDoneThisMonth ? 'store-list-btn-secondary' : ''}}"
+            data-store-id="{{item.id}}"
+            bindtap="onStoreCheckin"
+          >
+            {{item.checkinDoneThisMonth ? '重新打卡' : '打卡'}}
+          </button>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="store-list-empty">暂无门店，请先点击上方「新增门店」</view>
+  </view>
 </view>
 

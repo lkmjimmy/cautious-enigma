@@ -31,7 +31,7 @@ Page({
       return;
     }
     if (status === 'pending') {
-      wx.showToast({ title: '请等待管理者审核', icon: 'none' });
+      wx.showToast({ title: '请等待中台审核', icon: 'none' });
       return;
     }
 
@@ -44,7 +44,7 @@ Page({
       claim.setCurrentStoreView(name);
       wx.showToast({ title: '认领成功', icon: 'success' });
     } else if (res.mode === 'pending') {
-      wx.showToast({ title: '已提交审核，请等待管理者通过', icon: 'none' });
+      wx.showToast({ title: '已提交审核，请等待中台通过', icon: 'none' });
     }
     this.refresh();
   },

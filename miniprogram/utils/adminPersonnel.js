@@ -1,4 +1,4 @@
-/** 管理者维护的人员角色（演示：本地存储） */
+/** 中台维护的人员角色（演示：本地存储） */
 const KEY = 'adminPersonnelList';
 
 const ROLE_OPTIONS = ['巡店员', '店主', '广告主', '业务员'];

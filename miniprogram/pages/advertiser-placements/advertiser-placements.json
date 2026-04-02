@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "selector-sheet": "/components/selector-sheet/selector-sheet"
+  },
   "navigationBarTitleText": "已投放广告位"
 }
