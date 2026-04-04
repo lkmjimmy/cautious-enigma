@@ -3,8 +3,32 @@ const inspectorStores = require('./inspectorStores.js');
 const inspectorStoreRecords = require('./inspectorStoreRecords.js');
 const clientPlacementSchedule = require('./clientPlacementSchedule.js');
 const slotLatestPhoto = require('./slotLatestPhoto.js');
+const slotUploadGate = require('./slotUploadGate.js');
 
 const KEY = 'slotOwnerByCodeV1';
+const REMOVED_DEMO_KEY = 'adminRemovedDemoSlotCodesV1';
+
+function getRemovedDemoCodes() {
+  try {
+    const raw = wx.getStorageSync(REMOVED_DEMO_KEY);
+    if (Array.isArray(raw)) return raw;
+  } catch (e) {
+    /* ignore */
+  }
+  return [];
+}
+
+function markDemoSlotRemoved(code) {
+  if (!code) return;
+  const arr = getRemovedDemoCodes().slice();
+  if (arr.indexOf(code) >= 0) return;
+  arr.push(code);
+  try {
+    wx.setStorageSync(REMOVED_DEMO_KEY, arr);
+  } catch (e) {
+    /* ignore */
+  }
+}
 
 function getMap() {
   const raw = wx.getStorageSync(KEY);
@@ -14,6 +38,38 @@ function getMap() {
 
 function setMap(map) {
   wx.setStorageSync(KEY, map || {});
+}
+
+/** 仅解除编号与客户绑定 */
+function removeBinding(slotCode) {
+  if (!slotCode) return;
+  const map = getMap();
+  if (map[slotCode] !== undefined) {
+    delete map[slotCode];
+    setMap(map);
+  }
+}
+
+/** 删除客户时解除其名下全部广告位绑定 */
+function clearOwnersForClient(clientId) {
+  if (!clientId) return;
+  const map = getMap();
+  let changed = false;
+  Object.keys(map).forEach(function (code) {
+    if (map[code] === clientId) {
+      delete map[code];
+      changed = true;
+    }
+  });
+  if (changed) setMap(map);
+}
+
+/** 中台删除广告位：巡检记录中删除 + 解绑 + 演示静态位写入隐藏表 */
+function adminRemoveSlotByCode(code) {
+  if (!code) return;
+  inspectorStoreRecords.removeSlotByCode(code);
+  removeBinding(code);
+  markDemoSlotRemoved(code);
 }
 
 function setOwner(slotCode, clientId) {
@@ -32,28 +88,89 @@ function getOwner(slotCode) {
   return map[slotCode] || '';
 }
 
-/** 合并客户按类型设置的到期日，并计算 7 天内到期提醒；非空置广告位据此刷新状态 */
+/**
+ * 投放状态规则：
+ * - 已绑定客户但未在客户管理中设置该类型投放/到期：**待定**（可无现场图）
+ * - **未绑定客户**：一律 **空置**（可无现场图或有现场图）；满 7 天仍无有效投放设置则按 uploadGate 清空照片
+ * - 已绑定客户且已设置投放时间：按到期日 → 已投放 / 即将到期 / 已到期（无现场图时仍显示投放期状态，缩略图位为空）
+ */
 function enrichSlot(slot) {
-  const owner = getOwner(slot.code);
+  const code = slot.code;
+  const type = slot.type;
+  const owner = getOwner(code);
+  const sched = owner ? clientPlacementSchedule.getExpireMap(owner) : {};
+  const expStr = owner && sched[type] ? sched[type] : '';
   let expireAt = slot.expireAt;
-  const sched = owner ? clientPlacementSchedule.getForClient(owner) : {};
-  if (owner && sched[slot.type]) {
-    expireAt = sched[slot.type];
+  if (expStr) expireAt = expStr;
+  const hasSchedule = !!(expStr && expStr !== '--');
+  /** 绑定客户但未设置投放时间 → 一律待定 */
+  const pendingByBoundNoSchedule = !!(owner && !hasSchedule);
+
+  slotUploadGate.maybeClearIfPendingTimeout(code, hasSchedule);
+
+  const uploaded = slotUploadGate.hasUploadedPhoto(code);
+  const fallback =
+    slot._fallbackThumb ||
+    `https://picsum.photos/seed/${encodeURIComponent(code)}/240/160`;
+  let thumb = '';
+  if (uploaded) {
+    thumb = slotLatestPhoto.getLatestThumbForSlot(code, fallback);
   }
+  const thumbVacant = !uploaded;
+
+  const wmFromSlot = slot.watermarkTime || '';
+  const waFromSlot = slot.watermarkAddress || '';
+  const watermarkTime = uploaded ? wmFromSlot : '';
+  const watermarkAddress = uploaded ? waFromSlot : '';
+
   const now = new Date();
-  const d = clientPlacementSchedule.daysUntilExpire(expireAt, now);
-  const expireSoon = d !== null && d >= 0 && d <= 7;
-  let status = slot.status;
-  if (slot.status === '空置') {
-    // 保持空置
-  } else if (expireAt && expireAt !== '--') {
-    if (d !== null && d < 0) status = '已到期';
-    else if (d !== null && d >= 0 && d <= 7) status = '即将到期';
-    else if (d !== null && d > 7) {
-      status = status === '已到期' || status === '即将到期' ? '已投放' : status || '已投放';
+  let expireSoon = false;
+  let status = '空置';
+
+  if (pendingByBoundNoSchedule) {
+    status = '待定';
+    expireAt = '--';
+  } else if (!uploaded) {
+    if (owner && hasSchedule) {
+      const d = clientPlacementSchedule.daysUntilExpire(expireAt, now);
+      expireSoon = d !== null && d >= 0 && d <= 7;
+      if (expireAt && expireAt !== '--') {
+        if (d !== null && d < 0) status = '已到期';
+        else if (expireSoon) status = '即将到期';
+        else status = '已投放';
+      } else {
+        status = '已投放';
+      }
+    } else {
+      status = '空置';
+      expireAt = '--';
+    }
+  } else if (!owner) {
+    status = '空置';
+    expireAt = '--';
+  } else {
+    const d = clientPlacementSchedule.daysUntilExpire(expireAt, now);
+    expireSoon = d !== null && d >= 0 && d <= 7;
+    if (expireAt && expireAt !== '--') {
+      if (d !== null && d < 0) status = '已到期';
+      else if (expireSoon) status = '即将到期';
+      else status = '已投放';
+    } else {
+      status = '已投放';
     }
   }
-  return { ...slot, expireAt, status, expireSoon };
+
+  const { _fallbackThumb, ...rest } = slot;
+  return {
+    ...rest,
+    expireAt,
+    status,
+    expireSoon,
+    thumb,
+    thumbVacant,
+    watermarkTime,
+    watermarkAddress,
+  };
 }
 
 function getAllSlots() {
@@ -65,7 +182,9 @@ function getAllSlots() {
       type: s.type,
       status: s.status,
       expireAt: s.expireAt,
-      thumb: slotLatestPhoto.getLatestThumbForSlot(s.code, fallback),
+      _fallbackThumb: fallback,
+      watermarkTime: '',
+      watermarkAddress: '',
     };
   });
 
@@ -88,17 +207,20 @@ function getAllSlots() {
         code: slot.code,
         store: storeNameById[storeId] || '新增门店',
         type: slot.type || '未知类型',
-        status: slot.photo ? '已投放' : '空置',
+        status: '空置',
         expireAt: '--',
-        thumb: slotLatestPhoto.getLatestThumbForSlot(slot.code, genFallback),
+        _fallbackThumb: genFallback,
         watermarkTime: slot.watermarkTime || '',
         watermarkAddress: slot.watermarkAddress || '',
       });
     });
   });
 
+  const removedDemo = getRemovedDemoCodes();
   const mapByCode = {};
   [...base, ...generated].forEach((s) => {
+    if (!s || !s.code) return;
+    if (removedDemo.indexOf(s.code) >= 0) return;
     mapByCode[s.code] = s;
   });
   return Object.keys(mapByCode).map((k) => enrichSlot(mapByCode[k]));
@@ -114,6 +236,9 @@ module.exports = {
   getMap,
   setOwner,
   getOwner,
+  removeBinding,
+  clearOwnersForClient,
+  adminRemoveSlotByCode,
   enrichSlot,
   getAllSlots,
   getOwnedSlots,

@@ -1,0 +1,77 @@
+<view class="page" wx:if="{{client}}">
+  <view class="card">
+    <view class="hd">
+      <text class="name">{{client.name}}</text>
+      <view class="badge {{client.inAd ? 'on' : 'off'}}">{{client.inAd ? '在投' : '未在投'}}</view>
+    </view>
+    <view class="line"><text class="k">电话</text>{{client.phone}}</view>
+    <view class="line"><text class="k">公司</text>{{client.company}}</view>
+    <view wx:if="{{client.inAd}}" class="ad-block">
+      <text class="ad-title">在投广告</text>
+      <block wx:for="{{client.placementLines}}" wx:key="*this" wx:for-item="line">
+        <text class="ad-line">{{line}}</text>
+      </block>
+    </view>
+    <view wx:else class="none-ad">当前无在投广告</view>
+  </view>
+
+  <button class="btn-time" bindtap="goTimeSettings">投放时间设置</button>
+
+  <view class="section-title">按类型投放到期</view>
+  <view wx:if="{{scheduleLines.length}}" class="schedule-block">
+    <block wx:for="{{scheduleLines}}" wx:key="type">
+      <view class="schedule-row">
+        <text class="schedule-type">{{item.type}}</text>
+        <text class="schedule-date {{item.expireSoon ? 'schedule-date--soon' : ''}}">{{item.date}}</text>
+        <text wx:if="{{item.expireSoon}}" class="schedule-soon">7天内到期</text>
+      </view>
+    </block>
+  </view>
+  <view wx:else class="schedule-empty">未设置各类型到期日，点击上方「投放时间设置」进行配置</view>
+
+  <view class="section-title">各类型广告位报价</view>
+  <view class="quote-tip">按类型选择投放期（月 / 季度 / 年度），并在后方填写报价金额（元）。仅本客户档案使用，演示为本地存储。</view>
+  <view class="quote-block">
+    <block wx:for="{{quoteRows}}" wx:key="type">
+      <view class="quote-row">
+        <text class="quote-type">{{item.type}}</text>
+        <view class="quote-fields">
+          <text class="quote-k">投放期</text>
+          <picker
+            class="quote-picker"
+            mode="selector"
+            range="{{periodLabels}}"
+            value="{{item.periodIndex}}"
+            data-type="{{item.type}}"
+            bindchange="onQuotePeriodChange"
+          >
+            <view class="quote-picker-inner">{{periodLabels[item.periodIndex]}}</view>
+          </picker>
+          <text class="quote-k">报价（元）</text>
+          <input
+            class="quote-input"
+            type="digit"
+            placeholder=""
+            value="{{item.price}}"
+            data-type="{{item.type}}"
+            bindinput="onQuotePriceInput"
+          />
+        </view>
+      </view>
+    </block>
+  </view>
+  <button class="btn-quote-save" bindtap="saveClientQuotes">{{quoteSaveBtnText}}</button>
+
+  <view class="section-title">广告主合同</view>
+  <view class="tip">仅中台与本客户在广告主端「我的合同」可见（演示为本地按客户隔离存储）</view>
+  <image wx:if="{{contractPath}}" class="contract-preview" src="{{contractPath}}" mode="widthFix" />
+  <view wx:if="{{contractPath && contractWatermarkTime}}" class="contract-wm">
+    <text class="contract-wm-line">{{contractWatermarkTime}}</text>
+    <text class="contract-wm-line">{{contractWatermarkAddress}}</text>
+  </view>
+  <view wx:if="{{!contractPath}}" class="contract-empty">尚未上传该客户合同</view>
+  <button class="btn-upload" bindtap="chooseContractImage">上传 / 更换合同图</button>
+  <view wx:if="{{contractPath}}" class="clear-row">
+    <text class="clear-link" bindtap="clearContract">移除合同图</text>
+  </view>
+</view>

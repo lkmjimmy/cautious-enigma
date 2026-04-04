@@ -1,0 +1,57 @@
+<view class="page">
+  <view class="summary">全部广告位（未分配优先）</view>
+
+  <input
+    class="search"
+    placeholder="搜索广告位编号/门店/类型"
+    value="{{keyword}}"
+    bindinput="onKeywordInput"
+  />
+
+  <block wx:for="{{slots}}" wx:key="code">
+    <view wx:if="{{!keyword || item.code.indexOf(keyword) !== -1 || item.store.indexOf(keyword) !== -1 || item.type.indexOf(keyword) !== -1}}" class="slot-card">
+      <view class="thumb-wrap">
+        <view
+          wx:if="{{item.thumbVacant}}"
+          class="thumb-vacant {{item.status === '待定' ? 'thumb-vacant--pending' : ''}}"
+        >
+          {{item.status === '待定' ? '待定' : '空置'}}
+        </view>
+        <image wx:else class="thumb" src="{{item.thumb}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view wx:if="{{item.watermarkTime}}" class="slot-wm">
+          <view class="slot-wm-line">{{item.watermarkTime}}</view>
+          <view class="slot-wm-line">{{item.watermarkAddress}}</view>
+        </view>
+      </view>
+      <view class="meta">
+        <view class="top">
+          <text class="code">{{item.code}}</text>
+          <text class="tag {{item.ownerClientId ? 'tag-ok' : 'tag-empty'}}">{{item.ownerClientId ? '已分配' : '未分配'}}</text>
+        </view>
+        <view class="line">{{item.store}} · {{item.type}}</view>
+        <view class="line">状态：{{item.status}}</view>
+        <view class="line expire-line">
+          <text>到期：{{item.expireAt === '--' ? '—' : item.expireAt}}</text>
+          <text wx:if="{{item.expireSoon && item.expireAt !== '--'}}" class="expire-soon">7天内到期</text>
+        </view>
+      </view>
+      <view class="bind-row">
+        <text class="bind-label">绑定客户</text>
+        <view class="bind-picker" data-code="{{item.code}}" bindtap="openClientSheet">{{item.ownerClientName}}</view>
+      </view>
+      <view class="slot-actions">
+        <button class="btn-del-slot" size="mini" catchtap="onDeleteSlot" data-code="{{item.code}}">删除广告位</button>
+      </view>
+    </view>
+  </block>
+
+  <selector-sheet
+    show="{{showClientSheet}}"
+    title="选择客户"
+    options="{{clientPicker}}"
+    range-key="label"
+    selected-index="{{clientSheetSelectedIndex}}"
+    bind:select="onClientSheetSelect"
+    bind:close="onClientSheetClose"
+  />
+</view>

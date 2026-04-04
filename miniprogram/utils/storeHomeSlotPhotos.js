@@ -31,9 +31,19 @@ function setRecord(slotCode, record) {
   setMap(m);
 }
 
+function removeRecord(slotCode) {
+  if (!slotCode) return;
+  const m = getMap();
+  if (m[slotCode]) {
+    delete m[slotCode];
+    setMap(m);
+  }
+}
+
 module.exports = {
   KEY,
   getMap,
   getRecord,
   setRecord,
+  removeRecord,
 };

@@ -146,7 +146,7 @@
 }
 
 .index-logout {
-  margin-top: 36rpx;
+  margin-top: 96rpx;
   padding: 20rpx;
   text-align: center;
   font-size: 30rpx;

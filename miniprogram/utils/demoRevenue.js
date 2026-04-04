@@ -1,22 +1,10 @@
 /**
- * 各广告位「本月」预估收益演示数据（元）；空置为 0
- * 上线后由接口按门店、账期返回
+ * 预估收益展示：formatYuan / monthLabel 等工具；行数据由 storeRevenueCalc 等按规则计算
  */
 const demoSlots = require('./demoSlots.js');
 
-/** 与 demoSlots 中 code 一一对应 */
-const MONTH_REVENUE_YUAN = {
-  'SZ-FT-LX-01': 0,
-  'SZ-FT-LX-02': 12800,
-  'SZ-FT-DT-01': 0,
-  'SZ-FT-HJ-01': 9620,
-  'SZ-NS-LED-01': 21500,
-  'SZ-NS-MT-01': 8800,
-  'SZ-NS-CKY-01': 0,
-  'SZ-BA-HJ-01': 7340,
-  'SZ-BA-DT-01': 0,
-  'SZ-BA-MT-01': 11200,
-};
+/** 与 demoSlots 中 code 一一对应（预留；无预置广告位时为空） */
+const MONTH_REVENUE_YUAN = {};
 
 function formatYuan(n) {
   const v = Math.round(Number(n)) || 0;

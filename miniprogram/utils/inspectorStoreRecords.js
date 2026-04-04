@@ -157,6 +157,37 @@ function updateSlots(storeId, slots) {
   setMap(map);
 }
 
+/** 从所有门店记录中删除指定编号的广告位（巡检生成） */
+function removeSlotByCode(slotCode) {
+  if (!slotCode) return false;
+  const map = getMap();
+  let changed = false;
+  Object.keys(map || {}).forEach((storeId) => {
+    const row = map[storeId];
+    const slots = row && row.slots ? row.slots : [];
+    const idx = slots.findIndex((s) => s && s.code === slotCode);
+    if (idx >= 0) {
+      slots.splice(idx, 1);
+      row.slots = slots;
+      row.updatedAt = Date.now();
+      map[storeId] = row;
+      changed = true;
+    }
+  });
+  if (changed) setMap(map);
+  return changed;
+}
+
+/** 删除某门店的全部巡检记录（删门店时调用） */
+function deleteRecordForStore(storeId) {
+  if (!storeId) return;
+  const map = getMap();
+  if (map[storeId]) {
+    delete map[storeId];
+    setMap(map);
+  }
+}
+
 /**
  * 追加/填充一条“已拍照片”的广告位记录
  * - 若 slots 中存在同类型且 photo 为空的占位：优先填充
@@ -344,6 +375,37 @@ function currentMonthKey() {
 }
 
 /** 门店「全部广告位」网格打卡完成时写入，用于巡店列表展示本月是否已打卡 */
+/**
+ * 清空某广告位巡店侧照片（用于：超过 7 天未在客户管理中设置投放时间时回收展示）
+ */
+function clearSlotPhotoByCode(slotCode) {
+  if (!slotCode) return false;
+  const map = getMap();
+  let changed = false;
+  Object.keys(map || {}).forEach((storeId) => {
+    const row = map[storeId];
+    if (!row || !row.slots) return;
+    let rowChanged = false;
+    const nextSlots = row.slots.map((s) => {
+      if (!s || s.code !== slotCode || !s.photo) return s;
+      rowChanged = true;
+      return {
+        ...s,
+        photo: '',
+        photoTakenAt: undefined,
+        watermarkTime: '',
+        watermarkAddress: '',
+      };
+    });
+    if (rowChanged) {
+      map[storeId] = { ...row, slots: nextSlots, updatedAt: Date.now() };
+      changed = true;
+    }
+  });
+  if (changed) setMap(map);
+  return changed;
+}
+
 function markGridCheckinDoneForMonth(storeId) {
   if (!storeId) return;
   const map = getMap();
@@ -370,11 +432,14 @@ module.exports = {
   getRecord,
   getAllRecords,
   updateSlots,
+  removeSlotByCode,
+  deleteRecordForStore,
   initSlotsForStore,
   addGeneratedSlot,
   markCompleted,
   ensureDemoSlotsSeededInRecord,
   upsertSlotPhotoByCode,
+  clearSlotPhotoByCode,
   markGridCheckinDoneForMonth,
   isGridCheckinDoneThisMonth,
 };

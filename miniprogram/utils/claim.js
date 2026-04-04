@@ -1,25 +1,30 @@
 /**
- * 门店认领（演示：本地存储；上线后由后端接管同一套规则）
+ * 门店认领（本地存储；上线后由后端接管同一套规则）
  * - 每个门店仅能被一名用户认领（registry）
  * - 用户第一家店：即时认领
  * - 用户第二家及以后：写入待审核，需中台通过后才写入 registry
+ * 可认领门店名 = 演示广告位中的门店 + 巡店员已添加的门店
  */
 
 const adminTodoAuditLog = require('./adminTodoAuditLog.js');
+const demoSlots = require('./demoSlots.js');
 
 const KEY_USER = 'localUserId';
 const KEY_REGISTRY = 'storeClaimRegistry';
 const KEY_PENDING = 'storePendingClaims';
-
-const ALL_STORES = [
-  '福田中心店',
-  '南山科技园店',
-  '宝安壹方城店',
-  '龙岗万达店',
-  '龙华红山店',
-  '罗湖万象店',
-];
 const KEY_CURRENT_STORE = 'currentStoreView';
+
+function getStoreNamesForClaim() {
+  const fromSlots = [...new Set(demoSlots.RAW_SLOTS.map((s) => s.store))];
+  let fromIns = [];
+  try {
+    const inspectorStores = require('./inspectorStores.js');
+    fromIns = inspectorStores.getStores().map((s) => s.name);
+  } catch (e) {
+    /* ignore */
+  }
+  return [...new Set([...fromSlots, ...fromIns])];
+}
 
 function ensureUserId() {
   let id = wx.getStorageSync(KEY_USER);
@@ -48,12 +53,12 @@ function setPendingList(list) {
 
 function getMyApprovedStores(userId) {
   const r = getRegistry();
-  return ALL_STORES.filter((name) => r[name] === userId);
+  return Object.keys(r).filter((name) => r[name] === userId);
 }
 
 /** 认领：首店即时；多店进待审核 */
 function requestClaim(storeName) {
-  if (!ALL_STORES.includes(storeName)) {
+  if (!getStoreNamesForClaim().includes(storeName)) {
     return { ok: false, message: '未知门店' };
   }
   const userId = ensureUserId();
@@ -152,7 +157,14 @@ function buildStoreRows() {
     .map((p) => p.storeName);
   const pendingNames = new Set(pending.map((p) => p.storeName));
 
-  return ALL_STORES.map((name) => {
+  const nameSet = new Set([
+    ...getStoreNamesForClaim(),
+    ...Object.keys(r),
+    ...pending.map((p) => p.storeName),
+  ]);
+  const names = Array.from(nameSet).sort((a, b) => a.localeCompare(b, 'zh-CN'));
+
+  return names.map((name) => {
     const owner = r[name];
     let status = 'free';
     let statusText = '可认领';
@@ -200,7 +212,7 @@ function getCurrentStoreView() {
  * 中台清退店主后调用：门店恢复无主，认领 registry 与相关待审一并释放，他人可重新认领
  */
 function releaseStoreAfterOwnerDismissed(storeName) {
-  if (!ALL_STORES.includes(storeName)) return;
+  if (!storeName) return;
   const r = { ...getRegistry() };
   delete r[storeName];
   setRegistry(r);
@@ -213,7 +225,7 @@ function releaseStoreAfterOwnerDismissed(storeName) {
 }
 
 module.exports = {
-  ALL_STORES,
+  getStoreNamesForClaim,
   ensureUserId,
   getMyApprovedStores,
   requestClaim,

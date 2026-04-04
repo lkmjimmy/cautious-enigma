@@ -1,0 +1,51 @@
+<view class="page">
+  <view class="intro">
+    按广告位类型填写投放天数与赠送天数（赠送不填视为 0）。到期日 = 投放起始日 + 投放天数 + 赠送天数；首次填写时起始日默认为保存当日。将同步到该客户名下该类型的全部广告位。
+  </view>
+  <view class="client-hd">
+    <text class="client-name">{{clientName}}</text>
+  </view>
+
+  <block wx:for="{{typeRows}}" wx:key="type">
+    <view class="type-card">
+      <view class="type-row">
+        <text class="type-label">{{item.type}}</text>
+        <text class="type-clear" data-index="{{index}}" bindtap="onClearType">清除</text>
+      </view>
+      <view class="days-row">
+        <view class="days-cell">
+          <text class="days-label">投放天数</text>
+          <input
+            class="days-input"
+            type="number"
+            placeholder=""
+            value="{{item.placementDays}}"
+            data-index="{{index}}"
+            data-field="placementDays"
+            bindinput="onDaysInput"
+          />
+        </view>
+        <view class="days-cell">
+          <text class="days-label">赠送天数</text>
+          <input
+            class="days-input"
+            type="number"
+            placeholder=""
+            value="{{item.bonusDays}}"
+            data-index="{{index}}"
+            data-field="bonusDays"
+            bindinput="onDaysInput"
+          />
+        </view>
+      </view>
+      <view class="expire-preview">
+        <text class="expire-preview-k">到期日期</text>
+        <text class="expire-preview-v {{item.expirePreview ? '' : 'is-placeholder'}}">
+          {{item.expirePreview || '填写投放天数后自动计算'}}
+        </text>
+      </view>
+    </view>
+  </block>
+
+  <button class="btn-save" bindtap="saveAll">保存并同步</button>
+</view>

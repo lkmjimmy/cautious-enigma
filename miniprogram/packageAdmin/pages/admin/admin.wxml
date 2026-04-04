@@ -1,0 +1,68 @@
+<view class="page admin-page">
+  <view class="section-title">核心看板</view>
+  <view class="grid">
+    <block wx:for="{{stats}}" wx:key="label">
+      <view class="stat-card" data-filter="{{item.filter}}" bindtap="goFilteredSlots">
+        <view class="stat-label">{{item.label}}</view>
+        <view class="stat-value tone-{{item.tone}}">{{item.value}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="section">
+    <view class="section-title">按广告位类型统计</view>
+    <view class="type-table">
+      <view class="type-head">
+        <view class="col-type">类型</view>
+        <view class="col-num">投放</view>
+        <view class="col-num">空置</view>
+        <view class="col-num">待定</view>
+        <view class="col-num">即将到期</view>
+      </view>
+      <block wx:for="{{typeStats}}" wx:key="type">
+        <view class="type-row">
+          <view class="col-type">{{item.type}}</view>
+          <view class="col-num num-success">{{item.filled}}</view>
+          <view class="col-num num-danger">{{item.vacant}}</view>
+          <view class="col-num num-pending">{{item.pending}}</view>
+          <view class="col-num num-warning">{{item.expiring}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">高优先级处理</view>
+    <view class="urgent-hint">优先提醒即将到期的客户；「高优」为 7 天内到期，「中优」为空置待招商。</view>
+    <block wx:for="{{urgentSlots}}" wx:key="code">
+      <view class="row-card urgent-row">
+        <view class="row-top">
+          <view class="urgent-top-left">
+            <text class="urgent-pri urgent-pri--{{item.priority}}">{{item.priorityText}}</text>
+            <text class="row-title">{{item.code}}</text>
+          </view>
+          <view class="tag {{item.status === '空置' ? 'tag-danger' : 'tag-warning'}}">{{item.status}}</view>
+        </view>
+        <view class="row-meta">{{item.store}} · {{item.type}}</view>
+        <view class="urgent-client">客户：{{item.clientLabel}}</view>
+        <view class="row-meta">{{item.status === '空置' ? '无到期日' : '到期'}} {{item.expireAt === '--' ? '—' : item.expireAt}}</view>
+      </view>
+    </block>
+    <view wx:if="{{!urgentSlots.length}}" class="urgent-empty">暂无高优待办</view>
+  </view>
+
+  <view class="admin-bottom-bar">
+    <view class="admin-bottom-item" bindtap="goAdminPublish">
+      <text class="admin-bottom-text">消息发布</text>
+    </view>
+    <view class="admin-bottom-item" bindtap="goAdminTodo">
+      <view class="admin-bottom-todo-wrap">
+        <text class="admin-bottom-text">待办</text>
+        <view wx:if="{{todoHasPending}}" class="admin-bottom-dot" aria-hidden="true" />
+      </view>
+    </view>
+    <view class="admin-bottom-item" bindtap="goAdminMine">
+      <text class="admin-bottom-text">我的</text>
+    </view>
+  </view>
+</view>

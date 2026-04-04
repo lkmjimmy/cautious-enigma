@@ -1,0 +1,63 @@
+<view class="page">
+  <view class="card">
+    <view class="section-title">门店信息</view>
+    <view class="line"><text class="k">店铺名称：</text>{{storeName}}</view>
+    <view class="line"><text class="k">地址：</text>{{address}}</view>
+    <view class="line"><text class="k">联系电话：</text>{{phone}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title section-title--init">广告位初始化</view>
+    <view class="tip">按类型逐行拍摄：已拍缩略图在前、末尾为拍照框；点击缩略图可大图预览，角标 × 可删除后重拍。无需的类型可点「无」。</view>
+    <view class="total-line">已拍 {{totalCount}} 张</view>
+
+    <block wx:for="{{typeSections}}" wx:key="type">
+      <view class="type-section">
+        <view class="type-row">
+          <text class="type-name">{{item.type}}</text>
+          <button
+            class="btn-none-mini"
+            size="mini"
+            data-type="{{item.type}}"
+            bindtap="onSetNoneForType"
+            disabled="{{item.shots.length > 0}}"
+          >
+            无
+          </button>
+        </view>
+        <view class="strip" wx:if="{{!item.isNone}}">
+          <block wx:for="{{item.shots}}" wx:for-item="shot" wx:for-index="sidx" wx:key="sidx">
+            <view
+              class="thumb-wrap"
+              data-type="{{item.type}}"
+              data-index="{{sidx}}"
+              bindtap="previewShot"
+            >
+              <image class="thumb" src="{{shot.photo}}" mode="aspectFill" lazy-load="{{true}}" />
+              <view wx:if="{{shot.watermarkTime}}" class="thumb-wm">
+                <text class="thumb-wm-line">{{shot.watermarkTime}}</text>
+              </view>
+              <view
+                class="thumb-del"
+                data-type="{{item.type}}"
+                data-index="{{sidx}}"
+                catchtap="onDeleteShot"
+              >
+                ×
+              </view>
+            </view>
+          </block>
+          <view class="slot-box" data-type="{{item.type}}" bindtap="choosePhotoForType">
+            <text class="slot-box-text">点击拍照</text>
+          </view>
+        </view>
+        <view wx:else class="none-row">该类型：无广告位</view>
+      </view>
+    </block>
+
+    <view class="footer-actions">
+      <button class="action-btn confirm" bindtap="onConfirm">确认生成广告位</button>
+      <button class="action-btn ghost" bindtap="onCancel">取消</button>
+    </view>
+  </view>
+</view>

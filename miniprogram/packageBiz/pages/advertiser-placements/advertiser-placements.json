@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "selector-sheet": "/components/selector-sheet/selector-sheet"
+  },
+  "navigationBarTitleText": "推广投放"
+}

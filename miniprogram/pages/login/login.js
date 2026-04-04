@@ -1,5 +1,21 @@
 const STORAGE_LOGGED = 'loggedIn';
 const STORAGE_PHONE = 'userPhone';
+const STORAGE_ROLE = 'userRole';
+const apiConfig = require('../../utils/apiConfig.js');
+const apiRequest = require('../../utils/apiRequest.js');
+
+function syncServerSession(code, role) {
+  if (!apiConfig.useServer || !apiConfig.baseUrl) return Promise.resolve();
+  return apiRequest
+    .request({
+      path: '/api/v1/auth/wechat',
+      method: 'POST',
+      data: { code, role: role === 'admin' ? 'admin' : 'user' },
+    })
+    .then((data) => {
+      if (data && data.token) apiRequest.setApiToken(data.token);
+    });
+}
 
 Page({
   data: {
@@ -12,31 +28,68 @@ Page({
     }
   },
 
-  /** 微信一键登录：wx.login 仅拿到 code，必须由服务端换 openid / session */
-  onWechatLogin() {
+  /** 微信一键登录：先换票（若启用后端）再写入本地并进入首页，减少 token 未就绪的竞态 */
+  _doWechatLogin(role) {
     if (this.data.loading) return;
 
     this.setData({ loading: true });
+    const r = role || 'user';
+    const self = this;
+
+    const persistLocalAndEnter = function (toastTitle, toastIcon, delayMs) {
+      wx.setStorageSync(STORAGE_LOGGED, true);
+      wx.setStorageSync(STORAGE_PHONE, '微信用户');
+      wx.setStorageSync(STORAGE_ROLE, r);
+      self.setData({ loading: false });
+      if (toastTitle) {
+        wx.showToast({ title: toastTitle, icon: toastIcon || 'none' });
+      }
+      setTimeout(function () {
+        wx.reLaunch({ url: '/pages/index/index' });
+      }, delayMs == null ? 450 : delayMs);
+    };
+
     wx.login({
-      success: (res) => {
+      success: function (res) {
         if (!res.code) {
-          this.setData({ loading: false });
+          self.setData({ loading: false });
           wx.showToast({ title: '未获取到登录凭证', icon: 'none' });
           return;
         }
-        // 生产环境：wx.request({ url: '你的后端/login', data: { code: res.code }, ... })
-        wx.setStorageSync(STORAGE_LOGGED, true);
-        wx.setStorageSync(STORAGE_PHONE, '微信用户');
-        this.setData({ loading: false });
-        wx.showToast({ title: '登录成功', icon: 'success' });
-        setTimeout(() => {
-          wx.reLaunch({ url: '/pages/index/index' });
-        }, 450);
+
+        if (!apiConfig.useServer || !apiConfig.baseUrl) {
+          persistLocalAndEnter('登录成功', 'success', 450);
+          return;
+        }
+
+        syncServerSession(res.code, r)
+          .then(function () {
+            persistLocalAndEnter('登录成功', 'success', 450);
+          })
+          .catch(function (err) {
+            console.error('[login] 后端 /api/v1/auth/wechat 失败', err);
+            const msg = err && (err.errMsg || err.message || '');
+            const isTimeout = /timeout/i.test(String(msg));
+            wx.showToast({
+              title: isTimeout ? '后端超时：请核对 apiConfig 里 IP 与后端' : '后端未连通，已仅本地登录',
+              icon: 'none',
+              duration: isTimeout ? 3500 : 2800,
+            });
+            persistLocalAndEnter(null, null, isTimeout ? 3200 : 2600);
+          });
       },
-      fail: () => {
-        this.setData({ loading: false });
+      fail: function () {
+        self.setData({ loading: false });
         wx.showToast({ title: '微信登录失败', icon: 'none' });
       },
     });
+  },
+
+  onWechatLogin() {
+    this._doWechatLogin('user');
+  },
+
+  onAdminWechatLogin() {
+    this._doWechatLogin('admin');
   },
 });

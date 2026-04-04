@@ -2,30 +2,53 @@
   "pages": [
     "pages/login/login",
     "pages/index/index",
-    "pages/store-claim/store-claim",
-    "pages/store-home/store-home",
-    "pages/store-revenue/store-revenue",
-    "pages/admin/admin",
-    "pages/admin-publish/admin-publish",
-    "pages/admin-todo/admin-todo",
-    "pages/admin-mine/admin-mine",
-    "pages/admin-store-manage/admin-store-manage",
-    "pages/admin-personnel/admin-personnel",
-    "pages/admin-slot-manage/admin-slot-manage",
-    "pages/admin-clients/admin-clients",
-    "pages/admin-client-detail/admin-client-detail",
-    "pages/admin-client-time/admin-client-time",
-    "pages/admin-store-detail/admin-store-detail",
-    "pages/slots/slots",
-    "pages/store-slots/store-slots",
-    "pages/advertiser/advertiser",
-    "pages/advertiser-contract/advertiser-contract",
-    "pages/advertiser-placements/advertiser-placements",
-    "pages/inspector/inspector",
-    "pages/inspector-check/inspector-check",
-    "pages/inspector-store-checkin/inspector-store-checkin",
-    "pages/inspector-store-init/inspector-store-init",
-    "pages/inspector-add-store/inspector-add-store"
+    "pages/role-first-profile/role-first-profile"
+  ],
+  "lazyCodeLoading": "requiredComponents",
+  "subPackages": [
+    {
+      "root": "packageAdmin",
+      "name": "admin",
+      "pages": [
+        "pages/admin/admin",
+        "pages/admin-publish/admin-publish",
+        "pages/admin-todo/admin-todo",
+        "pages/admin-mine/admin-mine",
+        "pages/admin-slot-prices/admin-slot-prices",
+        "pages/admin-store-manage/admin-store-manage",
+        "pages/admin-personnel/admin-personnel",
+        "pages/admin-slot-manage/admin-slot-manage",
+        "pages/admin-clients/admin-clients",
+        "pages/admin-client-detail/admin-client-detail",
+        "pages/admin-client-time/admin-client-time",
+        "pages/admin-store-detail/admin-store-detail",
+        "pages/slots/slots"
+      ]
+    },
+    {
+      "root": "packageStore",
+      "name": "store",
+      "pages": [
+        "pages/store-claim/store-claim",
+        "pages/store-home/store-home",
+        "pages/store-revenue/store-revenue",
+        "pages/store-slots/store-slots"
+      ]
+    },
+    {
+      "root": "packageBiz",
+      "name": "biz",
+      "pages": [
+        "pages/advertiser/advertiser",
+        "pages/advertiser-contract/advertiser-contract",
+        "pages/advertiser-placements/advertiser-placements",
+        "pages/inspector/inspector",
+        "pages/inspector-check/inspector-check",
+        "pages/inspector-store-checkin/inspector-store-checkin",
+        "pages/inspector-store-init/inspector-store-init",
+        "pages/inspector-add-store/inspector-add-store"
+      ]
+    }
   ],
   "window": {
     "navigationBarTitleText": "广告位管理",
@@ -34,6 +57,12 @@
     "backgroundColor": "#F5F5F7"
   },
   "sitemapLocation": "sitemap.json",
+  "networkTimeout": {
+    "request": 60000,
+    "connectSocket": 60000,
+    "uploadFile": 60000,
+    "downloadFile": 60000
+  },
   "permission": {
     "scope.userLocation": {
       "desc": "用于在广告位照片水印中展示拍摄地点（经纬度）"

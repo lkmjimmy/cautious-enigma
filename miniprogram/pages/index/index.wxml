@@ -11,7 +11,7 @@
   <view class="index-body">
     <view class="index-section-label">选择身份进入</view>
 
-    <view class="role-card" hover-class="role-card--hover" bindtap="goAdmin">
+    <view wx:if="{{isAdmin}}" class="role-card" hover-class="role-card--hover" bindtap="goAdmin">
       <view class="role-icon role-icon--admin">📊</view>
       <view class="role-main">
         <view class="role-title">中台</view>

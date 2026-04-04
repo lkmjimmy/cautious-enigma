@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="tabs">
+    <block wx:for="{{tabs}}" wx:key="*this">
+      <view class="tab {{activeTab === item ? 'tab-active' : ''}}" data-tab="{{item}}" bindtap="onTabTap">{{item}}</view>
+    </block>
+  </view>
+
+  <view wx:if="{{activeTab !== '全部'}}" class="group-wrap">
+    <block wx:for="{{groupedSlots}}" wx:key="store">
+      <view class="group-card">
+        <view class="group-store">{{item.store}}</view>
+        <view class="group-table">
+          <view class="group-head">
+            <view class="g-type">类型</view>
+            <view class="g-count">数量</view>
+            <view class="g-codes">广告位编号</view>
+          </view>
+          <block wx:for="{{item.types}}" wx:key="type">
+            <view class="group-row">
+              <view class="g-type">{{item.type}}</view>
+              <view class="g-count">{{item.count}}</view>
+              <view class="g-codes">{{item.codes}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view wx:else>
+    <block wx:for="{{visibleSlots}}" wx:key="code">
+      <view class="row-card">
+        <view class="row-top">
+          <view class="row-title">{{item.code}}</view>
+          <view
+            class="tag {{item.status === '空置' ? 'tag-danger' : item.status === '待定' ? 'tag-pending' : item.status === '即将到期' ? 'tag-warning' : 'tag-success'}}"
+          >
+            {{item.status}}
+          </view>
+        </view>
+        <view class="row-meta">{{item.store}} · {{item.type}} · 到期 {{item.expireAt}}</view>
+        <view class="store-jump" data-store="{{item.store}}" bindtap="goStore">
+          <text class="store-name">{{item.store}}</text>
+          <text class="store-arrow">查看门店详情 ></text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

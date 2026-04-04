@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="intro">选择角色后即时保存（演示为本地存储）</view>
+  <block wx:for="{{personnel}}" wx:key="id">
+    <view class="person-card">
+      <view class="person-top">
+        <view class="person-top-left">
+          <text class="person-name">{{item.name}}</text>
+          <text class="person-phone">{{item.phone}}</text>
+        </view>
+        <button class="btn-del-person" size="mini" catchtap="onDeletePerson" data-id="{{item.id}}">删除</button>
+      </view>
+      <view class="person-row">
+        <text class="person-label">角色</text>
+        <view class="person-picker" data-id="{{item.id}}" bindtap="openRoleSheet">{{roleOptions[item.roleIndex]}}</view>
+      </view>
+    </view>
+  </block>
+
+  <selector-sheet
+    show="{{showRoleSheet}}"
+    title="选择角色"
+    options="{{roleOptions}}"
+    selected-index="{{roleSheetSelectedIndex}}"
+    bind:select="onRoleSheetSelect"
+    bind:close="onRoleSheetClose"
+  />
+</view>

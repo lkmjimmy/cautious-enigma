@@ -1,0 +1,85 @@
+.rfp-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--bg-page, #f5f5f7);
+  padding: 32rpx 32rpx calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.rfp-hero {
+  margin-bottom: 40rpx;
+}
+
+.rfp-title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: var(--text-primary, #1d1d1f);
+  line-height: 1.45;
+}
+
+.rfp-sub {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary, #6e6e73);
+  line-height: 1.65;
+  word-wrap: break-word;
+}
+
+.rfp-form {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 8rpx 24rpx 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.06);
+}
+
+.rfp-field {
+  padding-top: 28rpx;
+  padding-bottom: 8rpx;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.06);
+}
+
+.rfp-field:last-of-type {
+  border-bottom: none;
+}
+
+.rfp-label {
+  display: block;
+  font-size: 28rpx;
+  color: var(--text-secondary, #6e6e73);
+  margin-bottom: 16rpx;
+  line-height: 1.45;
+}
+
+.rfp-input {
+  width: 100%;
+  min-height: 96rpx;
+  font-size: 32rpx;
+  line-height: 48rpx;
+  color: var(--text-primary, #1d1d1f);
+  padding: 24rpx 0 28rpx;
+  box-sizing: border-box;
+}
+
+/* 占位符与正文行高一致，避免输入框内占位/汉字上下被裁切 */
+.rfp-placeholder {
+  color: #aeaeb2;
+  font-size: 30rpx;
+  line-height: 48rpx;
+}
+
+.rfp-actions {
+  margin-top: 48rpx;
+}
+
+.rfp-btn {
+  background: #1677ff !important;
+  color: #fff !important;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius: 999rpx;
+  padding: 22rpx 32rpx;
+  border: none;
+}
+
+.rfp-btn::after {
+  border: none;
+}

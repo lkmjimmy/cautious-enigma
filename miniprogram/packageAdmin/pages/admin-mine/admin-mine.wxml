@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="mine-card" bindtap="goPersonnel">
+    <view class="mine-card-main">
+      <text class="mine-card-title">人员管理</text>
+      <text class="mine-card-desc">调整人员角色：巡店员、店主、广告主、业务员</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+  <view class="mine-card" bindtap="goClients">
+    <view class="mine-card-main">
+      <text class="mine-card-title">客户管理</text>
+      <text class="mine-card-desc">客户姓名、电话、公司及在投广告位类型、数量与到期</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+  <view class="mine-card" bindtap="goSlotManage">
+    <view class="mine-card-main">
+      <text class="mine-card-title">广告位管理</text>
+      <text class="mine-card-desc">查看全部广告位（含图片），并为单个广告位绑定客户</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+  <view class="mine-card" bindtap="goSlotPrices">
+    <view class="mine-card-main">
+      <text class="mine-card-title">广告位价格管理</text>
+      <text class="mine-card-desc">按类型设置制作成本（元），留空表示未填写</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+  <view class="mine-card" bindtap="goStoreDetailCurrent">
+    <view class="mine-card-main">
+      <text class="mine-card-title">门店管理</text>
+      <text class="mine-card-desc">查看门店广告位汇总、明细、状态与到期时间</text>
+    </view>
+    <text class="mine-card-arrow">›</text>
+  </view>
+</view>

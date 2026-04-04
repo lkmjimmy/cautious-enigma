@@ -5,46 +5,23 @@ const claim = require('./claim.js');
 
 const KEY = 'storeManagerBindings';
 
-const DEFAULT = {
-  福田中心店: { name: '张明', phone: '138****2160' },
-  南山科技园店: { name: '刘洋', phone: '159****8832' },
-  宝安壹方城店: { name: '陈静', phone: '186****5091' },
-  龙岗万达店: { name: '赵磊', phone: '137****1101' },
-  龙华红山店: { name: '周婷', phone: '136****2202' },
-  罗湖万象店: { name: '吴凯', phone: '135****3303' },
-};
+const DEFAULT = {};
 
-const ALL = [
-  '福田中心店',
-  '南山科技园店',
-  '宝安壹方城店',
-  '龙岗万达店',
-  '龙华红山店',
-  '罗湖万象店',
-];
+const ALL = [];
 
 function getMap() {
   let m = wx.getStorageSync(KEY);
   if (m === undefined || m === null || m === '') {
-    m = { ...DEFAULT };
+    m = {};
     wx.setStorageSync(KEY, m);
     return m;
   }
   if (typeof m !== 'object' || Array.isArray(m)) {
-    m = { ...DEFAULT };
+    m = {};
     wx.setStorageSync(KEY, m);
     return m;
   }
-  let changed = false;
-  const next = { ...m };
-  ALL.forEach((name) => {
-    if (DEFAULT[name] && !next[name]) {
-      next[name] = { ...DEFAULT[name] };
-      changed = true;
-    }
-  });
-  if (changed) wx.setStorageSync(KEY, next);
-  return changed ? next : m;
+  return m;
 }
 
 function getRows() {

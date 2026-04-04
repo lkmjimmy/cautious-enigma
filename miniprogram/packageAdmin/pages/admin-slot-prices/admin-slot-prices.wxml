@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="intro">按广告位类型维护制作成本（元），留空表示暂未填写。数据保存在本机（演示）。</view>
+
+  <block wx:for="{{rows}}" wx:key="type">
+    <view class="type-card">
+      <view class="type-name">{{item.type}}</view>
+      <view class="cost-row">
+        <text class="dim-label">制作成本（元）</text>
+        <input
+          class="dim-input"
+          type="digit"
+          placeholder=""
+          value="{{item.makeCost}}"
+          data-type="{{item.type}}"
+          data-field="makeCost"
+          bindinput="onPriceInput"
+        />
+      </view>
+    </view>
+  </block>
+
+  <button class="save-btn" bindtap="onSave">{{saveBtnText}}</button>
+</view>

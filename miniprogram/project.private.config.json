@@ -2,7 +2,7 @@
   "libVersion": "3.15.1",
   "projectname": "miniprogram",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": false,
@@ -12,7 +12,7 @@
     "compileHotReLoad": true,
     "useApiHook": true,
     "useStaticServer": false,
-    "useLanDebug": false,
+    "useLanDebug": true,
     "showES6CompileOption": false,
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true,

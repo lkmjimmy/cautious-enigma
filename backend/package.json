@@ -1,0 +1,19 @@
+{
+  "name": "adslot-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "广告位管理小程序配套 API（JSON 持久化，可换数据库）",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

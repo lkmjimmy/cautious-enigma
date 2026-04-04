@@ -1,33 +1,14 @@
-/** 演示用各门店广告位列表（与 slots / store-home 一致） */
+/** 各门店广告位清单（可由接口下发；初始无预置行，类型列表仍用于表单） */
 // slotLatestPhoto 不在此处顶层 require，避免与 inspectorStores → demoSlots → … → inspectorStoreRecords → inspectorStores 形成循环依赖导致白屏
 
-const RAW_SLOTS = [
-  { code: 'SZ-FT-LX-01', store: '福田中心店', type: '灯箱', status: '空置', expireAt: '--' },
-  { code: 'SZ-FT-LX-02', store: '福田中心店', type: '灯箱', status: '已投放', expireAt: '2026-05-20' },
-  { code: 'SZ-FT-LX-03', store: '福田中心店', type: '灯箱', status: '已投放', expireAt: '2026-06-01' },
-  { code: 'SZ-NS-LX-01', store: '南山科技园店', type: '灯箱', status: '已投放', expireAt: '2026-04-08' },
-  { code: 'SZ-BA-LX-01', store: '宝安壹方城店', type: '灯箱', status: '即将到期', expireAt: '2026-04-05' },
-  { code: 'SZ-FT-DT-01', store: '福田中心店', type: '地贴', status: '空置', expireAt: '--' },
-  { code: 'SZ-FT-HJ-01', store: '福田中心店', type: '货架', status: '即将到期', expireAt: '2026-04-06' },
-  { code: 'SZ-NS-LED-01', store: '南山科技园店', type: 'LED', status: '即将到期', expireAt: '2026-04-07' },
-  { code: 'SZ-NS-MT-01', store: '南山科技园店', type: '门头', status: '已投放', expireAt: '2026-05-18' },
-  { code: 'SZ-NS-CKY-01', store: '南山科技园店', type: '出库仪', status: '空置', expireAt: '--' },
-  { code: 'SZ-BA-HJ-01', store: '宝安壹方城店', type: '货架', status: '即将到期', expireAt: '2026-04-05' },
-  { code: 'SZ-BA-DT-01', store: '宝安壹方城店', type: '地贴', status: '空置', expireAt: '--' },
-  { code: 'SZ-BA-MT-01', store: '宝安壹方城店', type: '门头', status: '已投放', expireAt: '2026-05-11' },
-  { code: 'SZ-LG-LX-01', store: '龙岗万达店', type: '灯箱', status: '已投放', expireAt: '2026-05-28' },
-  { code: 'SZ-LG-LX-02', store: '龙岗万达店', type: '灯箱', status: '空置', expireAt: '--' },
-  { code: 'SZ-LG-DT-01', store: '龙岗万达店', type: '地贴', status: '已投放', expireAt: '2026-06-10' },
-  { code: 'SZ-LG-LED-01', store: '龙岗万达店', type: 'LED', status: '即将到期', expireAt: '2026-04-08' },
-  { code: 'SZ-HS-LX-01', store: '龙华红山店', type: '灯箱', status: '已投放', expireAt: '2026-05-15' },
-  { code: 'SZ-HS-MT-01', store: '龙华红山店', type: '门头', status: '已投放', expireAt: '2026-06-01' },
-  { code: 'SZ-HS-HJ-01', store: '龙华红山店', type: '货架', status: '空置', expireAt: '--' },
-  { code: 'SZ-HS-CKY-01', store: '龙华红山店', type: '出库仪', status: '即将到期', expireAt: '2026-04-09' },
-  { code: 'SZ-LW-LX-01', store: '罗湖万象店', type: '灯箱', status: '即将到期', expireAt: '2026-04-10' },
-  { code: 'SZ-LW-DT-01', store: '罗湖万象店', type: '地贴', status: '空置', expireAt: '--' },
-  { code: 'SZ-LW-MT-01', store: '罗湖万象店', type: '门头', status: '已投放', expireAt: '2026-05-22' },
-  { code: 'SZ-LW-HJ-01', store: '罗湖万象店', type: '货架', status: '已投放', expireAt: '2026-06-18' },
-];
+const RAW_SLOTS = [];
+
+const DEFAULT_SLOT_TYPES = ['灯箱', '地贴', '货架', 'LED', '门头', '出库仪'];
+
+const ALL_SLOT_TYPES =
+  RAW_SLOTS.length > 0
+    ? [...new Set(RAW_SLOTS.map((s) => s.type))].sort((a, b) => a.localeCompare(b, 'zh-CN'))
+    : [...DEFAULT_SLOT_TYPES].sort((a, b) => a.localeCompare(b, 'zh-CN'));
 
 function slotsForStore(storeName) {
   return RAW_SLOTS.filter((s) => s.store === storeName).map((s) => ({
@@ -37,11 +18,6 @@ function slotsForStore(storeName) {
     expireAt: s.expireAt,
   }));
 }
-
-/** 全项目出现的全部广告位类型（固定顺序用于门店汇总表，无该类型时填 0） */
-const ALL_SLOT_TYPES = [...new Set(RAW_SLOTS.map((s) => s.type))].sort((a, b) =>
-  a.localeCompare(b, 'zh-CN')
-);
 
 const VACANT_THUMB =
   'https://dummyimage.com/300x200/f3f4f6/9ca3af.png&text=%E7%A9%BA%E7%BD%AE';
@@ -57,7 +33,7 @@ function _daysUntilExpire(expireStr, now) {
 }
 
 /**
- * 本店工作台：按广告位类型分组，含缩略图 URL、状态、到期与临期标记（演示数据）
+ * 本店工作台：按广告位类型分组，含缩略图 URL、状态、到期与临期标记
  */
 function buildStoreVisualGroups(storeName) {
   const slotLatestPhoto = require('./slotLatestPhoto.js');

@@ -1,0 +1,25 @@
+<view class="page ds-page">
+  <view class="head-card ds-card">
+    <view class="head-label">{{monthLabel}} · 本月预估收益</view>
+    <view class="head-total">{{monthTotalText}}</view>
+    <view class="head-history">历史收益合计（早于本月各月快照之和）{{historyTotalText}}</view>
+    <view class="head-tip">
+      按月统计：单广告位月收入 = max(0, 客户该类型月折算单价 − 该类型制作成本) × 30%。客户报价在「客户详情」按投放期填写后折算为月；制作成本在「广告位价格管理」。已绑定客户且非空置/待定的广告位参与计算。
+    </view>
+  </view>
+
+  <view class="section-title">各广告位本月预估收益</view>
+
+  <block wx:for="{{rows}}" wx:key="code">
+    <view class="rev-row ds-card">
+      <view class="rev-top">
+        <view class="rev-code">{{item.code}}</view>
+        <view class="rev-amount">{{item.revenueText}}</view>
+      </view>
+      <view class="rev-meta">
+        <text class="rev-type">{{item.type}}</text>
+        <text class="rev-status">{{item.status}}</text>
+      </view>
+    </view>
+  </block>
+</view>

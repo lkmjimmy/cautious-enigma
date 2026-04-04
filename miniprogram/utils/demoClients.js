@@ -1,41 +1,82 @@
-/** 演示客户列表（与投放意向无关，独立演示数据） */
-const CLIENTS = [
+const slotOwnership = require('./slotOwnership.js');
+const clientPlacementSchedule = require('./clientPlacementSchedule.js');
+const clientSlotQuotes = require('./clientSlotQuotes.js');
+const advertiserContractByClient = require('./advertiserContractByClient.js');
+
+const STORAGE_KEY = 'demoClientsListV1';
+
+const DEFAULT_CLIENTS = [
   {
-    id: 'c1',
-    name: '王海',
-    phone: '138****3301',
-    company: '深圳新锐食品有限公司',
-    inAd: true,
-    placementLines: ['灯箱×2（最近到期 2026-05-20）', '地贴×1（2026-04-30）'],
-  },
-  {
-    id: 'c2',
-    name: '林芳',
-    phone: '159****6602',
-    company: '南山智创科技',
-    inAd: true,
-    placementLines: ['LED×1（2026-04-07）', '门头×1（2026-05-18）'],
-  },
-  {
-    id: 'c3',
-    name: '陈浩',
-    phone: '186****7703',
-    company: '宝安壹方城商贸',
+    id: 'c_demo_1',
+    name: '模拟客户',
+    phone: '000****0000',
+    company: '模拟公司',
     inAd: false,
     placementLines: [],
   },
-  {
-    id: 'c4',
-    name: '黄薇',
-    phone: '135****8804',
-    company: '福田传媒策划',
-    inAd: true,
-    placementLines: ['货架×3（最近到期 2026-04-06）'],
-  },
 ];
 
-function getById(id) {
-  return CLIENTS.find((c) => c.id === id) || null;
+function cloneSeed() {
+  return DEFAULT_CLIENTS.map(function (c) {
+    return {
+      id: c.id,
+      name: c.name,
+      phone: c.phone,
+      company: c.company,
+      inAd: false,
+      placementLines: [],
+    };
+  });
 }
 
-module.exports = { CLIENTS, getById };
+function getList() {
+  try {
+    const raw = wx.getStorageSync(STORAGE_KEY);
+    if (raw && Array.isArray(raw) && raw.length) return raw;
+  } catch (e) {
+    /* ignore */
+  }
+  const seed = cloneSeed();
+  try {
+    wx.setStorageSync(STORAGE_KEY, seed);
+  } catch (e2) {
+    /* ignore */
+  }
+  return seed;
+}
+
+function getById(id) {
+  const list = getList();
+  for (let i = 0; i < list.length; i += 1) {
+    if (list[i].id === id) return list[i];
+  }
+  return null;
+}
+
+function cleanupClientRelations(clientId) {
+  slotOwnership.clearOwnersForClient(clientId);
+  clientPlacementSchedule.removeClient(clientId);
+  clientSlotQuotes.removeForClient(clientId);
+  advertiserContractByClient.set(clientId, '');
+  advertiserContractByClient.setCaptureMeta(clientId, null);
+}
+
+function removeById(clientId) {
+  if (!clientId) return getList();
+  const list = getList().filter(function (c) {
+    return c.id !== clientId;
+  });
+  try {
+    wx.setStorageSync(STORAGE_KEY, list);
+  } catch (e) {
+    /* ignore */
+  }
+  cleanupClientRelations(clientId);
+  return list;
+}
+
+module.exports = {
+  getList,
+  getById,
+  removeById,
+};

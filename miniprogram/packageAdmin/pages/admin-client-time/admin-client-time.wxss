@@ -1,0 +1,129 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.intro {
+  font-size: 24rpx;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 20rpx;
+}
+
+.client-hd {
+  margin-bottom: 16rpx;
+}
+
+.client-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.type-card {
+  background: #fff;
+  border: 1rpx solid #e9eef5;
+  border-radius: 14rpx;
+  padding: 20rpx 22rpx;
+  margin-bottom: 14rpx;
+}
+
+.type-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.type-label {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.type-clear {
+  font-size: 24rpx;
+  color: #9ca3af;
+  padding: 12rpx 8rpx;
+}
+
+.days-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16rpx;
+}
+
+.days-cell {
+  flex: 1;
+  min-width: 0;
+}
+
+.days-label {
+  display: block;
+  font-size: 24rpx;
+  color: #64748b;
+  margin-bottom: 8rpx;
+}
+
+.days-input {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 16rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  color: #111827;
+  background: #f9fafb;
+  border-radius: 12rpx;
+  border: 1rpx solid #e5e7eb;
+}
+
+.expire-preview {
+  margin-top: 16rpx;
+  padding-top: 14rpx;
+  border-top: 1rpx solid #f1f5f9;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.expire-preview-k {
+  font-size: 24rpx;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.expire-preview-v {
+  flex: 1;
+  text-align: right;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1677ff;
+}
+
+.expire-preview-v.is-placeholder {
+  font-weight: 500;
+  font-size: 26rpx;
+  color: #9ca3af;
+}
+
+.btn-save {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  margin-top: 24rpx;
+  padding: 0;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+  background: #1677ff;
+  border-radius: 12rpx;
+}
+
+.btn-save::after {
+  border: none;
+}

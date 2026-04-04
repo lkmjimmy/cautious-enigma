@@ -1,0 +1,86 @@
+<view class="page ds-page">
+  <view class="owner-card ds-card">
+    <view class="owner-card-title">店主</view>
+    <view wx:if="{{hasOwner}}" class="owner-body">
+      <view class="owner-line">
+        <text class="owner-label">姓名</text>
+        <text class="owner-value">{{ownerName}}</text>
+      </view>
+      <view class="owner-line">
+        <text class="owner-label">手机</text>
+        <text class="owner-value">{{ownerPhone}}</text>
+      </view>
+      <button class="btn-remove-owner" bindtap="onRemoveOwner">清退店主</button>
+    </view>
+    <view wx:else class="owner-empty">暂无店主，请先在后台指派或联系运营</view>
+  </view>
+
+  <view class="stat-row">
+    <block wx:for="{{stats}}" wx:key="label">
+      <view class="stat-item">
+        <view class="stat-value tone-{{item.tone}}">{{item.value}}</view>
+        <view class="stat-label">{{item.label}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="section-title">广告位与到期时间</view>
+
+  <block wx:for="{{slots}}" wx:key="code">
+    <view class="slot-row ds-card">
+      <view class="slot-thumb-wrap">
+        <view
+          wx:if="{{item.thumbVacant}}"
+          class="slot-thumb-vacant {{item.status === '待定' ? 'slot-thumb-vacant--pending' : ''}}"
+        >
+          {{item.status === '待定' ? '待定' : '空置'}}
+        </view>
+        <image wx:else class="slot-thumb" src="{{item.thumb}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view wx:if="{{item.watermarkTime}}" class="slot-wm">
+          <view class="slot-wm-line">{{item.watermarkTime}}</view>
+          <view class="slot-wm-line">{{item.watermarkAddress}}</view>
+        </view>
+      </view>
+      <view class="slot-top">
+        <view class="slot-code">{{item.code}}</view>
+        <view class="slot-tags">
+          <view
+            class="tag {{item.status === '空置' ? 'tag-danger' : item.status === '待定' ? 'tag-pending' : item.status === '即将到期' ? 'tag-warning' : item.status === '已到期' ? 'tag-expired' : 'tag-success'}}"
+          >
+            {{item.status}}
+          </view>
+          <view class="tag {{item.ownerClientId ? 'tag-owner-ok' : 'tag-owner-empty'}}">
+            {{item.ownerClientId ? '已分配' : '未分配'}}
+          </view>
+        </view>
+      </view>
+      <view class="slot-meta">{{item.type}}</view>
+      <view class="slot-owner">
+        <text class="slot-owner-label">归属客户</text>
+        <view class="slot-owner-picker" data-code="{{item.code}}" bindtap="openClientSheet">{{item.ownerClientName}}</view>
+      </view>
+      <view class="slot-expire">
+        <text class="slot-expire-label">到期时间</text>
+        <view class="slot-expire-right">
+          <text class="slot-expire-value {{item.expireAt === '--' ? 'is-empty' : ''}} {{item.expireSoon ? 'is-soon' : ''}}">{{item.expireAt === '--' ? '—' : item.expireAt}}</text>
+          <text wx:if="{{item.expireSoon && item.expireAt !== '--'}}" class="slot-expire-soon">7天内到期</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="link-block" bindtap="goStoreVisual">
+    <text class="link-text">查看该门店广告位缩略图</text>
+    <text class="link-arrow">›</text>
+  </view>
+
+  <selector-sheet
+    show="{{showClientSheet}}"
+    title="选择客户"
+    options="{{clientPicker}}"
+    range-key="label"
+    selected-index="{{clientSheetSelectedIndex}}"
+    bind:select="onClientSheetSelect"
+    bind:close="onClientSheetClose"
+  />
+</view>

@@ -1,0 +1,101 @@
+<view class="rfp-page">
+  <view class="rfp-hero" wx:if="{{meta}}">
+    <view class="rfp-title">{{meta.title}}</view>
+    <view class="rfp-sub">{{meta.subtitle}}</view>
+  </view>
+
+  <view class="rfp-form" wx:if="{{role === 'store'}}">
+    <view class="rfp-field">
+      <text class="rfp-label">门店名称</text>
+      <input
+        class="rfp-input"
+        placeholder-class="rfp-placeholder"
+        placeholder="请输入门店名称"
+        value="{{storeName}}"
+        maxlength="64"
+        bindinput="onStoreNameInput"
+      />
+    </view>
+    <view class="rfp-field">
+      <text class="rfp-label">联系电话</text>
+      <input
+        class="rfp-input"
+        placeholder-class="rfp-placeholder"
+        type="digit"
+        placeholder="请输入11位手机号"
+        value="{{phone}}"
+        maxlength="11"
+        bindinput="onPhoneInput"
+      />
+    </view>
+  </view>
+
+  <view class="rfp-form" wx:elif="{{role === 'advertiser'}}">
+    <view class="rfp-field">
+      <text class="rfp-label">姓名</text>
+      <input
+        class="rfp-input"
+        placeholder-class="rfp-placeholder"
+        placeholder="联系人姓名"
+        value="{{name}}"
+        maxlength="32"
+        bindinput="onNameInput"
+      />
+    </view>
+    <view class="rfp-field">
+      <text class="rfp-label">公司名称</text>
+      <input
+        class="rfp-input"
+        placeholder-class="rfp-placeholder"
+        placeholder="企业或品牌名称"
+        value="{{companyName}}"
+        maxlength="64"
+        bindinput="onCompanyNameInput"
+      />
+    </view>
+    <view class="rfp-field">
+      <text class="rfp-label">联系电话</text>
+      <input
+        class="rfp-input"
+        placeholder-class="rfp-placeholder"
+        type="digit"
+        placeholder="请输入手机号"
+        value="{{phone}}"
+        maxlength="20"
+        bindinput="onPhoneInput"
+      />
+    </view>
+  </view>
+
+  <view class="rfp-form" wx:elif="{{role === 'inspector'}}">
+    <view class="rfp-field">
+      <text class="rfp-label">姓名</text>
+      <input
+        class="rfp-input"
+        placeholder-class="rfp-placeholder"
+        placeholder="请输入姓名"
+        value="{{name}}"
+        maxlength="32"
+        bindinput="onNameInput"
+      />
+    </view>
+    <view class="rfp-field">
+      <text class="rfp-label">联系电话</text>
+      <input
+        class="rfp-input"
+        placeholder-class="rfp-placeholder"
+        type="digit"
+        placeholder="请输入11位手机号"
+        value="{{phone}}"
+        maxlength="11"
+        bindinput="onPhoneInput"
+      />
+    </view>
+  </view>
+
+  <view class="rfp-actions">
+    <button class="rfp-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submit">
+      进入工作台
+    </button>
+  </view>
+</view>
