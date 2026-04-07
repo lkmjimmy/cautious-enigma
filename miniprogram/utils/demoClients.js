@@ -32,7 +32,8 @@ function cloneSeed() {
 function getList() {
   try {
     const raw = wx.getStorageSync(STORAGE_KEY);
-    if (raw && Array.isArray(raw) && raw.length) return raw;
+    /** 含空数组：与服务端同步后允许为 []，不再强制回填演示种子 */
+    if (Array.isArray(raw)) return raw;
   } catch (e) {
     /* ignore */
   }
@@ -72,6 +73,12 @@ function removeById(clientId) {
     /* ignore */
   }
   cleanupClientRelations(clientId);
+  try {
+    const serverDataSync = require('./serverDataSync.js');
+    serverDataSync.afterClientsListChanged(list);
+  } catch (e2) {
+    /* ignore */
+  }
   return list;
 }
 

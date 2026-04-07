@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
@@ -73,7 +73,7 @@
 
 .promote-inbox-done {
   margin: 0;
-  color: #1677ff;
+  color: #007AFF;
   background: #e8f3ff;
 }
 
@@ -160,7 +160,7 @@
   margin-top: 6rpx;
   font-size: 26rpx;
   font-weight: 600;
-  color: #1677ff;
+  color: #007AFF;
 }
 
 .audit-line {

@@ -12,10 +12,24 @@ npm run dev
 
 默认监听 **`0.0.0.0:3000`**（本机可用 `127.0.0.1` 或局域网 IP；环境变量 `PORT` 可改端口）。
 
+可复制 **`backend/.env.example`** 为 **`.env`** 并填写（已依赖 `dotenv`，启动时自动加载）。
+
+### 环境变量（微信登录）
+
+| 变量 | 说明 |
+|------|------|
+| `WECHAT_APP_ID` 或 `WECHAT_APPID` | 小程序 AppID |
+| `WECHAT_APP_SECRET` | 小程序 AppSecret（勿提交仓库） |
+| `WECHAT_ADMIN_OPENIDS` | 可选，管理员 **openid**，逗号分隔。配置后 **不再** 由客户端 `role` 决定管理员，避免伪造 |
+| `PORT` | 可选，监听端口 |
+
+- **未配置 AppID+Secret**：仍为**演示登录**（不校验 `code`，每次随机 `userId`，`body.role` 可区分 admin，仅本地联调）。
+- **已配置**：调用微信 `jscode2session`，`userId` 稳定为 `wx_<openid>`；`role` 由 `WECHAT_ADMIN_OPENIDS` 是否包含当前 openid 决定（未在列表则为 `user`）。
+
 - 健康检查：`GET /health`
-- 登录（演示，不校验微信 `code` 真伪）：`POST /api/v1/auth/wechat`  
-  Body: `{ "code": "<wx.login 返回的 code>", "role": "user" | "admin" }`  
-  响应：`{ token, userId, role, user }`，后续请求头带 `Authorization: Bearer <token>`。
+- 登录：`POST /api/v1/auth/wechat`  
+  Body: `{ "code": "<wx.login 返回的 code>", "role": "user" | "admin" }`（`role` 仅在**演示模式**下生效）  
+  响应：`{ token, userId, role, user, authMode: "wechat" | "demo" }`，后续请求头带 `Authorization: Bearer <token>`。
 
 ## 主要接口
 
@@ -46,6 +60,38 @@ npm run dev
 更完整的 **baseUrl 对照表** 见 **`miniprogram/README.md` →「后端联调：baseUrl 怎么配」**。
 
 当前仓库内 **前端仍以本地存储为主**；接入后端时可在各 `utils/*.js` 中逐步改为 `api` 请求 + 本地缓存。
+
+## 微信云托管部署
+
+### 1. 准备镜像
+
+在 `backend/` 目录（含 `Dockerfile`）构建并推送到云托管关联的**镜像仓库**（控制台「镜像仓库」里有地址与登录方式），或使用云托管「从代码构建」若已绑定 Git 并指定 Dockerfile 路径为 `backend/Dockerfile`。
+
+本地验证构建：
+
+```bash
+cd backend
+docker build -t adslot-backend:local .
+docker run --rm -p 3000:3000 -e PORT=3000 adslot-backend:local
+# 另开终端：curl http://127.0.0.1:3000/health
+```
+
+### 2. 服务与环境变量
+
+- **监听端口**：代码已使用 `process.env.PORT`（云托管会注入），`Dockerfile` 中 `EXPOSE` 需与控制台「容器端口」一致；若平台要求固定端口，在「服务设置」里把容器端口设为与 `PORT` 相同（常见为 `80` 或平台指定值）。
+- **健康检查**：路径填 **`/health`**，方法 `GET`。
+- **环境变量**（在云托管「服务设置 → 环境变量」配置，勿把密钥提交到 Git）：
+  - 小程序正式登录必配：`WECHAT_APP_ID`、`WECHAT_APP_SECRET`；生产管理员：`WECHAT_ADMIN_OPENIDS`（见上文）。
+  - 当前仓库后端 **数据仍写在容器内 `data/db.json`**，与控制台里的 `MYSQL_*`、`COS_*` **尚未在代码中对接**；若已填 MySQL/COS，需自行改 `db` 层或做持久化方案，否则仅作占位。无挂载卷时，**重建实例会丢本地 JSON 数据**。
+
+### 3. 小程序端
+
+1. 微信公众平台 → **开发 → 开发管理 → 开发设置 → 服务器域名** → 将云托管默认域名或你的**自定义域名**加入 **request 合法域名**（须 HTTPS）。
+2. `miniprogram/utils/apiConfig.js`：`useServer: true`，`baseUrl` 填 **`https://你的域名`**（无尾部斜杠）。
+
+### 4. 安全提醒
+
+- 数据库口令、COS 密钥等 **不要出现在截图、仓库或聊天记录**；若曾泄露，请在对应控制台**立即轮换密码/密钥**。
 
 ## 数据文件
 

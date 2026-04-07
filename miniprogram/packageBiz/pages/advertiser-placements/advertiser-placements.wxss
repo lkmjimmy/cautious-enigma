@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   box-sizing: border-box;
 }
 
@@ -67,7 +67,7 @@
   flex: 0.45;
   text-align: center;
   font-weight: 600;
-  color: #1677ff;
+  color: #007AFF;
 }
 
 .empty {
@@ -191,9 +191,9 @@
 }
 
 .promote-type-chip.is-on {
-  color: #1677ff;
+  color: #007AFF;
   background: #e8f3ff;
-  border-color: #1677ff;
+  border-color: #007AFF;
   font-weight: 600;
 }
 
@@ -258,7 +258,7 @@
 
 .promote-btn.primary {
   color: #fff;
-  background: #1677ff;
+  background: #007AFF;
 }
 
 .expand-mask {
@@ -385,20 +385,20 @@
   border-radius: 10rpx;
   font-size: 24rpx;
   font-weight: 600;
-  color: #1677ff;
+  color: #007AFF;
   background: #f0f7ff;
   border: 1rpx solid #91caff;
 }
 
 .vacant-chip--on {
   color: #fff;
-  background: #1677ff;
-  border-color: #1677ff;
+  background: #007AFF;
+  border-color: #007AFF;
 }
 
 .expand-selected-hint {
   font-size: 26rpx;
-  color: #1677ff;
+  color: #007AFF;
   font-weight: 600;
   margin-bottom: 12rpx;
 }
@@ -426,7 +426,7 @@
 
 .est-months {
   font-weight: 700;
-  color: #1677ff;
+  color: #007AFF;
 }
 
 .est-line {

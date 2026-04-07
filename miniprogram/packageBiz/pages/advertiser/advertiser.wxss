@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   box-sizing: border-box;
 }
 
@@ -106,7 +106,7 @@
 .value {
   font-size: 34rpx;
   font-weight: 700;
-  color: #1677ff;
+  color: #007AFF;
 }
 
 .label {
@@ -376,9 +376,9 @@
 }
 
 .adv-btn--outline {
-  color: #1677ff;
+  color: #007AFF;
   background: #fff;
-  border: 1rpx solid #1677ff;
+  border: 1rpx solid #007AFF;
 }
 
 .adv-btn--expand {

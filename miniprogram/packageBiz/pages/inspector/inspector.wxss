@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   box-sizing: border-box;
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
@@ -20,7 +20,7 @@
 
 .value {
   margin-top: 8rpx;
-  color: #1677ff;
+  color: #007AFF;
   font-size: 38rpx;
   font-weight: 700;
 }
@@ -61,7 +61,7 @@
   font-size: 30rpx;
   font-weight: 700;
   color: #fff;
-  background: #1677ff;
+  background: #007AFF;
 }
 
 .add-store-btn::after {
@@ -104,7 +104,7 @@
   border-radius: 12rpx;
   font-size: 26rpx;
   font-weight: 600;
-  color: #1677ff;
+  color: #007AFF;
   background: #eff6ff;
   border: 1rpx solid #bfdbfe;
 }
@@ -170,12 +170,12 @@
   font-size: 26rpx;
   font-weight: 600;
   color: #fff;
-  background: #1677ff;
+  background: #007AFF;
   border-radius: 999rpx;
 }
 
 .store-list-btn-secondary {
-  color: #1677ff;
+  color: #007AFF;
   background: #fff;
   border: 1rpx solid #93c5fd;
 }
@@ -217,7 +217,7 @@
 
 .mini-btn {
   background: #eff6ff;
-  color: #1677ff;
+  color: #007AFF;
   border-radius: 999rpx;
   font-size: 22rpx;
   padding: 0 18rpx;
@@ -284,8 +284,8 @@
 }
 
 .status.active {
-  border-color: #1677ff;
-  color: #1677ff;
+  border-color: #007AFF;
+  color: #007AFF;
   background: #eff6ff;
 }
 
@@ -340,7 +340,7 @@
 }
 
 .action-btn.primary {
-  background: #1677ff;
+  background: #007AFF;
   color: #fff;
 }
 

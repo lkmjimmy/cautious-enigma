@@ -52,9 +52,9 @@
   ],
   "window": {
     "navigationBarTitleText": "广告位管理",
-    "navigationBarBackgroundColor": "#1677FF",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#F5F5F7"
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F2F2F7"
   },
   "sitemapLocation": "sitemap.json",
   "networkTimeout": {

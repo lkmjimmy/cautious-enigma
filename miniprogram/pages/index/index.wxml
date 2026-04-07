@@ -1,24 +1,24 @@
 <view class="index-wrap">
-  <view class="index-hero">
-    <view class="index-hero-inner">
-      <view class="index-badge">广告位管理</view>
-      <view class="index-hero-title">广告投放与现场协同</view>
-      <view class="index-hero-desc">为中台、门店、广告主与巡店员提供统一工作台，数据一目了然。</view>
-    </view>
-    <view class="index-hero-deco" aria-hidden="true" />
-  </view>
-
-  <view class="index-body">
-    <view class="index-section-label">选择身份进入</view>
-
-    <view wx:if="{{isAdmin}}" class="role-card" hover-class="role-card--hover" bindtap="goAdmin">
-      <view class="role-icon role-icon--admin">📊</view>
-      <view class="role-main">
-        <view class="role-title">中台</view>
-        <view class="role-desc">全门店投放、空置广告位与到期提醒</view>
+  <view class="index-main">
+    <view class="index-hero">
+      <view class="index-hero-inner">
+        <view class="index-badge">广告位管理</view>
+        <view class="index-hero-title">广告投放与现场协同</view>
+        <view class="index-hero-desc">为中台、门店、广告主与巡店员提供统一工作台，数据一目了然。</view>
       </view>
-      <text class="role-chevron" aria-hidden="true">›</text>
     </view>
+
+    <view class="index-body">
+      <view class="index-section-label">选择身份进入</view>
+
+      <view wx:if="{{isAdmin}}" class="role-card" hover-class="role-card--hover" bindtap="goAdmin">
+        <view class="role-icon role-icon--admin">📊</view>
+        <view class="role-main">
+          <view class="role-title">中台</view>
+          <view class="role-desc">全门店投放、空置广告位与到期提醒</view>
+        </view>
+        <text class="role-chevron" aria-hidden="true">›</text>
+      </view>
 
     <view class="role-card" hover-class="role-card--hover" bindtap="goStore">
       <view class="role-icon role-icon--store">🏪</view>
@@ -46,7 +46,8 @@
       </view>
       <text class="role-chevron" aria-hidden="true">›</text>
     </view>
-
-    <view class="index-logout" bindtap="logout">退出登录</view>
+    </view>
   </view>
+
+  <view class="index-logout" bindtap="logout">退出登录</view>
 </view>

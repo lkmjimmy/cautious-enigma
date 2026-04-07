@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
@@ -76,7 +76,7 @@
 }
 
 .action-btn.primary {
-  background: #1677ff !important;
+  background: #007AFF !important;
   color: #ffffff !important;
   box-shadow: 0 6rpx 16rpx rgba(22, 119, 255, 0.25);
 }

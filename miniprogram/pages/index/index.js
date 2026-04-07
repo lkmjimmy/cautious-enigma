@@ -1,4 +1,5 @@
 const userRoleProfile = require('../../utils/userRoleProfile.js');
+const serverDataSync = require('../../utils/serverDataSync.js');
 
 const ROLE_REDIRECT = {
   store: '/packageStore/pages/store-claim/store-claim',
@@ -30,6 +31,7 @@ Page({
     }
     const role = wx.getStorageSync('userRole') || 'user';
     this.setData({ isAdmin: role === 'admin' });
+    serverDataSync.pullCoreData().catch(function () {});
   },
 
   logout() {

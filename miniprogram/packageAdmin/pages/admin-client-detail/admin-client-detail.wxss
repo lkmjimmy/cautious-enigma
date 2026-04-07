@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
@@ -69,7 +69,7 @@
   display: block;
   font-size: 24rpx;
   font-weight: 600;
-  color: #1677ff;
+  color: #007AFF;
   margin-bottom: 8rpx;
 }
 
@@ -144,7 +144,7 @@
   font-size: 28rpx;
   font-weight: 600;
   color: #fff;
-  background: #1677ff;
+  background: #007AFF;
   border-radius: 12rpx;
 }
 
@@ -171,7 +171,7 @@
   padding: 0;
   font-size: 28rpx;
   font-weight: 600;
-  color: #1677ff;
+  color: #007AFF;
   background: #eff6ff;
   border-radius: 12rpx;
   border: 1rpx solid #bfdbfe;
@@ -287,7 +287,7 @@
   min-width: 120rpx;
   padding: 12rpx 16rpx;
   font-size: 26rpx;
-  color: #1677ff;
+  color: #007AFF;
   font-weight: 600;
   background: #f8fafc;
   border: 1rpx solid #e2e8f0;
@@ -316,7 +316,7 @@
   font-size: 28rpx;
   font-weight: 600;
   color: #fff;
-  background: #1677ff;
+  background: #007AFF;
   border-radius: 12rpx;
 }
 

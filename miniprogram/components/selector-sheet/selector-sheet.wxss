@@ -5,7 +5,7 @@
   top: 0;
   bottom: 0;
   z-index: 12000;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -23,9 +23,9 @@
 .sheet-hd {
   text-align: center;
   padding: 26rpx 28rpx 16rpx;
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #64748b;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #86868b;
 }
 
 .sheet-scroll {
@@ -35,29 +35,29 @@
 .sheet-item {
   padding: 36rpx 28rpx;
   text-align: center;
-  border-bottom: 1rpx solid #f1f5f9;
+  border-bottom: 1rpx solid rgba(60, 60, 67, 0.12);
 }
 
 .sheet-item.is-active {
-  background: #eff6ff;
+  background: rgba(0, 122, 255, 0.06);
 }
 
 .sheet-item-text {
-  font-size: 42rpx;
-  font-weight: 600;
-  color: #111827;
+  font-size: 38rpx;
+  font-weight: 500;
+  color: #1d1d1f;
   line-height: 1.35;
 }
 
 .sheet-item.is-active .sheet-item-text {
-  color: #1677ff;
+  color: #007aff;
 }
 
 .sheet-cancel {
   padding: 32rpx 28rpx;
   text-align: center;
-  font-size: 36rpx;
-  font-weight: 600;
-  color: #64748b;
-  border-top: 12rpx solid #f1f5f9;
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #007aff;
+  border-top: 12rpx solid #f2f2f7;
 }

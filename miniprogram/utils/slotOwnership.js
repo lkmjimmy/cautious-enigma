@@ -37,7 +37,14 @@ function getMap() {
 }
 
 function setMap(map) {
-  wx.setStorageSync(KEY, map || {});
+  const m = map || {};
+  wx.setStorageSync(KEY, m);
+  try {
+    const serverDataSync = require('./serverDataSync.js');
+    serverDataSync.afterSlotOwnerMapChanged(m);
+  } catch (e) {
+    /* ignore */
+  }
 }
 
 /** 仅解除编号与客户绑定 */

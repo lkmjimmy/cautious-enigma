@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   box-sizing: border-box;
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
@@ -48,7 +48,7 @@
 
 .total-line {
   font-size: 24rpx;
-  color: #1677ff;
+  color: #007AFF;
   font-weight: 600;
   margin-bottom: 20rpx;
 }
@@ -173,7 +173,7 @@
 
 .slot-box:active {
   background: #eef2ff;
-  border-color: #1677ff;
+  border-color: #007AFF;
 }
 
 .slot-box-text {

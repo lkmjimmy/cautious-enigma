@@ -1,32 +1,33 @@
 /**
- * 全局设计令牌 — 广告位管理小程序
- * 主色与导航栏 #1677FF 对齐，便于各页复用 var(--*)
+ * 全局设计令牌 — Apple 极简 / iOS 风格
+ * 主色：系统蓝 #007AFF；背景：iOS Grouped #F2F2F7
  */
 page {
-  --primary: #1677ff;
-  --primary-dark: #0958d9;
-  --primary-soft: #e8f3ff;
-  --primary-muted: #eff6ff;
-  /* 页面灰底偏 Apple 官网 / iOS 设置系 */
-  --bg-page: #f5f5f7;
+  --primary: #007aff;
+  --primary-dark: #0051d5;
+  --primary-soft: rgba(0, 122, 255, 0.1);
+  --primary-muted: #f2f8ff;
+  --bg-page: #f2f2f7;
   --bg-elevated: #ffffff;
-  --border: #e2e8f0;
-  --border-light: #eef2f7;
-  --text: #0f172a;
-  --text-secondary: #64748b;
-  --text-tertiary: #94a3b8;
-  --success: #16a34a;
-  --success-bg: #f0fdf4;
-  --danger: #dc2626;
-  --danger-bg: #fef2f2;
-  --warning: #d97706;
-  --warning-bg: #fffbeb;
-  --radius-sm: 12rpx;
-  --radius-md: 20rpx;
-  --radius-lg: 28rpx;
+  --bg-secondary: #ffffff;
+  /* iOS 分隔线近似 */
+  --border: rgba(60, 60, 67, 0.18);
+  --border-light: rgba(60, 60, 67, 0.12);
+  --text: #1d1d1f;
+  --text-secondary: #86868b;
+  --text-tertiary: #aeaeb2;
+  --success: #34c759;
+  --success-bg: rgba(52, 199, 89, 0.12);
+  --danger: #ff3b30;
+  --danger-bg: rgba(255, 59, 48, 0.08);
+  --warning: #ff9500;
+  --warning-bg: rgba(255, 149, 0, 0.12);
+  --radius-sm: 10rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 20rpx;
   --radius-pill: 999rpx;
-  --shadow-sm: 0 2rpx 8rpx rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 8rpx 24rpx rgba(15, 23, 42, 0.08);
+  --shadow-sm: 0 2rpx 16rpx rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8rpx 32rpx rgba(0, 0, 0, 0.06);
   --font-title: 600;
   background-color: var(--bg-page);
   color: var(--text);
@@ -34,7 +35,7 @@ page {
     'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
 
-/* 通用页面容器：安全区与水平边距 */
+/* 通用页面容器 */
 .ds-page {
   min-height: 100vh;
   box-sizing: border-box;
@@ -42,18 +43,19 @@ page {
   background: var(--bg-page);
 }
 
-/* 分区标题：左侧主色条 */
+/* 分区标题：无装饰条，字重与留白为主 */
 .ds-section-title {
-  font-size: 30rpx;
+  font-size: 28rpx;
   font-weight: var(--font-title);
-  color: var(--text);
+  color: var(--text-secondary);
   margin-bottom: 16rpx;
-  padding-left: 16rpx;
-  border-left: 6rpx solid var(--primary);
-  line-height: 1.3;
+  padding-left: 0;
+  border-left: none;
+  line-height: 1.35;
+  letter-spacing: 0.25rpx;
 }
 
-/* 卡片表面 */
+/* 卡片：白底、细线、轻阴影 */
 .ds-card {
   background: var(--bg-elevated);
   border-radius: var(--radius-md);
@@ -61,10 +63,9 @@ page {
   box-shadow: var(--shadow-sm);
 }
 
-/* 文字链接 */
 .ds-link {
   color: var(--primary);
-  font-size: 24rpx;
+  font-size: 28rpx;
 }
 
 button::after {

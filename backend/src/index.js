@@ -1,7 +1,9 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import crypto from 'crypto';
-import { emptyState, getDb, loadDb, saveDb } from './db.js';
+import { getDb, loadDb, saveDb } from './db.js';
+import { jscode2session, isWechatConfigured } from './wechatAuth.js';
 
 const PORT = Number(process.env.PORT) || 3000;
 const app = express();
@@ -43,33 +45,86 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-/** 微信登录（演示）：不校验 code，签发会话 */
-app.post('/api/v1/auth/wechat', (req, res) => {
+/**
+ * 微信登录
+ * - 若设置 WECHAT_APP_ID + WECHAT_APP_SECRET：调用 jscode2session，用户以 openid 稳定绑定
+ * - 管理员：生产环境以 WECHAT_ADMIN_OPENIDS（逗号分隔 openid）为准，不再信任客户端传来的 admin
+ * - 未配置密钥：演示模式（每次随机 userId，仍接受 body.role 区分 admin，仅本地联调）
+ */
+app.post('/api/v1/auth/wechat', async (req, res) => {
   const { code, role: roleRaw } = req.body || {};
   if (!code) {
     res.status(400).json({ error: 'bad_request', message: '缺少 code' });
     return;
   }
-  const role = roleRaw === 'admin' ? 'admin' : 'user';
+
   const db = loadDb();
-  const userId = `u_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
   const token = randomToken();
-  db.sessions[token] = { userId, role, at: Date.now() };
-  db.users[userId] = { id: userId, role, createdAt: Date.now() };
+  let userId;
+  let openid = null;
+  let role;
+
+  if (isWechatConfigured()) {
+    const appId = process.env.WECHAT_APP_ID || process.env.WECHAT_APPID;
+    const secret = process.env.WECHAT_APP_SECRET;
+    try {
+      const wx = await jscode2session(appId, secret, code);
+      openid = wx.openid;
+    } catch (e) {
+      const msg = e && e.message ? String(e.message) : '微信登录失败';
+      const errcode = e && e.errcode;
+      res.status(400).json({
+        error: 'wechat_auth_failed',
+        message: msg,
+        ...(errcode != null ? { errcode } : {}),
+      });
+      return;
+    }
+    userId = `wx_${openid}`;
+    const admins = (process.env.WECHAT_ADMIN_OPENIDS || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+    role = openid && admins.includes(openid) ? 'admin' : 'user';
+  } else {
+    console.warn(
+      '[auth] 未配置 WECHAT_APP_ID / WECHAT_APP_SECRET，使用演示登录（随机用户，勿用于生产）'
+    );
+    userId = `u_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
+    role = roleRaw === 'admin' ? 'admin' : 'user';
+  }
+
+  db.sessions[token] = { userId, role, at: Date.now(), ...(openid ? { openid } : {}) };
+
+  const prev = db.users[userId];
+  db.users[userId] = {
+    id: userId,
+    role,
+    createdAt: prev && prev.createdAt ? prev.createdAt : Date.now(),
+    updatedAt: Date.now(),
+    ...(openid ? { openid } : {}),
+  };
+
   db.userRole = role;
   db.loggedIn = true;
   db.userPhone = '微信用户';
   saveDb();
+
   res.json({
     token,
     userId,
     role,
-    user: { id: userId, role },
+    user: { id: userId, role, ...(openid ? { openid } : {}) },
+    authMode: isWechatConfigured() ? 'wechat' : 'demo',
   });
 });
 
 app.get('/api/v1/me', requireAuth, (req, res) => {
-  res.json({ userId: req.session.userId, role: req.session.role });
+  res.json({
+    userId: req.session.userId,
+    role: req.session.role,
+    ...(req.session.openid ? { openid: req.session.openid } : {}),
+  });
 });
 
 /** 导出与小程序 wx.storage 对齐的快照（不含 sessions） */
@@ -202,4 +257,10 @@ app.put('/api/v1/kv/:key', requireAuth, (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`[adslot-backend] listening on http://127.0.0.1:${PORT} (and LAN IP:${PORT})`);
   console.log(`[adslot-backend] GET /health  |  POST /api/v1/auth/wechat  |  GET /api/v1/bootstrap`);
+  if (isWechatConfigured()) {
+    const n = (process.env.WECHAT_ADMIN_OPENIDS || '').split(',').filter((s) => s.trim()).length;
+    console.log(`[adslot-backend] 微信登录已启用；管理员 openid 数量: ${n}`);
+  } else {
+    console.log('[adslot-backend] 微信 AppSecret 未配置 → 演示登录模式');
+  }
 });

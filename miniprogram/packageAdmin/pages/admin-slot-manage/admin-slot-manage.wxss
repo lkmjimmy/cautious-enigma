@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   box-sizing: border-box;
 }
@@ -153,7 +153,7 @@
 .bind-picker {
   min-width: 180rpx;
   text-align: right;
-  color: #1677ff;
+  color: #007AFF;
   font-size: 30rpx;
   font-weight: 600;
   padding: 12rpx 0;

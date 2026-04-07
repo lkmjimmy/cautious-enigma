@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   box-sizing: border-box;
 }
@@ -23,8 +23,8 @@
 }
 
 .tab-active {
-  color: #1677ff;
-  border-color: #1677ff;
+  color: #007AFF;
+  border-color: #007AFF;
   background: #eff6ff;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .store-arrow {
-  color: #1677ff;
+  color: #007AFF;
   font-size: 24rpx;
 }
 

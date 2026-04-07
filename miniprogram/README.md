@@ -4,6 +4,8 @@
 
 本目录为微信小程序项目根（用开发者工具**直接打开本目录**）。数据以**本地存储 + 静态配置**为主；可按 `utils/apiConfig.js` 开启后端，与仓库 `backend/` 联调。
 
+**正式上线（域名、云托管服务 `express-17qb`、提审发布）**：见 **`docs/ONLINE-LAUNCH.md`**。
+
 ## 主包与分包（页面路径）
 
 为控制主包体积与首屏，`app.json` 仅保留三个主包页面，其余按业务拆到分包：
@@ -90,6 +92,15 @@
 - **不再**在 `app.js` 启动时自动全清 Storage（避免误清登录与业务数据）。
 - 需要一次性清空本机全部缓存时：在 **巡店** / **巡检** 页面使用「清空」确认（内部调用 `utils/clearAppLocalStorage.js` 的 `clearAll()`），或使用开发者工具 **清除缓存 → 清除数据存储**。
 
+## 服务端同步（客户与广告位归属）
+
+在 `utils/apiConfig.js` 中开启 `useServer`、配置 `baseUrl`，且已登录（Storage 中有 `apiToken`）时：
+
+- **拉取**：`GET /api/v1/bootstrap` 将 `clients` 写入 `demoClientsListV1`，将 `slotOwnerByCodeV1` 写入本地同名键；**冷启动**与 **微信登录换票成功后** 会**强制**各拉一次（`pullCoreData({ force: true })`）。**首页** `pages/index` 每次 `onShow` 也会尝试拉取，但与上次**成功**拉取间隔不足 **90 秒**时跳过（`serverDataSync.DEFAULT_PULL_MIN_INTERVAL_MS`），避免与中台页来回切换时重复请求。以云端快照覆盖本地（服务端若为空列表，本地将不再保留演示种子客户）。
+- **推送**：本地 `userRole === 'admin'` 时，客户列表变更会 `PUT /api/v1/clients`；广告位归属经 `slotOwnership.setMap` 写入后会 `PUT /api/v1/kv/slotOwnerByCodeV1`（`body` 为 `{ value: map }`）。
+
+实现见 `utils/serverDataSync.js`。
+
 ## 主要页面
 
 下表为**小程序内实际路径**（含分包前缀）。开发时也可只记「页面目录名」，完整路径以 `utils/routes.js` 为准。
@@ -129,6 +140,7 @@
 |------|------|
 | `demoSlots.js` | 广告位清单 `RAW_SLOTS`（可为空）、类型列表 `ALL_SLOT_TYPES`、本店可视化分组等 |
 | `demoClients.js` | 客户列表（可按需维护模拟客户） |
+| `serverDataSync.js` | 与服务端同步客户列表与 `slotOwnerByCodeV1`（bootstrap 拉取、变更后推送） |
 | `claim.js` | 门店认领；可认领门店名 = 演示广告位中的门店 ∪ `inspectorStores` 中门店 |
 | `inspectorStores.js` | 巡店侧门店列表（本地存储，无预置默认门店回填） |
 | `inspectorStoreRecords.js` | 巡检/网格打卡产生的广告位记录、打卡月份标记 |

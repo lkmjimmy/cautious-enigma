@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f2f2f7;
   padding: 24rpx;
   box-sizing: border-box;
 }
@@ -426,7 +426,7 @@
   padding: 20rpx 4rpx;
   text-align: center;
   font-size: 26rpx;
-  color: #1677ff;
+  color: #007AFF;
   font-weight: 500;
 }
 
@@ -473,7 +473,7 @@
 }
 
 .mgr-pick-item.is-active {
-  color: #1677ff;
+  color: #007AFF;
   background: #eff6ff;
 }
 
