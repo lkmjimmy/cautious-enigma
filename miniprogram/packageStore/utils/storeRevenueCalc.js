@@ -3,10 +3,10 @@
  * 单广告位月收入 = max(0, (客户该类型折算月单价 − 该类型制作成本)) × 30%
  * 与「各类型数量」展开式 (n·P − n·C)×30%/n 等价。
  */
-const slotOwnership = require('./slotOwnership.js');
-const clientSlotQuotes = require('./clientSlotQuotes.js');
-const slotPriceBook = require('./slotPriceBook.js');
-const demoRevenue = require('./demoRevenue.js');
+const slotOwnership = require('../../utils/slotOwnership.js');
+const clientSlotQuotes = require('../../utils/clientSlotQuotes.js');
+const slotPriceBook = require('../../utils/slotPriceBook.js');
+const demoRevenue = require('../../utils/demoRevenue.js');
 
 const SHARE_RATE = 0.3;
 

@@ -2,7 +2,7 @@ const demoClients = require('../../../utils/demoClients.js');
 const slotOwnership = require('../../../utils/slotOwnership.js');
 const slotLatestPhoto = require('../../../utils/slotLatestPhoto.js');
 const storeHomeSlotPhotos = require('../../../utils/storeHomeSlotPhotos.js');
-const deleteGuard = require('../../../utils/deleteGuard.js');
+const deleteGuard = require('../../utils/deleteGuard.js');
 
 function resolveSlotWatermark(s) {
   if (s.thumbVacant) {

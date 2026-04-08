@@ -8,7 +8,17 @@
 
     <view class="field">
       <text class="label">地址</text>
-      <input class="input" value="{{address}}" bindinput="onAddressInput" placeholder="请输入地址" />
+      <view class="addr-pick-row">
+        <view class="map-pick" hover-class="map-pick--hover" bindtap="onChooseLocation">
+          <text class="map-pick-icon" aria-hidden="true">📍</text>
+          <text class="map-pick-text">地图选点</text>
+        </view>
+        <view class="map-pick map-pick--poi" hover-class="map-pick--hover" bindtap="onChoosePoi">
+          <text class="map-pick-icon" aria-hidden="true">🔎</text>
+          <text class="map-pick-text">搜索地点（POI）</text>
+        </view>
+      </view>
+      <input class="input" value="{{address}}" bindinput="onAddressInput" placeholder="可手填或从地图/POI 生成" />
     </view>
 
     <view class="field">

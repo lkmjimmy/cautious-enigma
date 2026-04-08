@@ -1,5 +1,5 @@
-const storeRevenueCalc = require('../../../utils/storeRevenueCalc.js');
-const storeRevenueHistory = require('../../../utils/storeRevenueHistory.js');
+const storeRevenueCalc = require('../../utils/storeRevenueCalc.js');
+const storeRevenueHistory = require('../../utils/storeRevenueHistory.js');
 const demoRevenue = require('../../../utils/demoRevenue.js');
 
 Page({

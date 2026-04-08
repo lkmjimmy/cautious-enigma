@@ -1,4 +1,4 @@
-/** 拍照后统一获取：拍摄时间文案 + 定位说明（gcj02），供各业务存库与叠加水印 */
+/** 拍照后统一获取：拍摄时间文案 + 定位说明（模糊定位 gcj02），供各业务存库与叠加水印 */
 
 const LOCATION_TIMEOUT_MS = 10000;
 
@@ -28,14 +28,28 @@ function getCaptureMeta(opts, cb) {
     finish(address);
   }, LOCATION_TIMEOUT_MS);
 
-  wx.getLocation({
+  /** 与公众平台已开通能力对齐：使用 wx.getFuzzyLocation，不用 wx.getLocation */
+  const runFuzzy = typeof wx.getFuzzyLocation === 'function' ? wx.getFuzzyLocation : null;
+  if (!runFuzzy) {
+    clearTimeout(timer);
+    const address = addressPrefix ? `${addressPrefix}（未支持模糊定位）` : '未支持模糊定位';
+    finish(address);
+    return;
+  }
+
+  runFuzzy({
     type: 'gcj02',
-    /** 模拟器上高精度常较慢或触发框架 timeout，默认关闭高精度 */
-    isHighAccuracy: false,
     success: (loc) => {
       clearTimeout(timer);
-      const coord = `${loc.latitude.toFixed(5)}, ${loc.longitude.toFixed(5)}`;
-      const address = addressPrefix ? `${addressPrefix} · ${coord}` : coord;
+      const lat = Number(loc && loc.latitude);
+      const lng = Number(loc && loc.longitude);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+        const address = addressPrefix ? `${addressPrefix}（未获取定位）` : '未获取定位';
+        finish(address);
+        return;
+      }
+      const coord = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      const address = addressPrefix ? `${addressPrefix} · ${coord}（大致位置）` : `${coord}（大致位置）`;
       finish(address);
     },
     fail: () => {

@@ -56,7 +56,7 @@ function saveStores(list) {
   wx.setStorageSync(KEY, list);
 }
 
-function addStore({ name, address, phone }) {
+function addStore({ name, address, phone, latitude, longitude }) {
   const list = getStores();
   const nextSequenceNo = list.reduce((max, row) => {
     const n = Number(row && row.sequenceNo);
@@ -69,6 +69,10 @@ function addStore({ name, address, phone }) {
   const typeInventory = pickRandomTemplateInventory();
 
   const row = { id, name, address, phone, distance, typeInventory, sequenceNo: nextSequenceNo };
+  if (typeof latitude === 'number' && typeof longitude === 'number' && !Number.isNaN(latitude) && !Number.isNaN(longitude)) {
+    row.latitude = latitude;
+    row.longitude = longitude;
+  }
   list.unshift(row);
   saveStores(list);
   return row;

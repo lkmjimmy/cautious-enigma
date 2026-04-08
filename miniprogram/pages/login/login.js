@@ -99,8 +99,4 @@ Page({
   onWechatLogin() {
     this._doWechatLogin('user');
   },
-
-  onAdminWechatLogin() {
-    this._doWechatLogin('admin');
-  },
 });

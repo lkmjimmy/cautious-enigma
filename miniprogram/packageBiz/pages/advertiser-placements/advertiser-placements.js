@@ -1,7 +1,7 @@
 const demoSlots = require('../../../utils/demoSlots.js');
 const storeManagers = require('../../../utils/storeManagers.js');
 const promoteRequestInbox = require('../../../utils/promoteRequestInbox.js');
-const advertiserExpandEstimate = require('../../../utils/advertiserExpandEstimate.js');
+const advertiserExpandEstimate = require('../../utils/advertiserExpandEstimate.js');
 const clientSlotQuotes = require('../../../utils/clientSlotQuotes.js');
 
 const STORAGE_AD_CLIENT = 'currentAdvertiserClientId';

@@ -1,5 +1,5 @@
-const slotOwnership = require('./slotOwnership.js');
-const clientAdStatus = require('./clientAdStatus.js');
+const slotOwnership = require('../../utils/slotOwnership.js');
+const clientAdStatus = require('../../utils/clientAdStatus.js');
 
 /** 与列表「在投」一致：有分配且投放期内 */
 function clientCannotDeleteReason(clientId) {

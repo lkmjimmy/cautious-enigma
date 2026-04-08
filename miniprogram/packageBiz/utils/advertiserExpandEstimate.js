@@ -1,5 +1,5 @@
-const slotOwnership = require('./slotOwnership.js');
-const clientSlotQuotes = require('./clientSlotQuotes.js');
+const slotOwnership = require('../../utils/slotOwnership.js');
+const clientSlotQuotes = require('../../utils/clientSlotQuotes.js');
 
 function buildVacantSlotRows() {
   const slots = slotOwnership.getAllSlots().filter(function (s) {

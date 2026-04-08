@@ -65,8 +65,11 @@
   },
   "permission": {
     "scope.userLocation": {
-      "desc": "用于在广告位照片水印中展示拍摄地点（经纬度）"
+      "desc": "用于地图选点、POI与拍照水印"
+    },
+    "scope.userFuzzyLocation": {
+      "desc": "用于拍照水印模糊定位"
     }
   },
-  "requiredPrivateInfos": ["getLocation"]
+  "requiredPrivateInfos": ["getFuzzyLocation", "chooseLocation", "choosePoi"]
 }

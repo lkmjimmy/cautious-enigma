@@ -4,7 +4,7 @@ const slotOwnership = require('../../../utils/slotOwnership.js');
 const storeHomeSlotPhotos = require('../../../utils/storeHomeSlotPhotos.js');
 const slotLatestPhoto = require('../../../utils/slotLatestPhoto.js');
 const photoCaptureMeta = require('../../../utils/photoCaptureMeta.js');
-const storeMonthlyCheckin = require('../../../utils/storeMonthlyCheckin.js');
+const storeMonthlyCheckin = require('../../utils/storeMonthlyCheckin.js');
 
 function buildGroupsFromSlots(slotsForStore) {
   const byType = {};

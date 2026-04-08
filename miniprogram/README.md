@@ -79,8 +79,7 @@
 
 ## 登录与角色（首页入口）
 
-- **微信一键登录**：在 `pages/login/login`；若 `useServer === true` 且配置了 `baseUrl`，会先请求 `/api/v1/auth/wechat` **换票成功后再**写入本地登录态与 `userRole = user`，减少进首页时 `apiToken` 未就绪的竞态。
-- **管理者登录（演示）**：同一页第二个按钮，写入 `userRole = admin`；用于在首页显示「中台」入口。
+- **微信一键登录**：在 `pages/login/login`；若 `useServer === true` 且配置了 `baseUrl`，会先请求 `/api/v1/auth/wechat` **换票成功后再**写入本地登录态；`userRole` 由服务端返回（生产环境管理员以 `WECHAT_ADMIN_OPENIDS` 与 openid 为准，见 `backend/README.md`）。
 - **首页 `pages/index`**：
   - `userRole === 'admin'`：显示 **中台** + 门店 + 广告主 + 巡店员。
   - 其他身份：仅显示 **门店**、**广告主**、**巡店员**（不显示中台）。
@@ -107,7 +106,7 @@
 
 | 路径 | 说明 |
 |------|------|
-| `/pages/login/login` | 微信一键登录、管理者登录（演示） |
+| `/pages/login/login` | 微信一键登录 |
 | `/pages/index/index` | 按角色展示入口；退出登录 |
 | `/pages/role-first-profile/role-first-profile` | 首次进入某角色前的资料填写 |
 | `/packageAdmin/pages/admin/admin` | 中台总览、待办/我的/门店与广告位管理等 |
@@ -196,8 +195,8 @@
 ## 开发提示
 
 - 新增 `navigateTo` / `redirectTo` 目标页时，务必使用分包完整路径或 `utils/routes.js`，避免旧路径 `/pages/xxx` 导致无法打开。
-- 微信公众平台配置 `getLocation` 等与隐私说明见 `app.json`。
-- 若控制台出现 **`Error: timeout`** 且发生在拍照叠加水印前后：多为 **`wx.getLocation` 在模拟器/未授权场景耗时或挂起**。`utils/photoCaptureMeta.js` 已对定位增加超时回落（约 10s）并默认关闭高精度；真机请确认已授权定位。
+- 微信公众平台配置 **`getFuzzyLocation` / `chooseLocation` / `choosePoi`** 等与隐私说明见 `app.json`（与已开通能力对齐；拍照水印使用 **模糊定位**）。
+- 若控制台出现 **`Error: timeout`** 且发生在拍照叠加水印前后：多为 **`wx.getFuzzyLocation` 在模拟器/未授权场景耗时或挂起**。`utils/photoCaptureMeta.js` 已对定位增加超时回落（约 10s）；真机请确认已授权。
 - 对接后端后：可逐步把各 `utils/*.js` 改为请求 `apiRequest` + 本地缓存，保留页面路由与交互分层即可。
 
 文档最后更新：**2026-04-03**（已同步主包/分包与 `routes.js` 说明）

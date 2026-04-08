@@ -2,8 +2,8 @@
  * 门店打卡（店主）：自然月一次。
  * 判定：当前门店 demo 广告位清单中，每个编号在 storeHomeSlotPhotos 里均有本月内更新的照片（recordedAt 落在当月）。
  */
-const demoSlots = require('./demoSlots.js');
-const storeHomeSlotPhotos = require('./storeHomeSlotPhotos.js');
+const demoSlots = require('../../utils/demoSlots.js');
+const storeHomeSlotPhotos = require('../../utils/storeHomeSlotPhotos.js');
 
 function isRecordedThisMonth(recordedAt) {
   const n = Number(recordedAt);

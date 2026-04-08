@@ -1,5 +1,5 @@
-const adminPersonnel = require('../../../utils/adminPersonnel.js');
-const deleteGuard = require('../../../utils/deleteGuard.js');
+const adminPersonnel = require('../../utils/adminPersonnel.js');
+const deleteGuard = require('../../utils/deleteGuard.js');
 
 Page({
   data: {

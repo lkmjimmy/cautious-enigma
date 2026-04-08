@@ -1,7 +1,7 @@
 const inspectorStores = require('../../../utils/inspectorStores.js');
 const inspectorStoreRecords = require('../../../utils/inspectorStoreRecords.js');
 const demoSlots = require('../../../utils/demoSlots.js');
-const clearAppLocalStorage = require('../../../utils/clearAppLocalStorage.js');
+const clearAppLocalStorage = require('../../utils/clearAppLocalStorage.js');
 
 const STATUS_DEFAULT = '正常';
 

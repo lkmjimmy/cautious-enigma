@@ -1,6 +1,6 @@
 const demoClients = require('../../../utils/demoClients.js');
 const clientAdStatus = require('../../../utils/clientAdStatus.js');
-const deleteGuard = require('../../../utils/deleteGuard.js');
+const deleteGuard = require('../../utils/deleteGuard.js');
 
 Page({
   data: {
