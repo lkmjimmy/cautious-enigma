@@ -79,18 +79,6 @@
         bindinput="onNameInput"
       />
     </view>
-    <view class="rfp-field">
-      <text class="rfp-label">联系电话</text>
-      <input
-        class="rfp-input"
-        placeholder-class="rfp-placeholder"
-        type="digit"
-        placeholder="请输入11位手机号"
-        value="{{phone}}"
-        maxlength="11"
-        bindinput="onPhoneInput"
-      />
-    </view>
   </view>
 
   <view class="rfp-actions">

@@ -12,7 +12,7 @@ const ROLE_META = {
   },
   inspector: {
     title: '巡店员信息',
-    subtitle: '请填写姓名与联系电话',
+    subtitle: '请填写姓名',
   },
 };
 
@@ -93,15 +93,11 @@ Page({
       }
       payload = { name: t(name), companyName: t(companyName), phone: t(phone) };
     } else if (role === 'inspector') {
-      if (!t(name) || !t(phone)) {
-        wx.showToast({ title: '请填写姓名与电话', icon: 'none' });
+      if (!t(name)) {
+        wx.showToast({ title: '请填写姓名', icon: 'none' });
         return;
       }
-      if (!phoneValidate.isValidMainlandMobile(phone)) {
-        wx.showToast({ title: phoneValidate.invalidToastTitle(), icon: 'none' });
-        return;
-      }
-      payload = { name: t(name), phone: t(phone) };
+      payload = { name: t(name) };
     } else {
       return;
     }

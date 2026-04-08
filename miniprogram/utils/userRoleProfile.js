@@ -53,7 +53,7 @@ function hasCompleteProfile(role) {
     );
   }
   if (role === 'inspector') {
-    return !!(trim(p.name) && phoneValidate.isValidMainlandMobile(p.phone));
+    return !!trim(p.name);
   }
   return false;
 }
