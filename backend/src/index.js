@@ -25,6 +25,11 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'adslot-backend', time: new Date().toISOString() });
 });
 
+/** 微信云托管示例 / 控制台常用探测路径；与官方 demo 的 GET /api/count 兼容 */
+app.get('/api/count', (_req, res) => {
+  res.json({ count: 1, service: 'adslot-backend' });
+});
+
 function randomToken() {
   return crypto.randomBytes(24).toString('hex');
 }
@@ -269,7 +274,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(
     `[adslot-backend] listening on 0.0.0.0:${PORT} | env.PORT=${envPort === undefined ? '(unset)' : JSON.stringify(envPort)} | NODE_ENV=${process.env.NODE_ENV || '(unset)'}`
   );
-  console.log(`[adslot-backend] GET /health  |  POST /api/v1/auth/wechat  |  GET /api/v1/bootstrap`);
+  console.log(`[adslot-backend] GET /health  |  GET /api/count  |  POST /api/v1/auth/wechat  |  GET /api/v1/bootstrap`);
   if (isWechatConfigured()) {
     const n = (process.env.WECHAT_ADMIN_OPENIDS || '').split(',').filter((s) => s.trim()).length;
     console.log(`[adslot-backend] 微信登录已启用；管理员 openid 数量: ${n}`);
