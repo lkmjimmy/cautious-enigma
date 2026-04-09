@@ -5,7 +5,17 @@ import crypto from 'crypto';
 import { getDb, loadDb, saveDb } from './db.js';
 import { jscode2session, isWechatConfigured } from './wechatAuth.js';
 
-const PORT = Number(process.env.PORT) || 3000;
+/** 与探针一致：无效/空 PORT 时，生产默认 80，开发默认 3000（避免 PORT="" → 0 → 误用 3000） */
+function resolveListenPort() {
+  const raw = process.env.PORT;
+  if (raw !== undefined && String(raw).trim() !== '') {
+    const n = Number(raw);
+    if (Number.isFinite(n) && n > 0) return n;
+  }
+  return process.env.NODE_ENV === 'production' ? 80 : 3000;
+}
+
+const PORT = resolveListenPort();
 const app = express();
 
 app.use(cors({ origin: true }));
@@ -255,7 +265,10 @@ app.put('/api/v1/kv/:key', requireAuth, (req, res) => {
 
 /** 监听 0.0.0.0，便于本机 127.0.0.1、局域网 IP、真机访问同一端口 */
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[adslot-backend] listening on http://127.0.0.1:${PORT} (and LAN IP:${PORT})`);
+  const envPort = process.env.PORT;
+  console.log(
+    `[adslot-backend] listening on 0.0.0.0:${PORT} | env.PORT=${envPort === undefined ? '(unset)' : JSON.stringify(envPort)} | NODE_ENV=${process.env.NODE_ENV || '(unset)'}`
+  );
   console.log(`[adslot-backend] GET /health  |  POST /api/v1/auth/wechat  |  GET /api/v1/bootstrap`);
   if (isWechatConfigured()) {
     const n = (process.env.WECHAT_ADMIN_OPENIDS || '').split(',').filter((s) => s.trim()).length;

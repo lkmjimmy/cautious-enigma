@@ -78,7 +78,8 @@ docker run --rm -p 3000:3000 -e PORT=3000 adslot-backend:local
 
 ### 2. 服务与环境变量
 
-- **监听端口**：代码已使用 `process.env.PORT`（云托管会注入），`Dockerfile` 中 `EXPOSE` 需与控制台「容器端口」一致；若平台要求固定端口，在「服务设置」里把容器端口设为与 `PORT` 相同（常见为 `80` 或平台指定值）。
+- **监听端口**：代码使用 `process.env.PORT`；本地直接 `node`/`npm` 未设置时默认为 **3000**。生产镜像 `Dockerfile` 已设置 **`ENV PORT=80`**，与微信云托管常见容器端口/健康检查一致。若仍出现探针连 **80** 被拒，请确认控制台未用空值覆盖 `PORT`，或改为全链路 **3000** 并保持一致。  
+- 本地用 Docker 跑在 3000：`docker run -e PORT=3000 -p 3000:3000 ...`
 - **健康检查**：路径填 **`/health`**，方法 `GET`。
 - **环境变量**（在云托管「服务设置 → 环境变量」配置，勿把密钥提交到 Git）：
   - 小程序正式登录必配：`WECHAT_APP_ID`、`WECHAT_APP_SECRET`；生产管理员：`WECHAT_ADMIN_OPENIDS`（见上文）。

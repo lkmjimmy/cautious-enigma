@@ -11,6 +11,8 @@ COPY src ./src
 RUN mkdir -p data
 
 ENV NODE_ENV=production
-EXPOSE 3000
+# 与微信云托管等平台的容器端口/健康检查（常见为 80）一致；本地可用 -e PORT=3000 覆盖
+ENV PORT=80
+EXPOSE 80
 
 CMD ["node", "src/index.js"]
